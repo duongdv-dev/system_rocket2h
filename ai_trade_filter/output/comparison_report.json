@@ -1,27 +1,29 @@
 {
     "training_phase_ai_meta": {
-        "model_type": "RandomForestClassifier",
+        "model_type": "RandomForestClassifier (Advanced Directional)",
         "n_estimators": 300,
         "max_depth": 4,
         "train_period": "2020 - 2023",
         "train_days_count": 1032,
-        "total_bad_days_in_train": 151,
-        "total_safe_days_in_train": 881,
-        "roc_auc_score": 0.8452,
+        "total_bad_days_in_train": 116,
+        "total_safe_days_in_train": 916,
+        "roc_auc_score": 0.8101,
         "feature_importances": {
-            "atr_ratio_20d": 0.2584,
-            "range_to_atr_ratio": 0.1607,
-            "trend_to_atr_ratio": 0.2065,
-            "morning_vol_std": 0.3183,
-            "day_of_week": 0.0562
+            "atr_ratio_20d": 0.3779,
+            "directional_ratio": 0.1353,
+            "range_to_atr_ratio": 0.0891,
+            "trend_to_atr_ratio": 0.0862,
+            "morning_vol_std": 0.2885,
+            "day_of_week": 0.023
         },
-        "optimal_risk_threshold": 0.51,
+        "optimal_risk_threshold": 0.49,
         "training_performance": {
             "train_baseline_pnl": -830.68,
-            "train_filtered_pnl": 7931.57,
-            "train_max_dd": 541.71,
-            "bad_days_skipped": 127,
-            "good_days_skipped": 258
+            "train_filtered_pnl": 4417.35,
+            "train_max_dd": 2207.14,
+            "bad_days_skipped": 45,
+            "good_days_skipped": 64,
+            "sl_days_skipped": 3
         }
     },
     "test_phase_2023_2024": {
@@ -39,874 +41,239 @@
         },
         "ai_filtered_strategy": {
             "initial_capital": 10000.0,
-            "final_equity": 9572.28,
-            "net_pnl_usd": -427.72,
-            "return_pct": -4.28,
-            "total_trading_days": 344,
-            "skipped_days_count": 171,
-            "saved_loss_usd": 4277.99,
-            "tp_hit_days": 243,
+            "final_equity": 7797.6,
+            "net_pnl_usd": -2202.4,
+            "return_pct": -22.02,
+            "total_trading_days": 470,
+            "skipped_days_count": 44,
+            "saved_loss_usd": 1060.27,
+            "tp_hit_days": 318,
             "sl_hit_days": 2,
-            "win_rate_pct": 70.64,
-            "max_drawdown_usd": 2661.9,
-            "max_drawdown_pct": 26.62
+            "win_rate_pct": 67.66,
+            "max_drawdown_usd": 3566.22,
+            "max_drawdown_pct": 35.66
         }
     },
     "skipped_days_detail": [
         {
-            "date": "2023-01-05",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=51.8% ≥ 51.0%)",
-            "unfiltered_pnl_usd": -53.94
-        },
-        {
             "date": "2023-01-11",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=60.9% ≥ 51.0%)",
+            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=49.3% ≥ 49.0%)",
             "unfiltered_pnl_usd": -26.3
         },
         {
-            "date": "2023-01-13",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=54.3% ≥ 51.0%)",
-            "unfiltered_pnl_usd": -15.05
-        },
-        {
-            "date": "2023-01-16",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=51.7% ≥ 51.0%)",
-            "unfiltered_pnl_usd": -100.47
-        },
-        {
-            "date": "2023-01-18",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=52.9% ≥ 51.0%)",
-            "unfiltered_pnl_usd": -40.59
-        },
-        {
-            "date": "2023-01-19",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=56.5% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 10.06
-        },
-        {
             "date": "2023-01-20",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=54.2% ≥ 51.0%)",
+            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=50.2% ≥ 49.0%)",
             "unfiltered_pnl_usd": -174.69
         },
         {
-            "date": "2023-01-24",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=51.5% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 8.06
-        },
-        {
-            "date": "2023-01-25",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=54.8% ≥ 51.0%)",
-            "unfiltered_pnl_usd": -201.61
-        },
-        {
             "date": "2023-01-30",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=60.8% ≥ 51.0%)",
+            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=54.0% ≥ 49.0%)",
             "unfiltered_pnl_usd": 28.38
         },
         {
-            "date": "2023-01-31",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=57.3% ≥ 51.0%)",
-            "unfiltered_pnl_usd": -136.52
-        },
-        {
-            "date": "2023-02-01",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=52.8% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 56.45
-        },
-        {
             "date": "2023-02-02",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=58.1% ≥ 51.0%)",
+            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=49.6% ≥ 49.0%)",
             "unfiltered_pnl_usd": 8.67
         },
         {
             "date": "2023-02-06",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=52.2% ≥ 51.0%)",
+            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=49.7% ≥ 49.0%)",
             "unfiltered_pnl_usd": -75.27
         },
         {
-            "date": "2023-02-08",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=52.1% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 8.91
-        },
-        {
-            "date": "2023-02-10",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=52.7% ≥ 51.0%)",
-            "unfiltered_pnl_usd": -122.88
-        },
-        {
-            "date": "2023-02-13",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=53.0% ≥ 51.0%)",
-            "unfiltered_pnl_usd": -58.31
-        },
-        {
-            "date": "2023-02-15",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=53.5% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 14.61
-        },
-        {
-            "date": "2023-02-16",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=56.1% ≥ 51.0%)",
-            "unfiltered_pnl_usd": -20.58
-        },
-        {
-            "date": "2023-02-20",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=51.0% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 20.48
-        },
-        {
-            "date": "2023-03-01",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=62.1% ≥ 51.0%)",
-            "unfiltered_pnl_usd": -26.35
-        },
-        {
-            "date": "2023-03-03",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=52.3% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 8.91
-        },
-        {
-            "date": "2023-03-08",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=55.0% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 24.32
-        },
-        {
             "date": "2023-03-13",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=58.0% ≥ 51.0%)",
+            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=74.6% ≥ 49.0%)",
             "unfiltered_pnl_usd": -36.17
         },
         {
-            "date": "2023-03-15",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=55.4% ≥ 51.0%)",
-            "unfiltered_pnl_usd": -27.59
-        },
-        {
-            "date": "2023-03-22",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=54.1% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 14.74
-        },
-        {
-            "date": "2023-03-27",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=51.3% ≥ 51.0%)",
-            "unfiltered_pnl_usd": -30.76
-        },
-        {
-            "date": "2023-03-28",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=55.8% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 9.59
-        },
-        {
-            "date": "2023-03-30",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=51.5% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 8.87
-        },
-        {
-            "date": "2023-03-31",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=55.8% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 0.63
-        },
-        {
-            "date": "2023-04-04",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=56.6% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 19.74
-        },
-        {
-            "date": "2023-04-05",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=51.2% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 9.64
-        },
-        {
-            "date": "2023-04-13",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=52.8% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 31.46
-        },
-        {
-            "date": "2023-04-19",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=54.1% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 11.97
-        },
-        {
-            "date": "2023-04-21",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=57.4% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 9.68
-        },
-        {
-            "date": "2023-04-24",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=51.5% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 7.44
-        },
-        {
-            "date": "2023-04-25",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=58.5% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 10.14
-        },
-        {
-            "date": "2023-04-26",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=52.8% ≥ 51.0%)",
-            "unfiltered_pnl_usd": -0.19
-        },
-        {
-            "date": "2023-05-08",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=53.4% ≥ 51.0%)",
-            "unfiltered_pnl_usd": -49.87
-        },
-        {
-            "date": "2023-05-09",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=55.0% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 23.96
-        },
-        {
-            "date": "2023-05-15",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=54.7% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 1.99
-        },
-        {
-            "date": "2023-05-16",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=56.8% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 8.78
-        },
-        {
-            "date": "2023-05-18",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=59.5% ≥ 51.0%)",
-            "unfiltered_pnl_usd": -144.98
-        },
-        {
-            "date": "2023-05-22",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=53.0% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 12.4
-        },
-        {
-            "date": "2023-05-24",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=54.7% ≥ 51.0%)",
-            "unfiltered_pnl_usd": -85.02
+            "date": "2023-03-23",
+            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=50.0% ≥ 49.0%)",
+            "unfiltered_pnl_usd": 13.24
         },
         {
             "date": "2023-05-29",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=60.7% ≥ 51.0%)",
+            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=51.7% ≥ 49.0%)",
             "unfiltered_pnl_usd": 1.05
         },
         {
-            "date": "2023-05-30",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=55.4% ≥ 51.0%)",
-            "unfiltered_pnl_usd": -233.5
-        },
-        {
-            "date": "2023-05-31",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=54.3% ≥ 51.0%)",
-            "unfiltered_pnl_usd": -52.25
-        },
-        {
-            "date": "2023-06-01",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=51.4% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 10.8
-        },
-        {
-            "date": "2023-06-13",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=51.2% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 0.59
-        },
-        {
-            "date": "2023-06-14",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=51.4% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 6.22
-        },
-        {
-            "date": "2023-06-20",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=51.6% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 12.01
-        },
-        {
-            "date": "2023-06-28",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=54.7% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 23.05
-        },
-        {
             "date": "2023-07-03",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=55.8% ≥ 51.0%)",
+            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=54.6% ≥ 49.0%)",
             "unfiltered_pnl_usd": -156.89
         },
         {
             "date": "2023-07-04",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=64.3% ≥ 51.0%)",
+            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=53.3% ≥ 49.0%)",
             "unfiltered_pnl_usd": -60.03
         },
         {
             "date": "2023-07-10",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=59.4% ≥ 51.0%)",
+            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=51.5% ≥ 49.0%)",
             "unfiltered_pnl_usd": -87.47
         },
         {
-            "date": "2023-08-15",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=51.6% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 8.08
-        },
-        {
-            "date": "2023-08-16",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=52.6% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 20.1
-        },
-        {
-            "date": "2023-09-19",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=55.6% ≥ 51.0%)",
-            "unfiltered_pnl_usd": -24.92
-        },
-        {
-            "date": "2023-10-03",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=56.6% ≥ 51.0%)",
-            "unfiltered_pnl_usd": -23.24
-        },
-        {
-            "date": "2023-10-04",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=52.7% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 8.83
-        },
-        {
-            "date": "2023-10-09",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=53.3% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 9.96
-        },
-        {
-            "date": "2023-10-24",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=53.1% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 12.24
-        },
-        {
-            "date": "2023-10-30",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=54.4% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 8.18
-        },
-        {
-            "date": "2023-10-31",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=59.4% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 6.41
-        },
-        {
-            "date": "2023-11-15",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=55.9% ≥ 51.0%)",
-            "unfiltered_pnl_usd": -24.06
-        },
-        {
-            "date": "2023-11-28",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=52.6% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 10.57
-        },
-        {
-            "date": "2023-12-06",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=54.2% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 52.2
-        },
-        {
-            "date": "2023-12-12",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=57.0% ≥ 51.0%)",
-            "unfiltered_pnl_usd": -71.5
-        },
-        {
-            "date": "2023-12-20",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=53.9% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 8.47
-        },
-        {
-            "date": "2023-12-22",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=53.1% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 10.97
-        },
-        {
-            "date": "2024-01-23",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=56.0% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 8.6
-        },
-        {
             "date": "2024-03-07",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=54.0% ≥ 51.0%)",
+            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=63.4% ≥ 49.0%)",
             "unfiltered_pnl_usd": -109.65
         },
         {
-            "date": "2024-03-18",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=51.2% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 12.45
-        },
-        {
             "date": "2024-03-22",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=51.6% ≥ 51.0%)",
+            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=70.2% ≥ 49.0%)",
             "unfiltered_pnl_usd": 12.26
         },
         {
-            "date": "2024-03-25",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=52.4% ≥ 51.0%)",
-            "unfiltered_pnl_usd": -67.79
-        },
-        {
-            "date": "2024-03-26",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=58.0% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 8.72
-        },
-        {
-            "date": "2024-04-02",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=52.0% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 38.81
-        },
-        {
-            "date": "2024-04-03",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=52.3% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 11.37
-        },
-        {
             "date": "2024-04-08",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=54.9% ≥ 51.0%)",
+            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=76.8% ≥ 49.0%)",
             "unfiltered_pnl_usd": 5.46
         },
         {
-            "date": "2024-04-09",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=51.0% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 17.0
+            "date": "2024-04-12",
+            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=50.5% ≥ 49.0%)",
+            "unfiltered_pnl_usd": -34.1
         },
         {
             "date": "2024-04-15",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=53.8% ≥ 51.0%)",
+            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=51.5% ≥ 49.0%)",
             "unfiltered_pnl_usd": 27.58
         },
         {
-            "date": "2024-04-17",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=58.2% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 12.56
-        },
-        {
             "date": "2024-04-19",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=51.8% ≥ 51.0%)",
+            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=72.9% ≥ 49.0%)",
             "unfiltered_pnl_usd": -146.94
         },
         {
             "date": "2024-04-23",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=56.8% ≥ 51.0%)",
+            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=82.0% ≥ 49.0%)",
             "unfiltered_pnl_usd": 50.34
         },
         {
             "date": "2024-04-25",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=56.3% ≥ 51.0%)",
+            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=49.5% ≥ 49.0%)",
             "unfiltered_pnl_usd": 319.92
         },
         {
             "date": "2024-04-26",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=59.8% ≥ 51.0%)",
+            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=53.5% ≥ 49.0%)",
             "unfiltered_pnl_usd": 15.37
         },
         {
-            "date": "2024-04-30",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=58.4% ≥ 51.0%)",
-            "unfiltered_pnl_usd": -50.53
-        },
-        {
             "date": "2024-05-02",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=62.4% ≥ 51.0%)",
+            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=51.1% ≥ 49.0%)",
             "unfiltered_pnl_usd": 41.56
         },
         {
-            "date": "2024-05-07",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=57.9% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 45.07
-        },
-        {
             "date": "2024-05-08",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=60.0% ≥ 51.0%)",
+            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=51.0% ≥ 49.0%)",
             "unfiltered_pnl_usd": -4.44
         },
         {
-            "date": "2024-05-10",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=52.2% ≥ 51.0%)",
-            "unfiltered_pnl_usd": -69.02
-        },
-        {
             "date": "2024-05-13",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=60.0% ≥ 51.0%)",
+            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=52.0% ≥ 49.0%)",
             "unfiltered_pnl_usd": -52.5
         },
         {
             "date": "2024-05-14",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=60.1% ≥ 51.0%)",
+            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=49.1% ≥ 49.0%)",
             "unfiltered_pnl_usd": -16.66
         },
         {
             "date": "2024-05-16",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=53.7% ≥ 51.0%)",
+            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=49.5% ≥ 49.0%)",
             "unfiltered_pnl_usd": 19.68
         },
         {
-            "date": "2024-05-17",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=54.6% ≥ 51.0%)",
-            "unfiltered_pnl_usd": -28.72
-        },
-        {
             "date": "2024-05-21",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=55.8% ≥ 51.0%)",
+            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=73.2% ≥ 49.0%)",
             "unfiltered_pnl_usd": 110.47
         },
         {
-            "date": "2024-05-22",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=51.7% ≥ 51.0%)",
-            "unfiltered_pnl_usd": -28.24
-        },
-        {
-            "date": "2024-05-27",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=57.6% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 14.95
-        },
-        {
-            "date": "2024-05-28",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=59.4% ≥ 51.0%)",
-            "unfiltered_pnl_usd": -20.03
-        },
-        {
-            "date": "2024-05-29",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=52.9% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 15.28
-        },
-        {
-            "date": "2024-06-04",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=59.9% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 38.72
+            "date": "2024-05-31",
+            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=49.0% ≥ 49.0%)",
+            "unfiltered_pnl_usd": 93.93
         },
         {
             "date": "2024-06-10",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=60.2% ≥ 51.0%)",
+            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=51.4% ≥ 49.0%)",
             "unfiltered_pnl_usd": 14.71
         },
         {
-            "date": "2024-06-11",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=51.6% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 19.19
-        },
-        {
-            "date": "2024-06-12",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=55.7% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 43.7
-        },
-        {
-            "date": "2024-06-14",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=52.1% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 9.98
-        },
-        {
-            "date": "2024-06-17",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=52.5% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 22.39
-        },
-        {
-            "date": "2024-06-18",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=60.3% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 10.64
-        },
-        {
-            "date": "2024-06-19",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=52.6% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 8.63
-        },
-        {
-            "date": "2024-06-20",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=55.0% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 12.12
-        },
-        {
-            "date": "2024-06-25",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=56.4% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 12.85
-        },
-        {
             "date": "2024-06-26",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=53.8% ≥ 51.0%)",
+            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=52.4% ≥ 49.0%)",
             "unfiltered_pnl_usd": 10.64
         },
         {
             "date": "2024-06-28",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=54.2% ≥ 51.0%)",
+            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=49.0% ≥ 49.0%)",
             "unfiltered_pnl_usd": 11.22
         },
         {
-            "date": "2024-07-03",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=52.2% ≥ 51.0%)",
-            "unfiltered_pnl_usd": -125.28
-        },
-        {
-            "date": "2024-07-04",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=58.8% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 11.68
-        },
-        {
-            "date": "2024-07-08",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=52.2% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 14.13
-        },
-        {
-            "date": "2024-07-10",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=52.5% ≥ 51.0%)",
-            "unfiltered_pnl_usd": -4.49
-        },
-        {
-            "date": "2024-07-12",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=51.3% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 0.0
-        },
-        {
-            "date": "2024-07-15",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=55.3% ≥ 51.0%)",
-            "unfiltered_pnl_usd": -0.96
-        },
-        {
             "date": "2024-07-17",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=52.5% ≥ 51.0%)",
+            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=51.8% ≥ 49.0%)",
             "unfiltered_pnl_usd": -43.73
         },
         {
-            "date": "2024-07-22",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=51.2% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 17.29
-        },
-        {
-            "date": "2024-07-24",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=52.2% ≥ 51.0%)",
-            "unfiltered_pnl_usd": -9.78
-        },
-        {
             "date": "2024-07-25",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=51.5% ≥ 51.0%)",
+            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=54.8% ≥ 49.0%)",
             "unfiltered_pnl_usd": 32.63
         },
         {
             "date": "2024-07-29",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=52.9% ≥ 51.0%)",
+            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=49.6% ≥ 49.0%)",
             "unfiltered_pnl_usd": 17.08
         },
         {
             "date": "2024-08-06",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=54.2% ≥ 51.0%)",
+            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=53.5% ≥ 49.0%)",
             "unfiltered_pnl_usd": 21.19
         },
         {
-            "date": "2024-08-08",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=52.0% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 15.2
-        },
-        {
-            "date": "2024-08-09",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=52.5% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 18.47
-        },
-        {
-            "date": "2024-08-12",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=59.1% ≥ 51.0%)",
-            "unfiltered_pnl_usd": -157.0
-        },
-        {
-            "date": "2024-08-13",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=52.7% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 51.18
-        },
-        {
-            "date": "2024-08-15",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=57.8% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 1.48
-        },
-        {
             "date": "2024-08-19",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=55.8% ≥ 51.0%)",
+            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=52.9% ≥ 49.0%)",
             "unfiltered_pnl_usd": 18.59
         },
         {
-            "date": "2024-08-20",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=58.4% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 41.92
-        },
-        {
-            "date": "2024-08-21",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=56.5% ≥ 51.0%)",
-            "unfiltered_pnl_usd": -0.12
-        },
-        {
-            "date": "2024-08-23",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=52.1% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 13.69
-        },
-        {
             "date": "2024-08-26",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=62.9% ≥ 51.0%)",
+            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=53.6% ≥ 49.0%)",
             "unfiltered_pnl_usd": 11.04
         },
         {
-            "date": "2024-08-27",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=54.4% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 14.25
-        },
-        {
-            "date": "2024-09-02",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=51.2% ≥ 51.0%)",
-            "unfiltered_pnl_usd": -31.62
-        },
-        {
-            "date": "2024-09-03",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=59.2% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 13.05
-        },
-        {
-            "date": "2024-09-04",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=53.9% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 10.5
-        },
-        {
-            "date": "2024-09-05",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=56.4% ≥ 51.0%)",
-            "unfiltered_pnl_usd": -70.21
-        },
-        {
             "date": "2024-09-09",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=55.5% ≥ 51.0%)",
+            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=52.7% ≥ 49.0%)",
             "unfiltered_pnl_usd": 31.56
         },
         {
-            "date": "2024-09-10",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=51.9% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 10.77
-        },
-        {
-            "date": "2024-09-11",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=51.7% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 12.55
-        },
-        {
-            "date": "2024-09-18",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=56.1% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 10.03
-        },
-        {
-            "date": "2024-09-23",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=52.3% ≥ 51.0%)",
-            "unfiltered_pnl_usd": -27.64
-        },
-        {
-            "date": "2024-09-24",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=51.4% ≥ 51.0%)",
-            "unfiltered_pnl_usd": -288.76
-        },
-        {
-            "date": "2024-09-25",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=51.1% ≥ 51.0%)",
-            "unfiltered_pnl_usd": -208.55
-        },
-        {
-            "date": "2024-09-30",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=51.8% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 17.7
-        },
-        {
-            "date": "2024-10-02",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=56.8% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 9.45
-        },
-        {
-            "date": "2024-10-03",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=51.2% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 29.25
-        },
-        {
-            "date": "2024-10-07",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=51.9% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 13.97
-        },
-        {
             "date": "2024-10-08",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=57.1% ≥ 51.0%)",
+            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=71.0% ≥ 49.0%)",
             "unfiltered_pnl_usd": -35.43
         },
         {
-            "date": "2024-10-09",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=52.2% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 44.05
-        },
-        {
-            "date": "2024-10-23",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=51.7% ≥ 51.0%)",
-            "unfiltered_pnl_usd": -452.89
-        },
-        {
-            "date": "2024-10-24",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=52.2% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 17.25
-        },
-        {
-            "date": "2024-10-29",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=51.3% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 57.64
-        },
-        {
-            "date": "2024-10-30",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=52.1% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 45.21
-        },
-        {
-            "date": "2024-11-04",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=54.3% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 13.78
-        },
-        {
             "date": "2024-11-06",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=55.2% ≥ 51.0%)",
+            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=54.9% ≥ 49.0%)",
             "unfiltered_pnl_usd": 34.05
         },
         {
-            "date": "2024-11-19",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=52.3% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 17.57
-        },
-        {
-            "date": "2024-11-20",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=55.0% ≥ 51.0%)",
-            "unfiltered_pnl_usd": -32.41
-        },
-        {
             "date": "2024-12-03",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=59.5% ≥ 51.0%)",
+            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=51.4% ≥ 49.0%)",
             "unfiltered_pnl_usd": 48.17
         },
         {
-            "date": "2024-12-04",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=53.4% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 20.28
-        },
-        {
             "date": "2024-12-16",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=60.3% ≥ 51.0%)",
+            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=52.4% ≥ 49.0%)",
             "unfiltered_pnl_usd": 29.12
         },
         {
             "date": "2024-12-17",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=59.2% ≥ 51.0%)",
+            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=49.6% ≥ 49.0%)",
             "unfiltered_pnl_usd": 37.96
         },
         {
             "date": "2024-12-18",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=63.1% ≥ 51.0%)",
+            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=49.3% ≥ 49.0%)",
             "unfiltered_pnl_usd": 12.62
         },
         {
-            "date": "2024-12-20",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=51.8% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 23.07
-        },
-        {
             "date": "2024-12-23",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=61.3% ≥ 51.0%)",
+            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=51.0% ≥ 49.0%)",
             "unfiltered_pnl_usd": 18.41
-        },
-        {
-            "date": "2024-12-24",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=59.1% ≥ 51.0%)",
-            "unfiltered_pnl_usd": -33.6
-        },
-        {
-            "date": "2024-12-30",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=53.7% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 70.89
-        },
-        {
-            "date": "2024-12-31",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=59.5% ≥ 51.0%)",
-            "unfiltered_pnl_usd": 9.37
         }
     ]
 }
