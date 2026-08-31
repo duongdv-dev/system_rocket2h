@@ -1,0 +1,19 @@
+{
+    "model_type": "RandomForestClassifier (Volume Optimizer Model)",
+    "n_estimators": 300,
+    "max_depth": 5,
+    "train_period": "2020 - 2023",
+    "train_days_count": 1032,
+    "total_bad_days_in_train": 152,
+    "total_safe_days_in_train": 880,
+    "roc_auc_score": 0.8354,
+    "feature_importances": {
+        "atr_ratio_20d": 0.2816,
+        "directional_intensity": 0.1747,
+        "range_to_atr_ratio": 0.1616,
+        "trend_to_atr_ratio": 0.1288,
+        "morning_vol_std": 0.2202,
+        "day_of_week": 0.033
+    },
+    "optimal_risk_threshold": 0.36
+}
