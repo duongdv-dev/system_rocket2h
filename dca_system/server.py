@@ -10,144 +10,166 @@ UI_DIR = os.path.join(BASE_DIR, "ui")
 
 df_cache = None
 
-def ensure_backtest_executed():
-    """Ensure backtest results exist before serving Web UI."""
-    if not os.path.exists(OUTPUT_JSON):
-        print("Backtest results JSON not found. Running backtest engine first...")
-        from src.dca_backtester import DCABacktester
-        workspace_dir = os.path.dirname(BASE_DIR)
-        possible_paths = [
-            [os.path.join(workspace_dir, "XAUUSD_2023_m1.csv"), os.path.join(workspace_dir, "XAUUSD_2024_m1.csv")],
-            [os.path.join(BASE_DIR, "..", "XAUUSD_2023_m1.csv"), os.path.join(BASE_DIR, "..", "XAUUSD_2024_m1.csv")],
-            ["/app/data/XAUUSD_2023_m1.csv", "/app/data/XAUUSD_2024_m1.csv"]
-        ]
-        selected_paths = None
-        for path_set in possible_paths:
-            if all(os.path.exists(p) for p in path_set):
-                selected_paths = path_set
-                break
-        if not selected_paths:
-            selected_paths = possible_paths[0]
+def export_dca_results(daily_logs, final_balance, output_path):
+    df_logs = pd.DataFrame(daily_logs)
+    traded_days = df_logs[df_logs['direction'] != 'NONE']
+    tp_days = len(traded_days[traded_days['tp_hit'] == True])
+    sl_days = len(traded_days[traded_days['sl_hit'] == True])
+    loss_days = len(traded_days[traded_days['daily_pnl_usd'] < 0])
 
-        backtester = DCABacktester(
-            data_paths=selected_paths,
-            initial_balance=10000.0,
-            default_lot=0.1,
-            lot_usd_per_point=10.0,
-            max_daily_loss_pct=10.0
-        )
-        logs, final_bal = backtester.run_backtest()
-        backtester.export_results(logs, final_bal, OUTPUT_JSON)
+    initial_balance = 10000.0
+    net_pnl = final_balance - initial_balance
+    win_rate = (tp_days / len(traded_days) * 100) if len(traded_days) > 0 else 0.0
+    max_dd_usd = df_logs['max_drawdown_usd'].max()
+    max_dd_pct = (max_dd_usd / initial_balance) * 100.0
 
-def get_df_cache():
-    global df_cache
-    if df_cache is None:
-        from src.dca_backtester import DCABacktester
-        workspace_dir = os.path.dirname(BASE_DIR)
-        possible_paths = [
-            [os.path.join(workspace_dir, "XAUUSD_2023_m1.csv"), os.path.join(workspace_dir, "XAUUSD_2024_m1.csv")],
-            [os.path.join(BASE_DIR, "..", "XAUUSD_2023_m1.csv"), os.path.join(BASE_DIR, "..", "XAUUSD_2024_m1.csv")],
-            ["/app/data/XAUUSD_2023_m1.csv", "/app/data/XAUUSD_2024_m1.csv"]
-        ]
-        selected_paths = None
-        for path_set in possible_paths:
-            if all(os.path.exists(p) for p in path_set):
-                selected_paths = path_set
-                break
-        if not selected_paths:
-            selected_paths = possible_paths[0]
-            
-        bt = DCABacktester(selected_paths)
-        df_cache = bt.load_and_preprocess_data()
-    return df_cache
+    summary = {
+        "initial_balance_usd": initial_balance,
+        "final_balance_usd": round(final_balance, 2),
+        "total_pnl_usd": round(net_pnl, 2),
+        "total_return_pct": round((net_pnl / initial_balance) * 100, 2),
+        "max_daily_loss_pct_cap": 5.0,
+        "total_trading_days": len(traded_days),
+        "tp_hit_days": tp_days,
+        "sl_hit_days": sl_days,
+        "loss_days": loss_days,
+        "win_rate_pct": round(win_rate, 2),
+        "max_drawdown_usd": round(max_dd_usd, 2),
+        "max_drawdown_pct": round(max_dd_pct, 2)
+    }
 
-class DCAServerHandler(SimpleHTTPRequestHandler):
+    res_data = {
+        "summary": summary,
+        "daily_results": daily_logs
+    }
+
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    with open(output_path, 'w', encoding='utf-8') as f:
+        json.dump(res_data, f, indent=4, ensure_ascii=False)
+    print(f"Exported baseline DCA results to: {output_path}")
+
+def run_dca_baseline_backtest():
+    """Run baseline DCA backtest with 5% max daily loss cap."""
+    print("Running baseline DCA backtest with 5.0% max daily loss cap...")
+    from src.dca_backtester import DCABacktester
+    workspace_dir = os.path.dirname(BASE_DIR)
+    possible_paths = [
+        [os.path.join(workspace_dir, "XAUUSD_2023_m1.csv"), os.path.join(workspace_dir, "XAUUSD_2024_m1.csv")],
+        [os.path.join(BASE_DIR, "..", "XAUUSD_2023_m1.csv"), os.path.join(BASE_DIR, "..", "XAUUSD_2024_m1.csv")],
+        ["/app/data/XAUUSD_2023_m1.csv", "/app/data/XAUUSD_2024_m1.csv"]
+    ]
+    selected_paths = None
+    for path_set in possible_paths:
+        if all(os.path.exists(p) for p in path_set):
+            selected_paths = path_set
+            break
+    if not selected_paths:
+        selected_paths = possible_paths[0]
+
+    backtester = DCABacktester(
+        data_paths=selected_paths,
+        initial_balance=10000.0,
+        default_lot=0.1,
+        lot_usd_per_point=10.0,
+        max_daily_loss_pct=5.0
+    )
+    logs, final_bal = backtester.run_backtest()
+    export_dca_results(logs, final_bal, OUTPUT_JSON)
+
+class DCADashboardHandler(SimpleHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, directory=UI_DIR, **kwargs)
 
     def do_GET(self):
-        parsed_url = urllib.parse.urlparse(self.path)
-        path = parsed_url.path
-        query = urllib.parse.parse_qs(parsed_url.query)
+        parsed_path = urllib.parse.urlparse(self.path)
+        if parsed_path.path == '/api/summary':
+            self.send_json_file(OUTPUT_JSON)
+        elif parsed_path.path == '/api/day_chart':
+            self.handle_day_chart_api(parsed_path.query)
+        else:
+            super().do_GET()
 
-        if path == "/api/summary":
+    def send_json_file(self, file_path):
+        if not os.path.exists(file_path):
+            run_dca_baseline_backtest()
+            
+        if os.path.exists(file_path):
             self.send_response(200)
-            self.send_header("Content-Type", "application/json")
-            self.send_header("Access-Control-Allow-Origin", "*")
+            self.send_header('Content-type', 'application/json; charset=utf-8')
+            self.send_header('Access-Control-Allow-Origin', '*')
             self.end_headers()
-            if os.path.exists(OUTPUT_JSON):
-                with open(OUTPUT_JSON, "r", encoding="utf-8") as f:
-                    self.wfile.write(f.read().encode("utf-8"))
-            else:
-                self.wfile.write(json.dumps({"error": "Results file not found."}).encode("utf-8"))
+            with open(file_path, 'rb') as f:
+                self.wfile.write(f.read())
+        else:
+            self.send_error(404, "JSON Report Not Found")
+
+    def handle_day_chart_api(self, query_str):
+        params = urllib.parse.parse_qs(query_str)
+        date_str = params.get('date', [None])[0]
+
+        if not date_str:
+            self.send_error(400, "Missing date parameter")
             return
 
-        elif path == "/api/day_chart":
-            date_str = query.get("date", [None])[0]
-            if not date_str:
-                self.send_response(400)
-                self.end_headers()
-                self.wfile.write(b"Date parameter missing")
+        from src.dca_backtester import DCABacktester
+        workspace_dir = os.path.dirname(BASE_DIR)
+        possible_paths = [
+            [os.path.join(workspace_dir, "XAUUSD_2023_m1.csv"), os.path.join(workspace_dir, "XAUUSD_2024_m1.csv")],
+            [os.path.join(BASE_DIR, "..", "XAUUSD_2023_m1.csv"), os.path.join(BASE_DIR, "..", "XAUUSD_2024_m1.csv")],
+            ["/app/data/XAUUSD_2023_m1.csv", "/app/data/XAUUSD_2024_m1.csv"]
+        ]
+        selected_paths = None
+        for path_set in possible_paths:
+            if all(os.path.exists(p) for p in path_set):
+                selected_paths = path_set
+                break
+        if not selected_paths:
+            selected_paths = possible_paths[0]
+
+        try:
+            bt = DCABacktester(selected_paths, max_daily_loss_pct=5.0)
+            full_df = bt.load_and_preprocess_data()
+            day_m1 = full_df[full_df['date_str'] == date_str].copy()
+
+            if day_m1.empty:
+                self.send_error(404, f"No M1 data found for date {date_str}")
                 return
 
-            try:
-                df = get_df_cache()
-                day_df = df[df["date_str"] == date_str].copy()
+            candles = []
+            for _, row in day_m1.iterrows():
+                candles.append({
+                    "time": int(row['dt_utc'].timestamp()),
+                    "open": float(row['open']),
+                    "high": float(row['high']),
+                    "low": float(row['low']),
+                    "close": float(row['close'])
+                })
 
-                if day_df.empty:
-                    self.send_response(404)
-                    self.end_headers()
-                    self.wfile.write(b"No data for selected date")
-                    return
+            anchor_row = day_m1[day_m1['time'] >= day_m1['time'].min()]
+            anchor_price = float(anchor_row.iloc[0]['open']) if not anchor_row.empty else 0.0
 
-                day_df['time_str'] = day_df['dt_ict'].dt.strftime('%H:%M')
-                window_df = day_df[(day_df['time_str'] >= '09:30') & (day_df['time_str'] <= '12:30')].copy()
+            response_data = {
+                "date": date_str,
+                "anchor_price": anchor_price,
+                "candles": candles
+            }
 
-                candles = []
-                for _, row in window_df.iterrows():
-                    candles.append({
-                        "time": int(row['dt_utc'].timestamp()),
-                        "time_ict": row['dt_ict'].strftime('%H:%M:%S'),
-                        "open": float(row['open']),
-                        "high": float(row['high']),
-                        "low": float(row['low']),
-                        "close": float(row['close']),
-                    })
+            self.send_response(200)
+            self.send_header('Content-type', 'application/json; charset=utf-8')
+            self.send_header('Access-Control-Allow-Origin', '*')
+            self.end_headers()
+            self.wfile.write(json.dumps(response_data).encode('utf-8'))
 
-                cand_10am = day_df[day_df['time_str'] >= '10:00'].iloc[0] if len(day_df[day_df['time_str'] >= '10:00']) > 0 else None
-                anchor_price = float(cand_10am['open']) if cand_10am is not None else 0.0
-
-                resp_data = {
-                    "date": date_str,
-                    "anchor_price": anchor_price,
-                    "candles": candles
-                }
-
-                self.send_response(200)
-                self.send_header("Content-Type", "application/json")
-                self.send_header("Access-Control-Allow-Origin", "*")
-                self.end_headers()
-                self.wfile.write(json.dumps(resp_data).encode("utf-8"))
-            except Exception as e:
-                self.send_response(500)
-                self.end_headers()
-                self.wfile.write(str(e).encode("utf-8"))
-            return
-
-        super().do_GET()
+        except Exception as e:
+            print(f"Error serving day chart: {e}")
+            self.send_error(500, str(e))
 
 def run_server(port=8000):
-    ensure_backtest_executed()
-    print("=" * 70)
-    print(f"  🚀 DCA TRADING BACKTEST WEB UI DASHBOARD RUNNING")
-    print(f"  --> Open Browser: http://localhost:{port}")
-    print("=" * 70)
-    server_address = ("", port)
-    httpd = HTTPServer(server_address, DCAServerHandler)
-    try:
-        httpd.serve_forever()
-    except KeyboardInterrupt:
-        print("\nShutting down Web UI server...")
+    run_dca_baseline_backtest()
+    server_address = ('', port)
+    httpd = HTTPServer(server_address, DCADashboardHandler)
+    print(f"Server running on port {port}")
+    httpd.serve_forever()
 
 if __name__ == "__main__":
     run_server()

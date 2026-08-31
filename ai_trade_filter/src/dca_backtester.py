@@ -6,7 +6,7 @@ import numpy as np
 from datetime import datetime, time
 
 class DCABacktester:
-    def __init__(self, data_paths, initial_balance=10000.0, default_lot=0.1, lot_usd_per_point=10.0, max_daily_loss_pct=10.0):
+    def __init__(self, data_paths, initial_balance=10000.0, default_lot=0.1, lot_usd_per_point=10.0, max_daily_loss_pct=5.0):
         """
         DCA Strategy Backtester for XAUUSD (2020-2024)
         
@@ -14,7 +14,7 @@ class DCABacktester:
         :param initial_balance: Starting account equity in USD
         :param default_lot: Fixed volume size per DCA position (default 0.1)
         :param lot_usd_per_point: USD profit/loss per 1.0 price unit move per lot size (0.1 lot = $10/point)
-        :param max_daily_loss_pct: Max allowed daily loss in % of starting daily equity (default 10.0%)
+        :param max_daily_loss_pct: Max allowed daily loss in % of starting daily equity (default 5.0%)
         """
         self.data_paths = data_paths
         self.initial_balance = initial_balance
