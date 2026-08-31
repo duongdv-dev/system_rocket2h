@@ -5,105 +5,67 @@
         "max_depth": 4,
         "train_period": "2020 - 2023",
         "train_days_count": 1032,
-        "total_bad_days_in_train": 41,
-        "total_safe_days_in_train": 991,
-        "roc_auc_score": 0.9261,
+        "total_bad_days_in_train": 43,
+        "total_safe_days_in_train": 989,
+        "roc_auc_score": 0.773,
         "feature_importances": {
-            "atr_ratio_20d": 0.4559,
-            "directional_intensity": 0.086,
-            "range_to_atr_ratio": 0.0868,
-            "trend_to_atr_ratio": 0.0554,
-            "morning_vol_std": 0.294,
-            "day_of_week": 0.0219
+            "atr_ratio_20d": 0.2925,
+            "directional_intensity": 0.1593,
+            "range_to_atr_ratio": 0.1627,
+            "trend_to_atr_ratio": 0.1272,
+            "morning_vol_std": 0.2292,
+            "day_of_week": 0.0291
         },
-        "optimal_risk_threshold": 0.4,
+        "optimal_risk_threshold": 0.66,
         "training_performance": {
-            "train_baseline_pnl": -830.68,
-            "train_filtered_pnl": 3095.8,
-            "train_max_dd": 2535.94,
-            "bad_days_skipped": 9,
-            "good_days_skipped": 9,
-            "sl_days_skipped": 3
+            "train_baseline_pnl": -1016.88,
+            "train_filtered_pnl": 2994.05,
+            "train_max_dd": 1697.11,
+            "bad_days_skipped": 8,
+            "good_days_skipped": 1,
+            "sl_days_skipped": 8
         }
     },
     "test_phase_2023_2024": {
         "baseline_unfiltered": {
             "initial_capital": 10000.0,
-            "final_equity": 7834.17,
-            "net_pnl_usd": -2165.83,
-            "return_pct": -21.66,
+            "final_equity": 7971.87,
+            "net_pnl_usd": -2028.13,
+            "return_pct": -20.28,
+            "max_daily_loss_pct_cap": 5.0,
             "total_trading_days": 514,
             "tp_hit_days": 339,
-            "sl_hit_days": 2,
+            "sl_hit_days": 4,
             "win_rate_pct": 65.95,
-            "max_drawdown_usd": 1840.51,
-            "max_drawdown_pct": 18.41
+            "max_drawdown_usd": 877.68,
+            "max_drawdown_pct": 8.78
         },
         "ai_filtered_strategy": {
             "initial_capital": 10000.0,
-            "final_equity": 8106.73,
-            "net_pnl_usd": -1893.27,
-            "return_pct": -18.93,
-            "total_trading_days": 504,
-            "skipped_days_count": 10,
-            "saved_loss_usd": 485.08,
-            "tp_hit_days": 336,
-            "sl_hit_days": 2,
-            "win_rate_pct": 66.67,
-            "max_drawdown_usd": 3294.24,
-            "max_drawdown_pct": 32.94
+            "final_equity": 7957.01,
+            "net_pnl_usd": -2042.99,
+            "return_pct": -20.43,
+            "max_daily_loss_pct_cap": 5.0,
+            "total_trading_days": 512,
+            "skipped_days_count": 2,
+            "saved_loss_usd": 35.43,
+            "tp_hit_days": 338,
+            "sl_hit_days": 4,
+            "win_rate_pct": 66.02,
+            "max_drawdown_usd": 2856.13,
+            "max_drawdown_pct": 28.56
         }
     },
     "skipped_days_detail": [
         {
-            "date": "2023-03-13",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=40.3% ≥ 40.0%)",
-            "unfiltered_pnl_usd": -36.17
-        },
-        {
-            "date": "2023-07-03",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=49.2% ≥ 40.0%)",
-            "unfiltered_pnl_usd": -156.89
-        },
-        {
-            "date": "2024-03-07",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=50.4% ≥ 40.0%)",
-            "unfiltered_pnl_usd": -109.65
-        },
-        {
-            "date": "2024-03-22",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=60.8% ≥ 40.0%)",
-            "unfiltered_pnl_usd": 12.26
-        },
-        {
-            "date": "2024-04-08",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=59.6% ≥ 40.0%)",
-            "unfiltered_pnl_usd": 5.46
-        },
-        {
-            "date": "2024-04-19",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=48.0% ≥ 40.0%)",
-            "unfiltered_pnl_usd": -146.94
-        },
-        {
             "date": "2024-04-23",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=67.2% ≥ 40.0%)",
+            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=70.7% ≥ 66.0%)",
             "unfiltered_pnl_usd": 50.34
         },
         {
-            "date": "2024-05-21",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=63.8% ≥ 40.0%)",
-            "unfiltered_pnl_usd": 110.47
-        },
-        {
             "date": "2024-10-08",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=65.8% ≥ 40.0%)",
+            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=66.2% ≥ 66.0%)",
             "unfiltered_pnl_usd": -35.43
-        },
-        {
-            "date": "2024-11-06",
-            "reason": "Mô hình AI cảnh báo Rủi Ro Cao (P=45.0% ≥ 40.0%)",
-            "unfiltered_pnl_usd": 34.05
         }
     ]
 }

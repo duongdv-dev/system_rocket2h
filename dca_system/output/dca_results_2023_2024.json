@@ -1,17 +1,17 @@
 {
     "summary": {
         "initial_balance_usd": 10000.0,
-        "final_balance_usd": 7834.17,
-        "total_pnl_usd": -2165.83,
-        "total_return_pct": -21.66,
-        "max_daily_loss_pct_cap": 10.0,
+        "final_balance_usd": 7971.87,
+        "total_pnl_usd": -2028.13,
+        "total_return_pct": -20.28,
+        "max_daily_loss_pct_cap": 5.0,
         "total_trading_days": 514,
         "tp_hit_days": 339,
-        "sl_hit_days": 2,
-        "loss_days": 121,
+        "sl_hit_days": 4,
+        "loss_days": 122,
         "win_rate_pct": 65.95,
-        "max_drawdown_usd": 1840.51,
-        "max_drawdown_pct": 19.68
+        "max_drawdown_usd": 877.68,
+        "max_drawdown_pct": 8.78
     },
     "daily_results": [
         {
@@ -4415,9 +4415,9 @@
             "direction": "BUY",
             "trades_count": 12,
             "tp_hit": false,
-            "sl_hit": false,
-            "daily_pnl_usd": 319.92,
-            "ending_equity_usd": 10783.54,
+            "sl_hit": true,
+            "daily_pnl_usd": -523.18,
+            "ending_equity_usd": 9940.44,
             "max_drawdown_usd": 877.68,
             "max_drawdown_pct": 8.39
         },
@@ -4430,9 +4430,9 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 15.37,
-            "ending_equity_usd": 10798.91,
+            "ending_equity_usd": 9955.81,
             "max_drawdown_usd": 1.5,
-            "max_drawdown_pct": 0.01
+            "max_drawdown_pct": 0.02
         },
         {
             "date": "2024-04-29",
@@ -4443,9 +4443,9 @@
             "tp_hit": false,
             "sl_hit": false,
             "daily_pnl_usd": -156.32,
-            "ending_equity_usd": 10642.59,
+            "ending_equity_usd": 9799.49,
             "max_drawdown_usd": 165.92,
-            "max_drawdown_pct": 1.54
+            "max_drawdown_pct": 1.67
         },
         {
             "date": "2024-04-30",
@@ -4456,9 +4456,9 @@
             "tp_hit": false,
             "sl_hit": false,
             "daily_pnl_usd": -50.53,
-            "ending_equity_usd": 10592.06,
+            "ending_equity_usd": 9748.97,
             "max_drawdown_usd": 85.93,
-            "max_drawdown_pct": 0.81
+            "max_drawdown_pct": 0.88
         },
         {
             "date": "2024-05-01",
@@ -4469,9 +4469,9 @@
             "tp_hit": false,
             "sl_hit": false,
             "daily_pnl_usd": -120.12,
-            "ending_equity_usd": 10471.94,
+            "ending_equity_usd": 9628.85,
             "max_drawdown_usd": 191.52,
-            "max_drawdown_pct": 1.81
+            "max_drawdown_pct": 1.96
         },
         {
             "date": "2024-05-02",
@@ -4482,9 +4482,9 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 41.56,
-            "ending_equity_usd": 10513.51,
+            "ending_equity_usd": 9670.41,
             "max_drawdown_usd": 16.24,
-            "max_drawdown_pct": 0.16
+            "max_drawdown_pct": 0.17
         },
         {
             "date": "2024-05-03",
@@ -4495,9 +4495,9 @@
             "tp_hit": false,
             "sl_hit": false,
             "daily_pnl_usd": -157.44,
-            "ending_equity_usd": 10356.07,
+            "ending_equity_usd": 9512.97,
             "max_drawdown_usd": 190.44,
-            "max_drawdown_pct": 1.81
+            "max_drawdown_pct": 1.97
         },
         {
             "date": "2024-05-06",
@@ -4508,7 +4508,7 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 24.66,
-            "ending_equity_usd": 10380.72,
+            "ending_equity_usd": 9537.63,
             "max_drawdown_usd": 3.64,
             "max_drawdown_pct": 0.04
         },
@@ -4521,9 +4521,9 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 45.07,
-            "ending_equity_usd": 10425.79,
+            "ending_equity_usd": 9582.69,
             "max_drawdown_usd": 25.87,
-            "max_drawdown_pct": 0.25
+            "max_drawdown_pct": 0.27
         },
         {
             "date": "2024-05-08",
@@ -4534,9 +4534,9 @@
             "tp_hit": false,
             "sl_hit": false,
             "daily_pnl_usd": -4.44,
-            "ending_equity_usd": 10421.35,
+            "ending_equity_usd": 9578.25,
             "max_drawdown_usd": 6.54,
-            "max_drawdown_pct": 0.06
+            "max_drawdown_pct": 0.07
         },
         {
             "date": "2024-05-09",
@@ -4547,7 +4547,7 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 11.88,
-            "ending_equity_usd": 10433.22,
+            "ending_equity_usd": 9590.13,
             "max_drawdown_usd": 3.02,
             "max_drawdown_pct": 0.03
         },
@@ -4560,9 +4560,9 @@
             "tp_hit": false,
             "sl_hit": false,
             "daily_pnl_usd": -69.02,
-            "ending_equity_usd": 10364.21,
+            "ending_equity_usd": 9521.11,
             "max_drawdown_usd": 70.22,
-            "max_drawdown_pct": 0.67
+            "max_drawdown_pct": 0.73
         },
         {
             "date": "2024-05-13",
@@ -4573,9 +4573,9 @@
             "tp_hit": false,
             "sl_hit": false,
             "daily_pnl_usd": -52.5,
-            "ending_equity_usd": 10311.71,
+            "ending_equity_usd": 9468.61,
             "max_drawdown_usd": 94.5,
-            "max_drawdown_pct": 0.91
+            "max_drawdown_pct": 0.99
         },
         {
             "date": "2024-05-14",
@@ -4586,9 +4586,9 @@
             "tp_hit": false,
             "sl_hit": false,
             "daily_pnl_usd": -16.66,
-            "ending_equity_usd": 10295.05,
+            "ending_equity_usd": 9451.95,
             "max_drawdown_usd": 48.07,
-            "max_drawdown_pct": 0.47
+            "max_drawdown_pct": 0.51
         },
         {
             "date": "2024-05-15",
@@ -4599,9 +4599,9 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 29.57,
-            "ending_equity_usd": 10324.62,
+            "ending_equity_usd": 9481.52,
             "max_drawdown_usd": 18.83,
-            "max_drawdown_pct": 0.18
+            "max_drawdown_pct": 0.2
         },
         {
             "date": "2024-05-16",
@@ -4612,9 +4612,9 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 19.68,
-            "ending_equity_usd": 10344.29,
+            "ending_equity_usd": 9501.2,
             "max_drawdown_usd": 12.72,
-            "max_drawdown_pct": 0.12
+            "max_drawdown_pct": 0.13
         },
         {
             "date": "2024-05-17",
@@ -4625,9 +4625,9 @@
             "tp_hit": false,
             "sl_hit": false,
             "daily_pnl_usd": -28.72,
-            "ending_equity_usd": 10315.57,
+            "ending_equity_usd": 9472.47,
             "max_drawdown_usd": 35.06,
-            "max_drawdown_pct": 0.34
+            "max_drawdown_pct": 0.37
         },
         {
             "date": "2024-05-20",
@@ -4638,7 +4638,7 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 26.62,
-            "ending_equity_usd": 10342.19,
+            "ending_equity_usd": 9499.09,
             "max_drawdown_usd": 4.18,
             "max_drawdown_pct": 0.04
         },
@@ -4651,9 +4651,9 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 110.47,
-            "ending_equity_usd": 10452.66,
+            "ending_equity_usd": 9609.56,
             "max_drawdown_usd": 42.07,
-            "max_drawdown_pct": 0.41
+            "max_drawdown_pct": 0.44
         },
         {
             "date": "2024-05-22",
@@ -4664,9 +4664,9 @@
             "tp_hit": false,
             "sl_hit": false,
             "daily_pnl_usd": -28.24,
-            "ending_equity_usd": 10424.41,
+            "ending_equity_usd": 9581.32,
             "max_drawdown_usd": 59.44,
-            "max_drawdown_pct": 0.57
+            "max_drawdown_pct": 0.62
         },
         {
             "date": "2024-05-23",
@@ -4677,9 +4677,9 @@
             "tp_hit": false,
             "sl_hit": false,
             "daily_pnl_usd": -4.91,
-            "ending_equity_usd": 10419.5,
+            "ending_equity_usd": 9576.41,
             "max_drawdown_usd": 30.11,
-            "max_drawdown_pct": 0.29
+            "max_drawdown_pct": 0.31
         },
         {
             "date": "2024-05-24",
@@ -4690,9 +4690,9 @@
             "tp_hit": false,
             "sl_hit": false,
             "daily_pnl_usd": -15.89,
-            "ending_equity_usd": 10403.61,
+            "ending_equity_usd": 9560.51,
             "max_drawdown_usd": 21.19,
-            "max_drawdown_pct": 0.2
+            "max_drawdown_pct": 0.22
         },
         {
             "date": "2024-05-27",
@@ -4703,9 +4703,9 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 14.95,
-            "ending_equity_usd": 10418.56,
+            "ending_equity_usd": 9575.47,
             "max_drawdown_usd": 10.55,
-            "max_drawdown_pct": 0.1
+            "max_drawdown_pct": 0.11
         },
         {
             "date": "2024-05-28",
@@ -4716,9 +4716,9 @@
             "tp_hit": false,
             "sl_hit": false,
             "daily_pnl_usd": -20.03,
-            "ending_equity_usd": 10398.53,
+            "ending_equity_usd": 9555.43,
             "max_drawdown_usd": 37.04,
-            "max_drawdown_pct": 0.36
+            "max_drawdown_pct": 0.39
         },
         {
             "date": "2024-05-29",
@@ -4729,9 +4729,9 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 15.28,
-            "ending_equity_usd": 10413.81,
+            "ending_equity_usd": 9570.71,
             "max_drawdown_usd": 11.82,
-            "max_drawdown_pct": 0.11
+            "max_drawdown_pct": 0.12
         },
         {
             "date": "2024-05-30",
@@ -4742,9 +4742,9 @@
             "tp_hit": false,
             "sl_hit": false,
             "daily_pnl_usd": 2.73,
-            "ending_equity_usd": 10416.54,
+            "ending_equity_usd": 9573.44,
             "max_drawdown_usd": 70.77,
-            "max_drawdown_pct": 0.68
+            "max_drawdown_pct": 0.74
         },
         {
             "date": "2024-05-31",
@@ -4755,9 +4755,9 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 93.93,
-            "ending_equity_usd": 10510.48,
+            "ending_equity_usd": 9667.38,
             "max_drawdown_usd": 74.16,
-            "max_drawdown_pct": 0.71
+            "max_drawdown_pct": 0.77
         },
         {
             "date": "2024-06-03",
@@ -4768,9 +4768,9 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 12.68,
-            "ending_equity_usd": 10523.15,
+            "ending_equity_usd": 9680.06,
             "max_drawdown_usd": 5.42,
-            "max_drawdown_pct": 0.05
+            "max_drawdown_pct": 0.06
         },
         {
             "date": "2024-06-04",
@@ -4781,9 +4781,9 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 38.72,
-            "ending_equity_usd": 10561.87,
+            "ending_equity_usd": 9718.78,
             "max_drawdown_usd": 16.48,
-            "max_drawdown_pct": 0.16
+            "max_drawdown_pct": 0.17
         },
         {
             "date": "2024-06-05",
@@ -4794,9 +4794,9 @@
             "tp_hit": false,
             "sl_hit": false,
             "daily_pnl_usd": -88.37,
-            "ending_equity_usd": 10473.5,
+            "ending_equity_usd": 9630.41,
             "max_drawdown_usd": 89.85,
-            "max_drawdown_pct": 0.85
+            "max_drawdown_pct": 0.92
         },
         {
             "date": "2024-06-06",
@@ -4807,9 +4807,9 @@
             "tp_hit": false,
             "sl_hit": false,
             "daily_pnl_usd": -14.29,
-            "ending_equity_usd": 10459.22,
+            "ending_equity_usd": 9616.12,
             "max_drawdown_usd": 100.6,
-            "max_drawdown_pct": 0.96
+            "max_drawdown_pct": 1.04
         },
         {
             "date": "2024-06-07",
@@ -4820,9 +4820,9 @@
             "tp_hit": false,
             "sl_hit": false,
             "daily_pnl_usd": -199.6,
-            "ending_equity_usd": 10259.62,
+            "ending_equity_usd": 9416.52,
             "max_drawdown_usd": 248.6,
-            "max_drawdown_pct": 2.38
+            "max_drawdown_pct": 2.59
         },
         {
             "date": "2024-06-10",
@@ -4833,7 +4833,7 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 14.71,
-            "ending_equity_usd": 10274.33,
+            "ending_equity_usd": 9431.24,
             "max_drawdown_usd": 0.42,
             "max_drawdown_pct": 0.0
         },
@@ -4846,7 +4846,7 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 19.19,
-            "ending_equity_usd": 10293.52,
+            "ending_equity_usd": 9450.42,
             "max_drawdown_usd": 5.71,
             "max_drawdown_pct": 0.06
         },
@@ -4859,9 +4859,9 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 43.7,
-            "ending_equity_usd": 10337.21,
+            "ending_equity_usd": 9494.12,
             "max_drawdown_usd": 19.3,
-            "max_drawdown_pct": 0.19
+            "max_drawdown_pct": 0.2
         },
         {
             "date": "2024-06-13",
@@ -4872,9 +4872,9 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 17.23,
-            "ending_equity_usd": 10354.45,
+            "ending_equity_usd": 9511.35,
             "max_drawdown_usd": 4.34,
-            "max_drawdown_pct": 0.04
+            "max_drawdown_pct": 0.05
         },
         {
             "date": "2024-06-14",
@@ -4885,7 +4885,7 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 9.98,
-            "ending_equity_usd": 10364.43,
+            "ending_equity_usd": 9521.33,
             "max_drawdown_usd": 0.42,
             "max_drawdown_pct": 0.0
         },
@@ -4898,9 +4898,9 @@
             "tp_hit": false,
             "sl_hit": false,
             "daily_pnl_usd": 22.39,
-            "ending_equity_usd": 10386.82,
+            "ending_equity_usd": 9543.72,
             "max_drawdown_usd": 33.27,
-            "max_drawdown_pct": 0.32
+            "max_drawdown_pct": 0.35
         },
         {
             "date": "2024-06-18",
@@ -4911,9 +4911,9 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 10.64,
-            "ending_equity_usd": 10397.46,
+            "ending_equity_usd": 9554.36,
             "max_drawdown_usd": 1.43,
-            "max_drawdown_pct": 0.01
+            "max_drawdown_pct": 0.02
         },
         {
             "date": "2024-06-19",
@@ -4924,7 +4924,7 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 8.63,
-            "ending_equity_usd": 10406.08,
+            "ending_equity_usd": 9562.99,
             "max_drawdown_usd": 5.77,
             "max_drawdown_pct": 0.06
         },
@@ -4937,7 +4937,7 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 12.12,
-            "ending_equity_usd": 10418.2,
+            "ending_equity_usd": 9575.11,
             "max_drawdown_usd": 1.18,
             "max_drawdown_pct": 0.01
         },
@@ -4950,9 +4950,9 @@
             "tp_hit": false,
             "sl_hit": false,
             "daily_pnl_usd": -52.15,
-            "ending_equity_usd": 10366.06,
+            "ending_equity_usd": 9522.96,
             "max_drawdown_usd": 56.05,
-            "max_drawdown_pct": 0.54
+            "max_drawdown_pct": 0.59
         },
         {
             "date": "2024-06-24",
@@ -4963,9 +4963,9 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 14.12,
-            "ending_equity_usd": 10380.17,
+            "ending_equity_usd": 9537.08,
             "max_drawdown_usd": 5.51,
-            "max_drawdown_pct": 0.05
+            "max_drawdown_pct": 0.06
         },
         {
             "date": "2024-06-25",
@@ -4976,7 +4976,7 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 12.85,
-            "ending_equity_usd": 10393.03,
+            "ending_equity_usd": 9549.93,
             "max_drawdown_usd": 7.95,
             "max_drawdown_pct": 0.08
         },
@@ -4989,9 +4989,9 @@
             "tp_hit": false,
             "sl_hit": false,
             "daily_pnl_usd": 10.64,
-            "ending_equity_usd": 10403.67,
+            "ending_equity_usd": 9560.57,
             "max_drawdown_usd": 26.56,
-            "max_drawdown_pct": 0.26
+            "max_drawdown_pct": 0.28
         },
         {
             "date": "2024-06-27",
@@ -5002,9 +5002,9 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 8.05,
-            "ending_equity_usd": 10411.71,
+            "ending_equity_usd": 9568.62,
             "max_drawdown_usd": 4.65,
-            "max_drawdown_pct": 0.04
+            "max_drawdown_pct": 0.05
         },
         {
             "date": "2024-06-28",
@@ -5015,7 +5015,7 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 11.22,
-            "ending_equity_usd": 10422.94,
+            "ending_equity_usd": 9579.84,
             "max_drawdown_usd": 4.17,
             "max_drawdown_pct": 0.04
         },
@@ -5028,7 +5028,7 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 9.72,
-            "ending_equity_usd": 10432.65,
+            "ending_equity_usd": 9589.56,
             "max_drawdown_usd": 0.88,
             "max_drawdown_pct": 0.01
         },
@@ -5041,7 +5041,7 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 9.17,
-            "ending_equity_usd": 10441.83,
+            "ending_equity_usd": 9598.73,
             "max_drawdown_usd": 1.2,
             "max_drawdown_pct": 0.01
         },
@@ -5054,9 +5054,9 @@
             "tp_hit": false,
             "sl_hit": false,
             "daily_pnl_usd": -125.28,
-            "ending_equity_usd": 10316.54,
+            "ending_equity_usd": 9473.45,
             "max_drawdown_usd": 153.28,
-            "max_drawdown_pct": 1.47
+            "max_drawdown_pct": 1.6
         },
         {
             "date": "2024-07-04",
@@ -5067,7 +5067,7 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 11.68,
-            "ending_equity_usd": 10328.22,
+            "ending_equity_usd": 9485.13,
             "max_drawdown_usd": 5.69,
             "max_drawdown_pct": 0.06
         },
@@ -5080,9 +5080,9 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 14.47,
-            "ending_equity_usd": 10342.69,
+            "ending_equity_usd": 9499.6,
             "max_drawdown_usd": 4.33,
-            "max_drawdown_pct": 0.04
+            "max_drawdown_pct": 0.05
         },
         {
             "date": "2024-07-08",
@@ -5093,9 +5093,9 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 14.13,
-            "ending_equity_usd": 10356.82,
+            "ending_equity_usd": 9513.72,
             "max_drawdown_usd": 1.47,
-            "max_drawdown_pct": 0.01
+            "max_drawdown_pct": 0.02
         },
         {
             "date": "2024-07-09",
@@ -5106,9 +5106,9 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 14.65,
-            "ending_equity_usd": 10371.47,
+            "ending_equity_usd": 9528.38,
             "max_drawdown_usd": 8.62,
-            "max_drawdown_pct": 0.08
+            "max_drawdown_pct": 0.09
         },
         {
             "date": "2024-07-10",
@@ -5119,9 +5119,9 @@
             "tp_hit": false,
             "sl_hit": false,
             "daily_pnl_usd": -4.49,
-            "ending_equity_usd": 10366.98,
+            "ending_equity_usd": 9523.88,
             "max_drawdown_usd": 26.15,
-            "max_drawdown_pct": 0.25
+            "max_drawdown_pct": 0.27
         },
         {
             "date": "2024-07-11",
@@ -5132,9 +5132,9 @@
             "tp_hit": false,
             "sl_hit": false,
             "daily_pnl_usd": -107.44,
-            "ending_equity_usd": 10259.54,
+            "ending_equity_usd": 9416.44,
             "max_drawdown_usd": 116.44,
-            "max_drawdown_pct": 1.12
+            "max_drawdown_pct": 1.22
         },
         {
             "date": "2024-07-12",
@@ -5145,7 +5145,7 @@
             "tp_hit": false,
             "sl_hit": false,
             "daily_pnl_usd": 0.0,
-            "ending_equity_usd": 10259.54,
+            "ending_equity_usd": 9416.44,
             "max_drawdown_usd": 0.0,
             "max_drawdown_pct": 0.0
         },
@@ -5158,9 +5158,9 @@
             "tp_hit": false,
             "sl_hit": false,
             "daily_pnl_usd": -0.96,
-            "ending_equity_usd": 10258.58,
+            "ending_equity_usd": 9415.49,
             "max_drawdown_usd": 54.45,
-            "max_drawdown_pct": 0.53
+            "max_drawdown_pct": 0.58
         },
         {
             "date": "2024-07-16",
@@ -5171,7 +5171,7 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 12.95,
-            "ending_equity_usd": 10271.53,
+            "ending_equity_usd": 9428.44,
             "max_drawdown_usd": 0.88,
             "max_drawdown_pct": 0.01
         },
@@ -5184,9 +5184,9 @@
             "tp_hit": false,
             "sl_hit": false,
             "daily_pnl_usd": -43.73,
-            "ending_equity_usd": 10227.8,
+            "ending_equity_usd": 9384.71,
             "max_drawdown_usd": 190.81,
-            "max_drawdown_pct": 1.86
+            "max_drawdown_pct": 2.02
         },
         {
             "date": "2024-07-18",
@@ -5197,9 +5197,9 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 15.52,
-            "ending_equity_usd": 10243.33,
+            "ending_equity_usd": 9400.23,
             "max_drawdown_usd": 12.38,
-            "max_drawdown_pct": 0.12
+            "max_drawdown_pct": 0.13
         },
         {
             "date": "2024-07-19",
@@ -5210,9 +5210,9 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 19.81,
-            "ending_equity_usd": 10263.13,
+            "ending_equity_usd": 9420.04,
             "max_drawdown_usd": 13.99,
-            "max_drawdown_pct": 0.14
+            "max_drawdown_pct": 0.15
         },
         {
             "date": "2024-07-22",
@@ -5223,9 +5223,9 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 17.29,
-            "ending_equity_usd": 10280.42,
+            "ending_equity_usd": 9437.32,
             "max_drawdown_usd": 12.91,
-            "max_drawdown_pct": 0.13
+            "max_drawdown_pct": 0.14
         },
         {
             "date": "2024-07-23",
@@ -5236,9 +5236,9 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 41.6,
-            "ending_equity_usd": 10322.01,
+            "ending_equity_usd": 9478.92,
             "max_drawdown_usd": 26.74,
-            "max_drawdown_pct": 0.26
+            "max_drawdown_pct": 0.28
         },
         {
             "date": "2024-07-24",
@@ -5249,9 +5249,9 @@
             "tp_hit": false,
             "sl_hit": false,
             "daily_pnl_usd": -9.78,
-            "ending_equity_usd": 10312.24,
+            "ending_equity_usd": 9469.14,
             "max_drawdown_usd": 22.18,
-            "max_drawdown_pct": 0.21
+            "max_drawdown_pct": 0.23
         },
         {
             "date": "2024-07-25",
@@ -5262,9 +5262,9 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 32.63,
-            "ending_equity_usd": 10344.87,
+            "ending_equity_usd": 9501.77,
             "max_drawdown_usd": 26.4,
-            "max_drawdown_pct": 0.26
+            "max_drawdown_pct": 0.28
         },
         {
             "date": "2024-07-26",
@@ -5275,9 +5275,9 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 22.54,
-            "ending_equity_usd": 10367.4,
+            "ending_equity_usd": 9524.31,
             "max_drawdown_usd": 18.46,
-            "max_drawdown_pct": 0.18
+            "max_drawdown_pct": 0.19
         },
         {
             "date": "2024-07-29",
@@ -5288,7 +5288,7 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 17.08,
-            "ending_equity_usd": 10384.48,
+            "ending_equity_usd": 9541.39,
             "max_drawdown_usd": 3.72,
             "max_drawdown_pct": 0.04
         },
@@ -5301,7 +5301,7 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 16.53,
-            "ending_equity_usd": 10401.02,
+            "ending_equity_usd": 9557.92,
             "max_drawdown_usd": 3.87,
             "max_drawdown_pct": 0.04
         },
@@ -5314,9 +5314,9 @@
             "tp_hit": false,
             "sl_hit": false,
             "daily_pnl_usd": -467.62,
-            "ending_equity_usd": 9933.4,
+            "ending_equity_usd": 9090.3,
             "max_drawdown_usd": 468.32,
-            "max_drawdown_pct": 4.5
+            "max_drawdown_pct": 4.9
         },
         {
             "date": "2024-08-01",
@@ -5327,9 +5327,9 @@
             "tp_hit": false,
             "sl_hit": false,
             "daily_pnl_usd": 24.04,
-            "ending_equity_usd": 9957.44,
+            "ending_equity_usd": 9114.34,
             "max_drawdown_usd": 29.16,
-            "max_drawdown_pct": 0.29
+            "max_drawdown_pct": 0.32
         },
         {
             "date": "2024-08-02",
@@ -5340,9 +5340,9 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 29.8,
-            "ending_equity_usd": 9987.24,
+            "ending_equity_usd": 9144.14,
             "max_drawdown_usd": 10.31,
-            "max_drawdown_pct": 0.1
+            "max_drawdown_pct": 0.11
         },
         {
             "date": "2024-08-05",
@@ -5353,9 +5353,9 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 31.3,
-            "ending_equity_usd": 10018.53,
+            "ending_equity_usd": 9175.44,
             "max_drawdown_usd": 16.01,
-            "max_drawdown_pct": 0.16
+            "max_drawdown_pct": 0.18
         },
         {
             "date": "2024-08-06",
@@ -5366,9 +5366,9 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 21.19,
-            "ending_equity_usd": 10039.73,
+            "ending_equity_usd": 9196.63,
             "max_drawdown_usd": 3.31,
-            "max_drawdown_pct": 0.03
+            "max_drawdown_pct": 0.04
         },
         {
             "date": "2024-08-07",
@@ -5379,9 +5379,9 @@
             "tp_hit": false,
             "sl_hit": false,
             "daily_pnl_usd": -125.53,
-            "ending_equity_usd": 9914.19,
+            "ending_equity_usd": 9071.1,
             "max_drawdown_usd": 174.73,
-            "max_drawdown_pct": 1.74
+            "max_drawdown_pct": 1.9
         },
         {
             "date": "2024-08-08",
@@ -5392,7 +5392,7 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 15.2,
-            "ending_equity_usd": 9929.39,
+            "ending_equity_usd": 9086.3,
             "max_drawdown_usd": 3.1,
             "max_drawdown_pct": 0.03
         },
@@ -5405,9 +5405,9 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 18.47,
-            "ending_equity_usd": 9947.86,
+            "ending_equity_usd": 9104.76,
             "max_drawdown_usd": 12.7,
-            "max_drawdown_pct": 0.13
+            "max_drawdown_pct": 0.14
         },
         {
             "date": "2024-08-12",
@@ -5418,9 +5418,9 @@
             "tp_hit": false,
             "sl_hit": false,
             "daily_pnl_usd": -157.0,
-            "ending_equity_usd": 9790.86,
+            "ending_equity_usd": 8947.76,
             "max_drawdown_usd": 175.5,
-            "max_drawdown_pct": 1.76
+            "max_drawdown_pct": 1.93
         },
         {
             "date": "2024-08-13",
@@ -5431,9 +5431,9 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 51.18,
-            "ending_equity_usd": 9842.04,
+            "ending_equity_usd": 8998.94,
             "max_drawdown_usd": 20.96,
-            "max_drawdown_pct": 0.21
+            "max_drawdown_pct": 0.23
         },
         {
             "date": "2024-08-14",
@@ -5444,9 +5444,9 @@
             "tp_hit": false,
             "sl_hit": false,
             "daily_pnl_usd": 4.08,
-            "ending_equity_usd": 9846.12,
+            "ending_equity_usd": 9003.02,
             "max_drawdown_usd": 5.91,
-            "max_drawdown_pct": 0.06
+            "max_drawdown_pct": 0.07
         },
         {
             "date": "2024-08-15",
@@ -5457,9 +5457,9 @@
             "tp_hit": false,
             "sl_hit": false,
             "daily_pnl_usd": 1.48,
-            "ending_equity_usd": 9847.6,
+            "ending_equity_usd": 9004.5,
             "max_drawdown_usd": 39.38,
-            "max_drawdown_pct": 0.4
+            "max_drawdown_pct": 0.44
         },
         {
             "date": "2024-08-16",
@@ -5470,9 +5470,9 @@
             "tp_hit": false,
             "sl_hit": false,
             "daily_pnl_usd": 11.5,
-            "ending_equity_usd": 9859.1,
+            "ending_equity_usd": 9016.0,
             "max_drawdown_usd": 58.4,
-            "max_drawdown_pct": 0.59
+            "max_drawdown_pct": 0.65
         },
         {
             "date": "2024-08-19",
@@ -5483,9 +5483,9 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 18.59,
-            "ending_equity_usd": 9877.69,
+            "ending_equity_usd": 9034.59,
             "max_drawdown_usd": 5.11,
-            "max_drawdown_pct": 0.05
+            "max_drawdown_pct": 0.06
         },
         {
             "date": "2024-08-20",
@@ -5496,9 +5496,9 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 41.92,
-            "ending_equity_usd": 9919.61,
+            "ending_equity_usd": 9076.51,
             "max_drawdown_usd": 15.08,
-            "max_drawdown_pct": 0.15
+            "max_drawdown_pct": 0.17
         },
         {
             "date": "2024-08-21",
@@ -5509,9 +5509,9 @@
             "tp_hit": false,
             "sl_hit": false,
             "daily_pnl_usd": -0.12,
-            "ending_equity_usd": 9919.5,
+            "ending_equity_usd": 9076.4,
             "max_drawdown_usd": 91.32,
-            "max_drawdown_pct": 0.92
+            "max_drawdown_pct": 1.01
         },
         {
             "date": "2024-08-22",
@@ -5522,9 +5522,9 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 18.31,
-            "ending_equity_usd": 9937.81,
+            "ending_equity_usd": 9094.71,
             "max_drawdown_usd": 6.16,
-            "max_drawdown_pct": 0.06
+            "max_drawdown_pct": 0.07
         },
         {
             "date": "2024-08-23",
@@ -5535,9 +5535,9 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 13.69,
-            "ending_equity_usd": 9951.49,
+            "ending_equity_usd": 9108.39,
             "max_drawdown_usd": 3.21,
-            "max_drawdown_pct": 0.03
+            "max_drawdown_pct": 0.04
         },
         {
             "date": "2024-08-26",
@@ -5548,7 +5548,7 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 11.04,
-            "ending_equity_usd": 9962.53,
+            "ending_equity_usd": 9119.44,
             "max_drawdown_usd": 3.96,
             "max_drawdown_pct": 0.04
         },
@@ -5561,7 +5561,7 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 14.25,
-            "ending_equity_usd": 9976.78,
+            "ending_equity_usd": 9133.69,
             "max_drawdown_usd": 2.25,
             "max_drawdown_pct": 0.02
         },
@@ -5574,9 +5574,9 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 42.65,
-            "ending_equity_usd": 10019.43,
+            "ending_equity_usd": 9176.33,
             "max_drawdown_usd": 19.75,
-            "max_drawdown_pct": 0.2
+            "max_drawdown_pct": 0.22
         },
         {
             "date": "2024-08-29",
@@ -5587,7 +5587,7 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 12.06,
-            "ending_equity_usd": 10031.49,
+            "ending_equity_usd": 9188.4,
             "max_drawdown_usd": 0.24,
             "max_drawdown_pct": 0.0
         },
@@ -5600,9 +5600,9 @@
             "tp_hit": false,
             "sl_hit": false,
             "daily_pnl_usd": 0.35,
-            "ending_equity_usd": 10031.84,
+            "ending_equity_usd": 9188.74,
             "max_drawdown_usd": 36.45,
-            "max_drawdown_pct": 0.36
+            "max_drawdown_pct": 0.4
         },
         {
             "date": "2024-09-02",
@@ -5613,9 +5613,9 @@
             "tp_hit": false,
             "sl_hit": false,
             "daily_pnl_usd": -31.62,
-            "ending_equity_usd": 10000.21,
+            "ending_equity_usd": 9157.12,
             "max_drawdown_usd": 104.31,
-            "max_drawdown_pct": 1.04
+            "max_drawdown_pct": 1.14
         },
         {
             "date": "2024-09-03",
@@ -5626,9 +5626,9 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 13.05,
-            "ending_equity_usd": 10013.27,
+            "ending_equity_usd": 9170.17,
             "max_drawdown_usd": 8.05,
-            "max_drawdown_pct": 0.08
+            "max_drawdown_pct": 0.09
         },
         {
             "date": "2024-09-04",
@@ -5639,7 +5639,7 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 10.5,
-            "ending_equity_usd": 10023.77,
+            "ending_equity_usd": 9180.67,
             "max_drawdown_usd": 1.9,
             "max_drawdown_pct": 0.02
         },
@@ -5652,9 +5652,9 @@
             "tp_hit": false,
             "sl_hit": false,
             "daily_pnl_usd": -70.21,
-            "ending_equity_usd": 9953.55,
+            "ending_equity_usd": 9110.46,
             "max_drawdown_usd": 84.61,
-            "max_drawdown_pct": 0.84
+            "max_drawdown_pct": 0.92
         },
         {
             "date": "2024-09-06",
@@ -5665,7 +5665,7 @@
             "tp_hit": false,
             "sl_hit": false,
             "daily_pnl_usd": 1.09,
-            "ending_equity_usd": 9954.64,
+            "ending_equity_usd": 9111.55,
             "max_drawdown_usd": 6.74,
             "max_drawdown_pct": 0.07
         },
@@ -5678,9 +5678,9 @@
             "tp_hit": false,
             "sl_hit": false,
             "daily_pnl_usd": 31.56,
-            "ending_equity_usd": 9986.2,
+            "ending_equity_usd": 9143.11,
             "max_drawdown_usd": 43.74,
-            "max_drawdown_pct": 0.44
+            "max_drawdown_pct": 0.48
         },
         {
             "date": "2024-09-10",
@@ -5691,7 +5691,7 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 10.77,
-            "ending_equity_usd": 9996.97,
+            "ending_equity_usd": 9153.88,
             "max_drawdown_usd": 3.13,
             "max_drawdown_pct": 0.03
         },
@@ -5704,9 +5704,9 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 12.55,
-            "ending_equity_usd": 10009.52,
+            "ending_equity_usd": 9166.42,
             "max_drawdown_usd": 7.05,
-            "max_drawdown_pct": 0.07
+            "max_drawdown_pct": 0.08
         },
         {
             "date": "2024-09-12",
@@ -5717,9 +5717,9 @@
             "tp_hit": false,
             "sl_hit": false,
             "daily_pnl_usd": -102.03,
-            "ending_equity_usd": 9907.49,
+            "ending_equity_usd": 9064.4,
             "max_drawdown_usd": 132.38,
-            "max_drawdown_pct": 1.32
+            "max_drawdown_pct": 1.44
         },
         {
             "date": "2024-09-13",
@@ -5730,9 +5730,9 @@
             "tp_hit": false,
             "sl_hit": false,
             "daily_pnl_usd": -1.81,
-            "ending_equity_usd": 9905.68,
+            "ending_equity_usd": 9062.59,
             "max_drawdown_usd": 62.11,
-            "max_drawdown_pct": 0.63
+            "max_drawdown_pct": 0.69
         },
         {
             "date": "2024-09-16",
@@ -5743,9 +5743,9 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 57.35,
-            "ending_equity_usd": 9963.03,
+            "ending_equity_usd": 9119.93,
             "max_drawdown_usd": 51.25,
-            "max_drawdown_pct": 0.52
+            "max_drawdown_pct": 0.57
         },
         {
             "date": "2024-09-17",
@@ -5756,9 +5756,9 @@
             "tp_hit": false,
             "sl_hit": false,
             "daily_pnl_usd": -44.73,
-            "ending_equity_usd": 9918.3,
+            "ending_equity_usd": 9075.2,
             "max_drawdown_usd": 158.73,
-            "max_drawdown_pct": 1.59
+            "max_drawdown_pct": 1.74
         },
         {
             "date": "2024-09-18",
@@ -5769,7 +5769,7 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 10.03,
-            "ending_equity_usd": 9928.33,
+            "ending_equity_usd": 9085.23,
             "max_drawdown_usd": 0.27,
             "max_drawdown_pct": 0.0
         },
@@ -5782,9 +5782,9 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 18.31,
-            "ending_equity_usd": 9946.63,
+            "ending_equity_usd": 9103.54,
             "max_drawdown_usd": 8.79,
-            "max_drawdown_pct": 0.09
+            "max_drawdown_pct": 0.1
         },
         {
             "date": "2024-09-20",
@@ -5795,7 +5795,7 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 13.42,
-            "ending_equity_usd": 9960.05,
+            "ending_equity_usd": 9116.96,
             "max_drawdown_usd": 6.78,
             "max_drawdown_pct": 0.07
         },
@@ -5808,9 +5808,9 @@
             "tp_hit": false,
             "sl_hit": false,
             "daily_pnl_usd": -27.64,
-            "ending_equity_usd": 9932.42,
+            "ending_equity_usd": 9089.32,
             "max_drawdown_usd": 76.24,
-            "max_drawdown_pct": 0.77
+            "max_drawdown_pct": 0.84
         },
         {
             "date": "2024-09-24",
@@ -5821,9 +5821,9 @@
             "tp_hit": false,
             "sl_hit": false,
             "daily_pnl_usd": -288.76,
-            "ending_equity_usd": 9643.66,
+            "ending_equity_usd": 8800.56,
             "max_drawdown_usd": 311.16,
-            "max_drawdown_pct": 3.13
+            "max_drawdown_pct": 3.42
         },
         {
             "date": "2024-09-25",
@@ -5834,9 +5834,9 @@
             "tp_hit": false,
             "sl_hit": false,
             "daily_pnl_usd": -208.55,
-            "ending_equity_usd": 9435.1,
+            "ending_equity_usd": 8592.01,
             "max_drawdown_usd": 253.7,
-            "max_drawdown_pct": 2.63
+            "max_drawdown_pct": 2.88
         },
         {
             "date": "2024-09-26",
@@ -5847,9 +5847,9 @@
             "tp_hit": false,
             "sl_hit": false,
             "daily_pnl_usd": 25.07,
-            "ending_equity_usd": 9460.17,
+            "ending_equity_usd": 8617.07,
             "max_drawdown_usd": 61.9,
-            "max_drawdown_pct": 0.66
+            "max_drawdown_pct": 0.72
         },
         {
             "date": "2024-09-27",
@@ -5860,7 +5860,7 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 12.55,
-            "ending_equity_usd": 9472.72,
+            "ending_equity_usd": 8629.63,
             "max_drawdown_usd": 3.45,
             "max_drawdown_pct": 0.04
         },
@@ -5873,9 +5873,9 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 17.7,
-            "ending_equity_usd": 9490.42,
+            "ending_equity_usd": 8647.32,
             "max_drawdown_usd": 12.81,
-            "max_drawdown_pct": 0.14
+            "max_drawdown_pct": 0.15
         },
         {
             "date": "2024-10-01",
@@ -5886,9 +5886,9 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 13.71,
-            "ending_equity_usd": 9504.13,
+            "ending_equity_usd": 8661.04,
             "max_drawdown_usd": 4.99,
-            "max_drawdown_pct": 0.05
+            "max_drawdown_pct": 0.06
         },
         {
             "date": "2024-10-02",
@@ -5899,9 +5899,9 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 9.45,
-            "ending_equity_usd": 9513.58,
+            "ending_equity_usd": 8670.49,
             "max_drawdown_usd": 4.98,
-            "max_drawdown_pct": 0.05
+            "max_drawdown_pct": 0.06
         },
         {
             "date": "2024-10-03",
@@ -5912,9 +5912,9 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 29.25,
-            "ending_equity_usd": 9542.84,
+            "ending_equity_usd": 8699.74,
             "max_drawdown_usd": 20.15,
-            "max_drawdown_pct": 0.21
+            "max_drawdown_pct": 0.23
         },
         {
             "date": "2024-10-04",
@@ -5925,9 +5925,9 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 9.92,
-            "ending_equity_usd": 9552.76,
+            "ending_equity_usd": 8709.67,
             "max_drawdown_usd": 3.25,
-            "max_drawdown_pct": 0.03
+            "max_drawdown_pct": 0.04
         },
         {
             "date": "2024-10-07",
@@ -5938,7 +5938,7 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 13.97,
-            "ending_equity_usd": 9566.73,
+            "ending_equity_usd": 8723.63,
             "max_drawdown_usd": 0.73,
             "max_drawdown_pct": 0.01
         },
@@ -5951,9 +5951,9 @@
             "tp_hit": false,
             "sl_hit": false,
             "daily_pnl_usd": -35.43,
-            "ending_equity_usd": 9531.3,
+            "ending_equity_usd": 8688.21,
             "max_drawdown_usd": 124.83,
-            "max_drawdown_pct": 1.3
+            "max_drawdown_pct": 1.43
         },
         {
             "date": "2024-10-09",
@@ -5964,9 +5964,9 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 44.05,
-            "ending_equity_usd": 9575.35,
+            "ending_equity_usd": 8732.26,
             "max_drawdown_usd": 26.55,
-            "max_drawdown_pct": 0.28
+            "max_drawdown_pct": 0.31
         },
         {
             "date": "2024-10-10",
@@ -5977,9 +5977,9 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 13.58,
-            "ending_equity_usd": 9588.93,
+            "ending_equity_usd": 8745.83,
             "max_drawdown_usd": 3.32,
-            "max_drawdown_pct": 0.03
+            "max_drawdown_pct": 0.04
         },
         {
             "date": "2024-10-11",
@@ -5990,9 +5990,9 @@
             "tp_hit": false,
             "sl_hit": false,
             "daily_pnl_usd": -11.94,
-            "ending_equity_usd": 9576.99,
+            "ending_equity_usd": 8733.9,
             "max_drawdown_usd": 20.2,
-            "max_drawdown_pct": 0.21
+            "max_drawdown_pct": 0.23
         },
         {
             "date": "2024-10-14",
@@ -6003,9 +6003,9 @@
             "tp_hit": false,
             "sl_hit": false,
             "daily_pnl_usd": -20.67,
-            "ending_equity_usd": 9556.32,
+            "ending_equity_usd": 8713.23,
             "max_drawdown_usd": 51.67,
-            "max_drawdown_pct": 0.54
+            "max_drawdown_pct": 0.59
         },
         {
             "date": "2024-10-15",
@@ -6016,9 +6016,9 @@
             "tp_hit": false,
             "sl_hit": false,
             "daily_pnl_usd": -132.51,
-            "ending_equity_usd": 9423.81,
+            "ending_equity_usd": 8580.71,
             "max_drawdown_usd": 185.51,
-            "max_drawdown_pct": 1.94
+            "max_drawdown_pct": 2.13
         },
         {
             "date": "2024-10-16",
@@ -6029,7 +6029,7 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 18.1,
-            "ending_equity_usd": 9441.91,
+            "ending_equity_usd": 8598.81,
             "max_drawdown_usd": 2.4,
             "max_drawdown_pct": 0.03
         },
@@ -6042,9 +6042,9 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 17.47,
-            "ending_equity_usd": 9459.38,
+            "ending_equity_usd": 8616.28,
             "max_drawdown_usd": 2.23,
-            "max_drawdown_pct": 0.02
+            "max_drawdown_pct": 0.03
         },
         {
             "date": "2024-10-18",
@@ -6055,9 +6055,9 @@
             "tp_hit": false,
             "sl_hit": false,
             "daily_pnl_usd": -3.64,
-            "ending_equity_usd": 9455.74,
+            "ending_equity_usd": 8612.64,
             "max_drawdown_usd": 9.44,
-            "max_drawdown_pct": 0.1
+            "max_drawdown_pct": 0.11
         },
         {
             "date": "2024-10-21",
@@ -6068,7 +6068,7 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 19.17,
-            "ending_equity_usd": 9474.91,
+            "ending_equity_usd": 8631.81,
             "max_drawdown_usd": 1.83,
             "max_drawdown_pct": 0.02
         },
@@ -6081,22 +6081,22 @@
             "tp_hit": false,
             "sl_hit": false,
             "daily_pnl_usd": -96.49,
-            "ending_equity_usd": 9378.41,
+            "ending_equity_usd": 8535.32,
             "max_drawdown_usd": 170.64,
-            "max_drawdown_pct": 1.8
+            "max_drawdown_pct": 1.98
         },
         {
             "date": "2024-10-23",
             "anchor_price_10am": 2738.745,
             "atr14_m5_step": 1.264,
             "direction": "SELL",
-            "trades_count": 9,
+            "trades_count": 8,
             "tp_hit": false,
-            "sl_hit": false,
-            "daily_pnl_usd": -452.89,
-            "ending_equity_usd": 8925.52,
-            "max_drawdown_usd": 489.79,
-            "max_drawdown_pct": 5.22
+            "sl_hit": true,
+            "daily_pnl_usd": -426.77,
+            "ending_equity_usd": 8108.55,
+            "max_drawdown_usd": 434.71,
+            "max_drawdown_pct": 5.09
         },
         {
             "date": "2024-10-24",
@@ -6107,7 +6107,7 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 17.25,
-            "ending_equity_usd": 8942.77,
+            "ending_equity_usd": 8125.8,
             "max_drawdown_usd": 1.95,
             "max_drawdown_pct": 0.02
         },
@@ -6120,9 +6120,9 @@
             "tp_hit": false,
             "sl_hit": false,
             "daily_pnl_usd": 5.38,
-            "ending_equity_usd": 8948.15,
+            "ending_equity_usd": 8131.18,
             "max_drawdown_usd": 43.82,
-            "max_drawdown_pct": 0.49
+            "max_drawdown_pct": 0.54
         },
         {
             "date": "2024-10-28",
@@ -6133,9 +6133,9 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 15.13,
-            "ending_equity_usd": 8963.28,
+            "ending_equity_usd": 8146.31,
             "max_drawdown_usd": 8.97,
-            "max_drawdown_pct": 0.1
+            "max_drawdown_pct": 0.11
         },
         {
             "date": "2024-10-29",
@@ -6146,9 +6146,9 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 57.64,
-            "ending_equity_usd": 9020.91,
+            "ending_equity_usd": 8203.94,
             "max_drawdown_usd": 29.94,
-            "max_drawdown_pct": 0.33
+            "max_drawdown_pct": 0.37
         },
         {
             "date": "2024-10-30",
@@ -6159,9 +6159,9 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 45.21,
-            "ending_equity_usd": 9066.12,
+            "ending_equity_usd": 8249.16,
             "max_drawdown_usd": 20.59,
-            "max_drawdown_pct": 0.23
+            "max_drawdown_pct": 0.25
         },
         {
             "date": "2024-10-31",
@@ -6172,9 +6172,9 @@
             "tp_hit": false,
             "sl_hit": false,
             "daily_pnl_usd": 1.15,
-            "ending_equity_usd": 9067.28,
+            "ending_equity_usd": 8250.31,
             "max_drawdown_usd": 63.95,
-            "max_drawdown_pct": 0.71
+            "max_drawdown_pct": 0.78
         },
         {
             "date": "2024-11-01",
@@ -6185,9 +6185,9 @@
             "tp_hit": false,
             "sl_hit": false,
             "daily_pnl_usd": -20.69,
-            "ending_equity_usd": 9046.58,
+            "ending_equity_usd": 8229.61,
             "max_drawdown_usd": 31.11,
-            "max_drawdown_pct": 0.34
+            "max_drawdown_pct": 0.38
         },
         {
             "date": "2024-11-04",
@@ -6198,9 +6198,9 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 13.78,
-            "ending_equity_usd": 9060.36,
+            "ending_equity_usd": 8243.39,
             "max_drawdown_usd": 11.72,
-            "max_drawdown_pct": 0.13
+            "max_drawdown_pct": 0.14
         },
         {
             "date": "2024-11-05",
@@ -6211,9 +6211,9 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 21.34,
-            "ending_equity_usd": 9081.7,
+            "ending_equity_usd": 8264.73,
             "max_drawdown_usd": 1.26,
-            "max_drawdown_pct": 0.01
+            "max_drawdown_pct": 0.02
         },
         {
             "date": "2024-11-06",
@@ -6224,9 +6224,9 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 34.05,
-            "ending_equity_usd": 9115.75,
+            "ending_equity_usd": 8298.78,
             "max_drawdown_usd": 26.88,
-            "max_drawdown_pct": 0.3
+            "max_drawdown_pct": 0.33
         },
         {
             "date": "2024-11-07",
@@ -6237,9 +6237,9 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 27.4,
-            "ending_equity_usd": 9143.15,
+            "ending_equity_usd": 8326.18,
             "max_drawdown_usd": 10.97,
-            "max_drawdown_pct": 0.12
+            "max_drawdown_pct": 0.13
         },
         {
             "date": "2024-11-08",
@@ -6250,9 +6250,9 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 19.56,
-            "ending_equity_usd": 9162.71,
+            "ending_equity_usd": 8345.74,
             "max_drawdown_usd": 10.07,
-            "max_drawdown_pct": 0.11
+            "max_drawdown_pct": 0.12
         },
         {
             "date": "2024-11-11",
@@ -6263,9 +6263,9 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 24.3,
-            "ending_equity_usd": 9187.01,
+            "ending_equity_usd": 8370.04,
             "max_drawdown_usd": 15.7,
-            "max_drawdown_pct": 0.17
+            "max_drawdown_pct": 0.19
         },
         {
             "date": "2024-11-12",
@@ -6276,9 +6276,9 @@
             "tp_hit": false,
             "sl_hit": false,
             "daily_pnl_usd": -10.83,
-            "ending_equity_usd": 9176.18,
+            "ending_equity_usd": 8359.21,
             "max_drawdown_usd": 82.53,
-            "max_drawdown_pct": 0.9
+            "max_drawdown_pct": 0.99
         },
         {
             "date": "2024-11-13",
@@ -6289,9 +6289,9 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 57.18,
-            "ending_equity_usd": 9233.36,
+            "ending_equity_usd": 8416.39,
             "max_drawdown_usd": 55.62,
-            "max_drawdown_pct": 0.61
+            "max_drawdown_pct": 0.67
         },
         {
             "date": "2024-11-14",
@@ -6302,9 +6302,9 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 61.79,
-            "ending_equity_usd": 9295.15,
+            "ending_equity_usd": 8478.18,
             "max_drawdown_usd": 29.81,
-            "max_drawdown_pct": 0.32
+            "max_drawdown_pct": 0.35
         },
         {
             "date": "2024-11-15",
@@ -6315,9 +6315,9 @@
             "tp_hit": false,
             "sl_hit": false,
             "daily_pnl_usd": -20.31,
-            "ending_equity_usd": 9274.84,
+            "ending_equity_usd": 8457.87,
             "max_drawdown_usd": 22.91,
-            "max_drawdown_pct": 0.25
+            "max_drawdown_pct": 0.27
         },
         {
             "date": "2024-11-18",
@@ -6328,9 +6328,9 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 24.9,
-            "ending_equity_usd": 9299.74,
+            "ending_equity_usd": 8482.77,
             "max_drawdown_usd": 8.11,
-            "max_drawdown_pct": 0.09
+            "max_drawdown_pct": 0.1
         },
         {
             "date": "2024-11-19",
@@ -6341,9 +6341,9 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 17.57,
-            "ending_equity_usd": 9317.31,
+            "ending_equity_usd": 8500.34,
             "max_drawdown_usd": 12.86,
-            "max_drawdown_pct": 0.14
+            "max_drawdown_pct": 0.15
         },
         {
             "date": "2024-11-20",
@@ -6354,9 +6354,9 @@
             "tp_hit": false,
             "sl_hit": false,
             "daily_pnl_usd": -32.41,
-            "ending_equity_usd": 9284.9,
+            "ending_equity_usd": 8467.93,
             "max_drawdown_usd": 39.61,
-            "max_drawdown_pct": 0.43
+            "max_drawdown_pct": 0.47
         },
         {
             "date": "2024-11-21",
@@ -6367,9 +6367,9 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 19.16,
-            "ending_equity_usd": 9304.05,
+            "ending_equity_usd": 8487.08,
             "max_drawdown_usd": 12.84,
-            "max_drawdown_pct": 0.14
+            "max_drawdown_pct": 0.15
         },
         {
             "date": "2024-11-22",
@@ -6380,22 +6380,22 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 48.28,
-            "ending_equity_usd": 9352.33,
+            "ending_equity_usd": 8535.36,
             "max_drawdown_usd": 39.72,
-            "max_drawdown_pct": 0.43
+            "max_drawdown_pct": 0.47
         },
         {
             "date": "2024-11-25",
             "anchor_price_10am": 2695.065,
             "atr14_m5_step": 2.571,
             "direction": "BUY",
-            "trades_count": 12,
+            "trades_count": 6,
             "tp_hit": false,
             "sl_hit": true,
-            "daily_pnl_usd": -935.23,
-            "ending_equity_usd": 8417.1,
-            "max_drawdown_usd": 1840.51,
-            "max_drawdown_pct": 19.68
+            "daily_pnl_usd": -426.77,
+            "ending_equity_usd": 8108.59,
+            "max_drawdown_usd": 432.66,
+            "max_drawdown_pct": 5.07
         },
         {
             "date": "2024-11-26",
@@ -6406,7 +6406,7 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 22.32,
-            "ending_equity_usd": 8439.42,
+            "ending_equity_usd": 8130.91,
             "max_drawdown_usd": 1.48,
             "max_drawdown_pct": 0.02
         },
@@ -6419,9 +6419,9 @@
             "tp_hit": false,
             "sl_hit": false,
             "daily_pnl_usd": 7.61,
-            "ending_equity_usd": 8447.02,
+            "ending_equity_usd": 8138.52,
             "max_drawdown_usd": 11.89,
-            "max_drawdown_pct": 0.14
+            "max_drawdown_pct": 0.15
         },
         {
             "date": "2024-11-28",
@@ -6432,7 +6432,7 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 18.42,
-            "ending_equity_usd": 8465.44,
+            "ending_equity_usd": 8156.94,
             "max_drawdown_usd": 6.48,
             "max_drawdown_pct": 0.08
         },
@@ -6445,9 +6445,9 @@
             "tp_hit": false,
             "sl_hit": false,
             "daily_pnl_usd": 37.58,
-            "ending_equity_usd": 8503.03,
+            "ending_equity_usd": 8194.52,
             "max_drawdown_usd": 48.08,
-            "max_drawdown_pct": 0.57
+            "max_drawdown_pct": 0.59
         },
         {
             "date": "2024-12-02",
@@ -6458,9 +6458,9 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 30.03,
-            "ending_equity_usd": 8533.06,
+            "ending_equity_usd": 8224.55,
             "max_drawdown_usd": 13.94,
-            "max_drawdown_pct": 0.16
+            "max_drawdown_pct": 0.17
         },
         {
             "date": "2024-12-03",
@@ -6471,9 +6471,9 @@
             "tp_hit": false,
             "sl_hit": false,
             "daily_pnl_usd": 48.17,
-            "ending_equity_usd": 8581.23,
+            "ending_equity_usd": 8272.72,
             "max_drawdown_usd": 69.43,
-            "max_drawdown_pct": 0.81
+            "max_drawdown_pct": 0.84
         },
         {
             "date": "2024-12-04",
@@ -6484,7 +6484,7 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 20.28,
-            "ending_equity_usd": 8601.51,
+            "ending_equity_usd": 8293.01,
             "max_drawdown_usd": 0.09,
             "max_drawdown_pct": 0.0
         },
@@ -6497,22 +6497,22 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 14.14,
-            "ending_equity_usd": 8615.65,
+            "ending_equity_usd": 8307.15,
             "max_drawdown_usd": 3.86,
-            "max_drawdown_pct": 0.04
+            "max_drawdown_pct": 0.05
         },
         {
             "date": "2024-12-06",
             "anchor_price_10am": 2625.165,
             "atr14_m5_step": 1.742,
             "direction": "SELL",
-            "trades_count": 11,
+            "trades_count": 7,
             "tp_hit": false,
             "sl_hit": true,
-            "daily_pnl_usd": -861.57,
-            "ending_equity_usd": 7754.09,
-            "max_drawdown_usd": 966.59,
-            "max_drawdown_pct": 11.22
+            "daily_pnl_usd": -415.36,
+            "ending_equity_usd": 7891.79,
+            "max_drawdown_usd": 422.2,
+            "max_drawdown_pct": 5.08
         },
         {
             "date": "2024-12-09",
@@ -6523,9 +6523,9 @@
             "tp_hit": false,
             "sl_hit": false,
             "daily_pnl_usd": -140.39,
-            "ending_equity_usd": 7613.7,
+            "ending_equity_usd": 7751.4,
             "max_drawdown_usd": 232.39,
-            "max_drawdown_pct": 3.0
+            "max_drawdown_pct": 2.94
         },
         {
             "date": "2024-12-10",
@@ -6536,7 +6536,7 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 23.23,
-            "ending_equity_usd": 7636.93,
+            "ending_equity_usd": 7774.64,
             "max_drawdown_usd": 12.17,
             "max_drawdown_pct": 0.16
         },
@@ -6549,7 +6549,7 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 19.63,
-            "ending_equity_usd": 7656.56,
+            "ending_equity_usd": 7794.27,
             "max_drawdown_usd": 10.58,
             "max_drawdown_pct": 0.14
         },
@@ -6562,9 +6562,9 @@
             "tp_hit": false,
             "sl_hit": false,
             "daily_pnl_usd": -42.54,
-            "ending_equity_usd": 7614.02,
+            "ending_equity_usd": 7751.72,
             "max_drawdown_usd": 157.46,
-            "max_drawdown_pct": 2.06
+            "max_drawdown_pct": 2.02
         },
         {
             "date": "2024-12-13",
@@ -6575,7 +6575,7 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 25.28,
-            "ending_equity_usd": 7639.3,
+            "ending_equity_usd": 7777.0,
             "max_drawdown_usd": 21.42,
             "max_drawdown_pct": 0.28
         },
@@ -6588,9 +6588,9 @@
             "tp_hit": false,
             "sl_hit": false,
             "daily_pnl_usd": 29.12,
-            "ending_equity_usd": 7668.42,
+            "ending_equity_usd": 7806.12,
             "max_drawdown_usd": 25.76,
-            "max_drawdown_pct": 0.34
+            "max_drawdown_pct": 0.33
         },
         {
             "date": "2024-12-17",
@@ -6601,9 +6601,9 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 37.96,
-            "ending_equity_usd": 7706.38,
+            "ending_equity_usd": 7844.08,
             "max_drawdown_usd": 35.86,
-            "max_drawdown_pct": 0.47
+            "max_drawdown_pct": 0.46
         },
         {
             "date": "2024-12-18",
@@ -6614,7 +6614,7 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 12.62,
-            "ending_equity_usd": 7719.0,
+            "ending_equity_usd": 7856.7,
             "max_drawdown_usd": 2.19,
             "max_drawdown_pct": 0.03
         },
@@ -6627,9 +6627,9 @@
             "tp_hit": false,
             "sl_hit": false,
             "daily_pnl_usd": 3.11,
-            "ending_equity_usd": 7722.11,
+            "ending_equity_usd": 7859.81,
             "max_drawdown_usd": 22.26,
-            "max_drawdown_pct": 0.29
+            "max_drawdown_pct": 0.28
         },
         {
             "date": "2024-12-20",
@@ -6640,9 +6640,9 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 23.07,
-            "ending_equity_usd": 7745.17,
+            "ending_equity_usd": 7882.88,
             "max_drawdown_usd": 16.06,
-            "max_drawdown_pct": 0.21
+            "max_drawdown_pct": 0.2
         },
         {
             "date": "2024-12-23",
@@ -6653,7 +6653,7 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 18.41,
-            "ending_equity_usd": 7763.58,
+            "ending_equity_usd": 7901.29,
             "max_drawdown_usd": 17.79,
             "max_drawdown_pct": 0.23
         },
@@ -6666,7 +6666,7 @@
             "tp_hit": false,
             "sl_hit": false,
             "daily_pnl_usd": -33.6,
-            "ending_equity_usd": 7729.98,
+            "ending_equity_usd": 7867.69,
             "max_drawdown_usd": 36.8,
             "max_drawdown_pct": 0.47
         },
@@ -6679,7 +6679,7 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 9.74,
-            "ending_equity_usd": 7739.73,
+            "ending_equity_usd": 7877.43,
             "max_drawdown_usd": 4.96,
             "max_drawdown_pct": 0.06
         },
@@ -6692,9 +6692,9 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 14.18,
-            "ending_equity_usd": 7753.91,
+            "ending_equity_usd": 7891.61,
             "max_drawdown_usd": 12.15,
-            "max_drawdown_pct": 0.16
+            "max_drawdown_pct": 0.15
         },
         {
             "date": "2024-12-30",
@@ -6705,9 +6705,9 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 70.89,
-            "ending_equity_usd": 7824.79,
+            "ending_equity_usd": 7962.5,
             "max_drawdown_usd": 59.22,
-            "max_drawdown_pct": 0.76
+            "max_drawdown_pct": 0.75
         },
         {
             "date": "2024-12-31",
@@ -6718,9 +6718,9 @@
             "tp_hit": true,
             "sl_hit": false,
             "daily_pnl_usd": 9.37,
-            "ending_equity_usd": 7834.17,
+            "ending_equity_usd": 7971.87,
             "max_drawdown_usd": 8.23,
-            "max_drawdown_pct": 0.11
+            "max_drawdown_pct": 0.1
         }
     ]
 }
