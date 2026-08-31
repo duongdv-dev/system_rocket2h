@@ -16,13 +16,12 @@ from filter_backtester import FilterBacktester
 
 def run_step_1_training():
     """
-    BƯỚC 1: TRAINING MÔ HÌNH AI CAO CẤP (2020 - 2023)
-    - Thêm chỉ số Directional Ratio (Đẩy 1 chiều bão vs Hồi quy 2 chiều) để KHÔNG LỌC NHẦM CÁC NGÀY THẮNG HỒI QUY.
-    - Đánh trọng số phạt x15 cho các ngày dính Cắt Lỗ 10%.
-    - Tối ưu hóa Ngưỡng Rủi Ro để TỐI ĐA HÓA LỢI NHUẬN RÒNG & KHÔNG PHÁ VỠ SỐ NGÀY THẮNG.
+    BƯỚC 1: TRAINING MÔ HÌNH AI CHUẨN XÁC CAO - CHỈ LỌC CÁC NGÀY THUA LỖ NẶNG (SL 10% HOẶC PNL < -100 USD)
+    - Loại bỏ việc lọc nhầm các ngày thắng TP.
+    - Tập trung 100% tài lực nhận diện mầm mống của các ngày dính Cắt Lỗ 10%.
     """
     print("\n" + "=" * 80)
-    print("   🤖 HUẤN LUYỆN MÔ HÌNH AI CAO CẤP - BẢO VỆ NGÀY THẮNG & CHẶN SL 10%")
+    print("   🤖 HUẤN LUYỆN MÔ HÌNH AI TINH CHỈNH - BẢO VỆ NGÀY THẮNG & CHẶN SL 10%")
     print("=" * 80)
 
     src_dir = os.path.dirname(os.path.abspath(__file__))
@@ -59,7 +58,7 @@ def run_step_1_training():
     if not train_files:
         raise FileNotFoundError("Không tìm thấy các file CSV 2020-2023!")
 
-    # 1. Trích xuất chỉ số 10:00 sáng ICT (có thêm directional_ratio)
+    # 1. Trích xuất chỉ số 10:00 sáng ICT
     extractor = FeatureExtractor(train_files)
     features_df, _ = extractor.extract_daily_features()
 
@@ -73,12 +72,12 @@ def run_step_1_training():
 
     df_dataset = pd.merge(features_df, df_logs_clean, on='date')
 
-    # Nhãn 'skip' (1) nếu lỗ PnL < -30 USD hoặc dính SL 10%. Nhãn 'trade' (0) nếu PnL > 0.
-    df_dataset['label'] = np.where((df_dataset['daily_pnl_usd'] < -30.0) | (df_dataset['sl_hit'] == True), 'skip', 'trade')
+    # CHỈ ĐÁNH NHÃN 'skip' NẾU LÀ NGÀY THUA LỖ NẶNG (daily_pnl_usd < -100.0 HOẶC dính SL 10%)
+    df_dataset['label'] = np.where((df_dataset['daily_pnl_usd'] < -100.0) | (df_dataset['sl_hit'] == True), 'skip', 'trade')
     df_dataset['target'] = (df_dataset['label'] == 'skip').astype(int)
 
-    # Đánh trọng số phạt x15 cho ngày dính Cắt Lỗ SL 10%
-    sample_weights = np.where(df_dataset['sl_hit'] == True, 15.0, 1.0)
+    # Đánh trọng số phạt cực nặng (x25.0) cho ngày dính Cắt Lỗ SL 10%
+    sample_weights = np.where(df_dataset['sl_hit'] == True, 25.0, 1.0)
 
     skip_count = (df_dataset['label'] == 'skip').sum()
     trade_count = (df_dataset['label'] == 'trade').sum()
@@ -92,15 +91,15 @@ def run_step_1_training():
     export_cols = [
         'date', 'label', 'daily_pnl_usd', 'tp_hit', 'sl_hit', 'trades_count',
         'anchor_price_10am', 'atr14_m5', 'atr_ratio_20d', 'morning_range_pts',
-        'morning_trend_pts', 'directional_ratio', 'range_to_atr_ratio', 'trend_to_atr_ratio', 'morning_vol_std', 'day_of_week'
+        'morning_trend_pts', 'directional_intensity', 'range_to_atr_ratio', 'trend_to_atr_ratio', 'morning_vol_std', 'day_of_week'
     ]
     df_dataset[export_cols].to_csv(csv_output_path, index=False)
     with open(json_output_path, 'w', encoding='utf-8') as f:
         json.dump(df_dataset[export_cols].to_dict(orient='records'), f, indent=4, ensure_ascii=False)
 
-    # 3. Huấn luyện RandomForestClassifier bằng Bộ Đặc Trưng Cao Cấp
+    # 3. Huấn luyện RandomForestClassifier
     feature_cols = [
-        'atr_ratio_20d', 'directional_ratio', 'range_to_atr_ratio', 
+        'atr_ratio_20d', 'directional_intensity', 'range_to_atr_ratio', 
         'trend_to_atr_ratio', 'morning_vol_std', 'day_of_week'
     ]
     
@@ -110,7 +109,7 @@ def run_step_1_training():
     ai_model = RandomForestClassifier(
         n_estimators=300,
         max_depth=4,
-        min_samples_leaf=3,
+        min_samples_leaf=2,
         class_weight='balanced',
         random_state=42
     )
@@ -123,11 +122,12 @@ def run_step_1_training():
     feat_imp = {col: round(float(imp), 4) for col, imp in zip(feature_cols, importances)}
 
     # Tối ưu hóa Ngưỡng Cảnh Báo Rủi Ro (Optimal Risk Threshold)
-    best_thresh = 0.45
+    # Tìm ngưỡng rủi ro ưu tiên cao nhất cho việc BẢO VỆ NGÀY THẮNG & CHẶN ĐỨNG NGÀY THUA SL
+    best_thresh = 0.55
     best_score = -999999.0
     best_stats = {}
 
-    for thresh in np.arange(0.35, 0.65, 0.02):
+    for thresh in np.arange(0.40, 0.70, 0.02):
         filt_bal = 10000.0
         peak_bal = 10000.0
         max_dd = 0.0
@@ -154,8 +154,8 @@ def run_step_1_training():
                     skipped_good += 1
 
         net_pnl = filt_bal - 10000.0
-        # Score penalty: thưởng lớn cho chặn SL, phạt nặng nếu lọc nhầm ngày thắng
-        score = net_pnl + (sl_skipped * 800.0) - (skipped_good * 12.0)
+        # Score penalty: Phạt CỰC NẶNG (x30) nếu lọc nhầm ngày thắng TP, Thưởng CỰC LỚN (x1500) nếu chặn được SL 10%
+        score = net_pnl + (sl_skipped * 1500.0) - (skipped_good * 30.0)
 
         if score > best_score:
             best_score = score
@@ -180,7 +180,7 @@ def run_step_1_training():
     }, model_file)
 
     meta_info = {
-        "model_type": "RandomForestClassifier (Advanced Directional)",
+        "model_type": "RandomForestClassifier (Precision Targeted)",
         "n_estimators": 300,
         "max_depth": 4,
         "train_period": "2020 - 2023",
@@ -196,14 +196,14 @@ def run_step_1_training():
     with open(meta_file, 'w', encoding='utf-8') as f:
         json.dump(meta_info, f, indent=4, ensure_ascii=False)
 
-    print("\n================ TỔNG KẾT BƯỚC 1: TRAINING CAO CẤP HOÀN TẤT ================")
-    print(f"✅ Mô Hình AI Trained       : RandomForestClassifier (Directional Ratio)")
-    print(f"✅ Số Ngày Gắn Nhãn (2020-23): {trade_count} Safe ('trade') | {skip_count} Risk ('skip')")
+    print("\n================ TỔNG KẾT TRAINING AI TINH CHỈNH ================")
+    print(f"✅ Mô Hình AI Trained       : RandomForestClassifier (Precision Targeted)")
+    print(f"✅ Đánh Nhãn 2020-2023      : {trade_count} Safe ('trade') | {skip_count} Severe Loss ('skip')")
     print(f"✅ Đánh Giá ROC-AUC Score   : {auc_score:.4f}")
     print(f"✅ Ngưỡng Cảnh Báo Rủi Ro  : P(skip) >= {best_thresh}")
     print(f"✅ Lợi Nhuận Train (2020-23): Baseline=${best_stats['train_baseline_pnl']:,.2f} --> AI Filtered=${best_stats['train_filtered_pnl']:,.2f}")
     print(f"✅ File Model AI Lưu Tại   : {model_file}")
-    print("===========================================================================\n")
+    print("=================================================================\n")
 
     return ai_model, meta_info
 

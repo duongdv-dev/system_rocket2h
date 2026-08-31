@@ -47,7 +47,7 @@ class FeatureExtractor:
         return m5_df
 
     def extract_daily_features(self):
-        """Extract scale-invariant & directional 10:00 AM features for each trading day."""
+        """Extract scale-invariant & momentum intensity 10:00 AM features for each trading day."""
         df = self.load_data()
         m5_df = self.compute_m5_atr14(df)
         
@@ -107,10 +107,10 @@ class FeatureExtractor:
                 morning_trend_pts = atr14
                 morning_vol_std = 1.0
 
-            # Directional ratio (1-way trend breakout vs 2-sided mean reversion)
-            directional_ratio = morning_trend_pts / morning_range_pts if morning_range_pts > 0 else 0.5
+            # Directional intensity (1-way trend breakout without wicks)
+            directional_intensity = morning_trend_pts / morning_range_pts if morning_range_pts > 0 else 0.5
 
-            # Scale-invariant ratios (normalized by ATR)
+            # Scale-invariant ratios
             range_to_atr_ratio = morning_range_pts / atr14 if atr14 > 0 else 1.0
             trend_to_atr_ratio = morning_trend_pts / atr14 if atr14 > 0 else 1.0
             day_of_week = int(anchor_dt.weekday())
@@ -122,7 +122,7 @@ class FeatureExtractor:
                 "atr_ratio_20d": round(atr_ratio_20d, 3),
                 "morning_range_pts": round(morning_range_pts, 3),
                 "morning_trend_pts": round(morning_trend_pts, 3),
-                "directional_ratio": round(directional_ratio, 3),
+                "directional_intensity": round(directional_intensity, 3),
                 "range_to_atr_ratio": round(range_to_atr_ratio, 3),
                 "trend_to_atr_ratio": round(trend_to_atr_ratio, 3),
                 "morning_vol_std": round(morning_vol_std, 3),
