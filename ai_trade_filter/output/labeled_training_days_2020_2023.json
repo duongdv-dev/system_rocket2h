@@ -73,7 +73,7 @@
     },
     {
         "date": "2020-01-08",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -52.21,
         "tp_hit": false,
         "sl_hit": false,
@@ -271,7 +271,7 @@
     },
     {
         "date": "2020-01-23",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -35.78,
         "tp_hit": false,
         "sl_hit": false,
@@ -307,7 +307,7 @@
     },
     {
         "date": "2020-01-27",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -30.89,
         "tp_hit": false,
         "sl_hit": false,
@@ -469,7 +469,7 @@
     },
     {
         "date": "2020-02-07",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -33.5,
         "tp_hit": false,
         "sl_hit": false,
@@ -541,7 +541,7 @@
     },
     {
         "date": "2020-02-13",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -48.52,
         "tp_hit": false,
         "sl_hit": false,
@@ -865,7 +865,7 @@
     },
     {
         "date": "2020-03-10",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -44.14,
         "tp_hit": false,
         "sl_hit": false,
@@ -955,7 +955,7 @@
     },
     {
         "date": "2020-03-17",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -32.34,
         "tp_hit": false,
         "sl_hit": false,
@@ -1297,7 +1297,7 @@
     },
     {
         "date": "2020-04-14",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -23.78,
         "tp_hit": false,
         "sl_hit": false,
@@ -1477,7 +1477,7 @@
     },
     {
         "date": "2020-04-28",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -92.4,
         "tp_hit": false,
         "sl_hit": false,
@@ -1639,7 +1639,7 @@
     },
     {
         "date": "2020-05-11",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -66.56,
         "tp_hit": false,
         "sl_hit": false,
@@ -1693,7 +1693,7 @@
     },
     {
         "date": "2020-05-14",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -43.7,
         "tp_hit": false,
         "sl_hit": false,
@@ -1819,7 +1819,7 @@
     },
     {
         "date": "2020-05-25",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -22.66,
         "tp_hit": false,
         "sl_hit": false,
@@ -2107,7 +2107,7 @@
     },
     {
         "date": "2020-06-16",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -29.07,
         "tp_hit": false,
         "sl_hit": false,
@@ -2341,7 +2341,7 @@
     },
     {
         "date": "2020-07-03",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -21.91,
         "tp_hit": false,
         "sl_hit": false,
@@ -2485,7 +2485,7 @@
     },
     {
         "date": "2020-07-15",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -78.45,
         "tp_hit": false,
         "sl_hit": false,
@@ -2773,7 +2773,7 @@
     },
     {
         "date": "2020-08-06",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -65.45,
         "tp_hit": false,
         "sl_hit": false,
@@ -3079,7 +3079,7 @@
     },
     {
         "date": "2020-08-31",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -26.72,
         "tp_hit": false,
         "sl_hit": false,
@@ -3205,7 +3205,7 @@
     },
     {
         "date": "2020-09-09",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -36.56,
         "tp_hit": false,
         "sl_hit": false,
@@ -3277,7 +3277,7 @@
     },
     {
         "date": "2020-09-15",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -25.73,
         "tp_hit": false,
         "sl_hit": false,
@@ -3313,7 +3313,7 @@
     },
     {
         "date": "2020-09-17",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -48.11,
         "tp_hit": false,
         "sl_hit": false,
@@ -3367,7 +3367,7 @@
     },
     {
         "date": "2020-09-22",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -85.79,
         "tp_hit": false,
         "sl_hit": false,
@@ -3403,7 +3403,7 @@
     },
     {
         "date": "2020-09-24",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -76.5,
         "tp_hit": false,
         "sl_hit": false,
@@ -3853,7 +3853,7 @@
     },
     {
         "date": "2020-10-29",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -71.4,
         "tp_hit": false,
         "sl_hit": false,
@@ -3889,7 +3889,7 @@
     },
     {
         "date": "2020-11-02",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -25.79,
         "tp_hit": false,
         "sl_hit": false,
@@ -3907,7 +3907,7 @@
     },
     {
         "date": "2020-11-03",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -34.51,
         "tp_hit": false,
         "sl_hit": false,
@@ -3961,7 +3961,7 @@
     },
     {
         "date": "2020-11-06",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -27.59,
         "tp_hit": false,
         "sl_hit": false,
@@ -3997,7 +3997,7 @@
     },
     {
         "date": "2020-11-10",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -65.93,
         "tp_hit": false,
         "sl_hit": false,
@@ -4195,7 +4195,7 @@
     },
     {
         "date": "2020-11-25",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -37.52,
         "tp_hit": false,
         "sl_hit": false,
@@ -4321,7 +4321,7 @@
     },
     {
         "date": "2020-12-04",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -38.96,
         "tp_hit": false,
         "sl_hit": false,
@@ -5041,7 +5041,7 @@
     },
     {
         "date": "2021-02-02",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -47.72,
         "tp_hit": false,
         "sl_hit": false,
@@ -5599,7 +5599,7 @@
     },
     {
         "date": "2021-03-17",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -36.19,
         "tp_hit": false,
         "sl_hit": false,
@@ -5617,7 +5617,7 @@
     },
     {
         "date": "2021-03-18",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -45.3,
         "tp_hit": false,
         "sl_hit": false,
@@ -5653,7 +5653,7 @@
     },
     {
         "date": "2021-03-22",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -39.36,
         "tp_hit": false,
         "sl_hit": false,
@@ -5743,7 +5743,7 @@
     },
     {
         "date": "2021-03-29",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -75.74,
         "tp_hit": false,
         "sl_hit": false,
@@ -5851,7 +5851,7 @@
     },
     {
         "date": "2021-04-07",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -22.93,
         "tp_hit": false,
         "sl_hit": false,
@@ -5869,7 +5869,7 @@
     },
     {
         "date": "2021-04-08",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -69.5,
         "tp_hit": false,
         "sl_hit": false,
@@ -5977,7 +5977,7 @@
     },
     {
         "date": "2021-04-16",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -56.41,
         "tp_hit": false,
         "sl_hit": false,
@@ -6103,7 +6103,7 @@
     },
     {
         "date": "2021-04-27",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -39.44,
         "tp_hit": false,
         "sl_hit": false,
@@ -6571,7 +6571,7 @@
     },
     {
         "date": "2021-06-02",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -32.36,
         "tp_hit": false,
         "sl_hit": false,
@@ -6751,7 +6751,7 @@
     },
     {
         "date": "2021-06-16",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -53.57,
         "tp_hit": false,
         "sl_hit": false,
@@ -6769,7 +6769,7 @@
     },
     {
         "date": "2021-06-17",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -30.91,
         "tp_hit": false,
         "sl_hit": false,
@@ -7075,7 +7075,7 @@
     },
     {
         "date": "2021-07-12",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -24.57,
         "tp_hit": false,
         "sl_hit": false,
@@ -7705,7 +7705,7 @@
     },
     {
         "date": "2021-08-30",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -20.97,
         "tp_hit": false,
         "sl_hit": false,
@@ -7723,7 +7723,7 @@
     },
     {
         "date": "2021-08-31",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -27.43,
         "tp_hit": false,
         "sl_hit": false,
@@ -7759,7 +7759,7 @@
     },
     {
         "date": "2021-09-02",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -23.21,
         "tp_hit": false,
         "sl_hit": false,
@@ -7831,7 +7831,7 @@
     },
     {
         "date": "2021-09-08",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -21.38,
         "tp_hit": false,
         "sl_hit": false,
@@ -7867,7 +7867,7 @@
     },
     {
         "date": "2021-09-10",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -48.92,
         "tp_hit": false,
         "sl_hit": false,
@@ -8011,7 +8011,7 @@
     },
     {
         "date": "2021-09-22",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -27.92,
         "tp_hit": false,
         "sl_hit": false,
@@ -8173,7 +8173,7 @@
     },
     {
         "date": "2021-10-05",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -21.78,
         "tp_hit": false,
         "sl_hit": false,
@@ -8335,7 +8335,7 @@
     },
     {
         "date": "2021-10-18",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -20.28,
         "tp_hit": false,
         "sl_hit": false,
@@ -8389,7 +8389,7 @@
     },
     {
         "date": "2021-10-21",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -32.22,
         "tp_hit": false,
         "sl_hit": false,
@@ -8857,7 +8857,7 @@
     },
     {
         "date": "2021-11-26",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -25.45,
         "tp_hit": false,
         "sl_hit": false,
@@ -8929,7 +8929,7 @@
     },
     {
         "date": "2021-12-02",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -80.89,
         "tp_hit": false,
         "sl_hit": false,
@@ -9019,7 +9019,7 @@
     },
     {
         "date": "2021-12-09",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -25.87,
         "tp_hit": false,
         "sl_hit": false,
@@ -9361,7 +9361,7 @@
     },
     {
         "date": "2022-01-06",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -83.4,
         "tp_hit": false,
         "sl_hit": false,
@@ -9829,7 +9829,7 @@
     },
     {
         "date": "2022-02-11",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -51.53,
         "tp_hit": false,
         "sl_hit": false,
@@ -9847,7 +9847,7 @@
     },
     {
         "date": "2022-02-14",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -30.46,
         "tp_hit": false,
         "sl_hit": false,
@@ -10243,7 +10243,7 @@
     },
     {
         "date": "2022-03-16",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -30.83,
         "tp_hit": false,
         "sl_hit": false,
@@ -10387,7 +10387,7 @@
     },
     {
         "date": "2022-03-28",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -86.25,
         "tp_hit": false,
         "sl_hit": false,
@@ -10459,7 +10459,7 @@
     },
     {
         "date": "2022-04-01",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -30.46,
         "tp_hit": false,
         "sl_hit": false,
@@ -10531,7 +10531,7 @@
     },
     {
         "date": "2022-04-07",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -21.93,
         "tp_hit": false,
         "sl_hit": false,
@@ -10783,7 +10783,7 @@
     },
     {
         "date": "2022-04-28",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -73.8,
         "tp_hit": false,
         "sl_hit": false,
@@ -10801,7 +10801,7 @@
     },
     {
         "date": "2022-04-29",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -75.43,
         "tp_hit": false,
         "sl_hit": false,
@@ -10999,7 +10999,7 @@
     },
     {
         "date": "2022-05-16",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -39.91,
         "tp_hit": false,
         "sl_hit": false,
@@ -11035,7 +11035,7 @@
     },
     {
         "date": "2022-05-18",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -23.7,
         "tp_hit": false,
         "sl_hit": false,
@@ -11071,7 +11071,7 @@
     },
     {
         "date": "2022-05-20",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -47.04,
         "tp_hit": false,
         "sl_hit": false,
@@ -11215,7 +11215,7 @@
     },
     {
         "date": "2022-06-01",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -58.55,
         "tp_hit": false,
         "sl_hit": false,
@@ -11251,7 +11251,7 @@
     },
     {
         "date": "2022-06-03",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -37.53,
         "tp_hit": false,
         "sl_hit": false,
@@ -11755,7 +11755,7 @@
     },
     {
         "date": "2022-07-13",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -21.62,
         "tp_hit": false,
         "sl_hit": false,
@@ -11917,7 +11917,7 @@
     },
     {
         "date": "2022-07-26",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -60.63,
         "tp_hit": false,
         "sl_hit": false,
@@ -11989,7 +11989,7 @@
     },
     {
         "date": "2022-08-01",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -92.36,
         "tp_hit": false,
         "sl_hit": false,
@@ -12007,7 +12007,7 @@
     },
     {
         "date": "2022-08-02",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -20.87,
         "tp_hit": false,
         "sl_hit": false,
@@ -12025,7 +12025,7 @@
     },
     {
         "date": "2022-08-03",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -46.82,
         "tp_hit": false,
         "sl_hit": false,
@@ -12115,7 +12115,7 @@
     },
     {
         "date": "2022-08-10",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -79.02,
         "tp_hit": false,
         "sl_hit": false,
@@ -12241,7 +12241,7 @@
     },
     {
         "date": "2022-08-19",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -81.35,
         "tp_hit": false,
         "sl_hit": false,
@@ -12349,7 +12349,7 @@
     },
     {
         "date": "2022-08-29",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -30.05,
         "tp_hit": false,
         "sl_hit": false,
@@ -12457,7 +12457,7 @@
     },
     {
         "date": "2022-09-06",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -99.2,
         "tp_hit": false,
         "sl_hit": false,
@@ -12619,7 +12619,7 @@
     },
     {
         "date": "2022-09-19",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -34.76,
         "tp_hit": false,
         "sl_hit": false,
@@ -12655,7 +12655,7 @@
     },
     {
         "date": "2022-09-21",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -29.77,
         "tp_hit": false,
         "sl_hit": false,
@@ -12673,7 +12673,7 @@
     },
     {
         "date": "2022-09-22",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -22.71,
         "tp_hit": false,
         "sl_hit": false,
@@ -12889,7 +12889,7 @@
     },
     {
         "date": "2022-10-10",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -76.42,
         "tp_hit": false,
         "sl_hit": false,
@@ -13267,7 +13267,7 @@
     },
     {
         "date": "2022-11-08",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -56.29,
         "tp_hit": false,
         "sl_hit": false,
@@ -13375,7 +13375,7 @@
     },
     {
         "date": "2022-11-16",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -79.54,
         "tp_hit": false,
         "sl_hit": false,
@@ -13393,7 +13393,7 @@
     },
     {
         "date": "2022-11-17",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -88.88,
         "tp_hit": false,
         "sl_hit": false,
@@ -13645,7 +13645,7 @@
     },
     {
         "date": "2022-12-07",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -20.92,
         "tp_hit": false,
         "sl_hit": false,
@@ -13717,7 +13717,7 @@
     },
     {
         "date": "2022-12-13",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -37.44,
         "tp_hit": false,
         "sl_hit": false,
@@ -13771,7 +13771,7 @@
     },
     {
         "date": "2022-12-16",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -25.32,
         "tp_hit": false,
         "sl_hit": false,
@@ -13987,7 +13987,7 @@
     },
     {
         "date": "2023-01-05",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -53.94,
         "tp_hit": false,
         "sl_hit": false,
@@ -14059,7 +14059,7 @@
     },
     {
         "date": "2023-01-11",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -26.3,
         "tp_hit": false,
         "sl_hit": false,
@@ -14149,7 +14149,7 @@
     },
     {
         "date": "2023-01-18",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -40.59,
         "tp_hit": false,
         "sl_hit": false,
@@ -14383,7 +14383,7 @@
     },
     {
         "date": "2023-02-06",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -75.27,
         "tp_hit": false,
         "sl_hit": false,
@@ -14473,7 +14473,7 @@
     },
     {
         "date": "2023-02-13",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -58.31,
         "tp_hit": false,
         "sl_hit": false,
@@ -14527,7 +14527,7 @@
     },
     {
         "date": "2023-02-16",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -20.58,
         "tp_hit": false,
         "sl_hit": false,
@@ -14671,7 +14671,7 @@
     },
     {
         "date": "2023-02-28",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -49.68,
         "tp_hit": false,
         "sl_hit": false,
@@ -14689,7 +14689,7 @@
     },
     {
         "date": "2023-03-01",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -26.35,
         "tp_hit": false,
         "sl_hit": false,
@@ -14833,7 +14833,7 @@
     },
     {
         "date": "2023-03-13",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -36.17,
         "tp_hit": false,
         "sl_hit": false,
@@ -14869,7 +14869,7 @@
     },
     {
         "date": "2023-03-15",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -27.59,
         "tp_hit": false,
         "sl_hit": false,
@@ -15013,7 +15013,7 @@
     },
     {
         "date": "2023-03-27",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -30.76,
         "tp_hit": false,
         "sl_hit": false,
@@ -15211,7 +15211,7 @@
     },
     {
         "date": "2023-04-12",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -70.16,
         "tp_hit": false,
         "sl_hit": false,
@@ -15535,7 +15535,7 @@
     },
     {
         "date": "2023-05-08",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -49.87,
         "tp_hit": false,
         "sl_hit": false,
@@ -15751,7 +15751,7 @@
     },
     {
         "date": "2023-05-24",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -85.02,
         "tp_hit": false,
         "sl_hit": false,
@@ -15841,7 +15841,7 @@
     },
     {
         "date": "2023-05-31",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -52.25,
         "tp_hit": false,
         "sl_hit": false,
@@ -16273,7 +16273,7 @@
     },
     {
         "date": "2023-07-04",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -60.03,
         "tp_hit": false,
         "sl_hit": false,
@@ -16345,7 +16345,7 @@
     },
     {
         "date": "2023-07-10",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -87.47,
         "tp_hit": false,
         "sl_hit": false,
@@ -17263,7 +17263,7 @@
     },
     {
         "date": "2023-09-19",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -24.92,
         "tp_hit": false,
         "sl_hit": false,
@@ -17443,7 +17443,7 @@
     },
     {
         "date": "2023-10-03",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -23.24,
         "tp_hit": false,
         "sl_hit": false,
@@ -18001,7 +18001,7 @@
     },
     {
         "date": "2023-11-15",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -24.06,
         "tp_hit": false,
         "sl_hit": false,
@@ -18289,7 +18289,7 @@
     },
     {
         "date": "2023-12-07",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -24.09,
         "tp_hit": false,
         "sl_hit": false,
@@ -18343,7 +18343,7 @@
     },
     {
         "date": "2023-12-12",
-        "label": "trade",
+        "label": "skip",
         "daily_pnl_usd": -71.5,
         "tp_hit": false,
         "sl_hit": false,
