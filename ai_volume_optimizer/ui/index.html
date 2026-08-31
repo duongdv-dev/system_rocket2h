@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Dynamic Volume Optimizer Dashboard (Port 8003)</title>
+    <script src="https://unpkg.com/lightweight-charts@4.1.0/dist/lightweight-charts.standalone.production.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #12141d;
+            --bg-secondary: #1a1d29;
+            --bg-card: #222636;
+            --text-main: #f0f2f5;
+            --text-muted: #8c93a8;
+            --accent-gold: #ffd700;
+            --green-win: #00c853;
+            --red-loss: #ff3d00;
+            --orange-skip: #ff9100;
+            --cyan-buy: #00e5ff;
+            --purple-vol: #ab47bc;
+            --border-color: #2d3345;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        header {
+            background-color: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--accent-gold);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        header .tag {
+            background: rgba(171, 71, 188, 0.2);
+            color: var(--purple-vol);
+            font-size: 0.75rem;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .kpi-container {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 12px;
+            padding: 12px 24px;
+            background-color: var(--bg-primary);
+        }
+
+        .kpi-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px 16px;
+        }
+
+        .kpi-card .label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; }
+        .kpi-card .val { font-size: 1.15rem; font-weight: 700; margin-top: 4px; }
+        .kpi-card .sub { font-size: 0.75rem; color: var(--text-muted); margin-top: 2px; }
+
+        .val.green { color: var(--green-win); }
+        .val.red { color: var(--red-loss); }
+        .val.gold { color: var(--accent-gold); }
+        .val.purple { color: var(--purple-vol); }
+
+        .main-workspace {
+            display: grid;
+            grid-template-columns: 360px 1fr;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            background-color: var(--bg-secondary);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .sidebar-header {
+            padding: 12px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            padding: 6px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            cursor: pointer;
+        }
+
+        .filter-btn.active {
+            background: var(--accent-gold);
+            color: #000;
+            font-weight: 600;
+        }
+
+        .days-list {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .day-item {
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: background 0.15s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .day-item:hover { background-color: rgba(255, 255, 255, 0.04); }
+        .day-item.selected { background-color: rgba(255, 215, 0, 0.12); border-left: 4px solid var(--accent-gold); }
+
+        .day-info .date { font-weight: 600; font-size: 0.85rem; }
+        .day-info .meta { font-size: 0.75rem; color: var(--text-muted); margin-top: 2px; }
+
+        .day-badge {
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 3px 6px;
+            border-radius: 4px;
+        }
+
+        .badge-std { background: rgba(0, 200, 83, 0.15); color: var(--green-win); }
+        .badge-reduced { background: rgba(171, 71, 188, 0.2); color: var(--purple-vol); }
+        .badge-skip { background: rgba(255, 145, 0, 0.15); color: var(--orange-skip); }
+
+        .chart-workspace {
+            display: flex;
+            flex-direction: column;
+            background: var(--bg-primary);
+            overflow: hidden;
+        }
+
+        .chart-header {
+            padding: 12px 20px;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chart-title { font-size: 1rem; font-weight: 600; }
+        .chart-meta { display: flex; gap: 16px; font-size: 0.85rem; color: var(--text-muted); }
+        .chart-meta span strong { color: var(--text-main); }
+
+        .status-banner {
+            padding: 8px 16px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .chart-container {
+            flex: 1;
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        #candlestickChart { width: 100%; height: 100%; }
+
+        .chart-legend {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            z-index: 10;
+            background: rgba(26, 29, 41, 0.85);
+            backdrop-filter: blur(4px);
+            border: 1px solid var(--border-color);
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            display: flex;
+            gap: 12px;
+        }
+
+        .legend-item { display: flex; align-items: center; gap: 6px; }
+        .legend-color { width: 12px; height: 3px; border-radius: 2px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>💎 AI Dynamic Volume Optimizer Dashboard <span>(0.01 Lot Multiples Dynamic Scaling)</span></h1>
+        <span class="tag">Dynamic Position Sizing Model</span>
+    </header>
+
+    <!-- KPI Comparison Grid -->
+    <div class="kpi-container" id="kpiBar">
+        <div class="kpi-card">
+            <div class="label">Lợi Nhuận Test (2023-2024)</div>
+            <div class="val green" id="kpiPnl">Loading...</div>
+            <div class="sub" id="kpiPnlSub">Baseline Cố Định: Loading...</div>
+        </div>
+        <div class="kpi-card">
+            <div class="label">Phân Phối Khối Lượng Ngày</div>
+            <div class="val purple" id="kpiVolDist">Loading...</div>
+            <div class="sub" id="kpiVolSub">Standard / Reduced / Skip</div>
+        </div>
+        <div class="kpi-card">
+            <div class="label">Tỷ Lệ Thắng (Win Rate)</div>
+            <div class="val gold" id="kpiWinRate">Loading...</div>
+            <div class="sub" id="kpiWinSub">Baseline Cố Định: Loading...</div>
+        </div>
+        <div class="kpi-card">
+            <div class="label">Max Drawdown Test</div>
+            <div class="val red" id="kpiMaxDD">Loading...</div>
+            <div class="sub" id="kpiDDSub">Baseline Cố Định: Loading...</div>
+        </div>
+        <div class="kpi-card">
+            <div class="label">Số Ngày Dính SL 5%</div>
+            <div class="val" id="kpiSL">Loading...</div>
+            <div class="sub" id="kpiSLSub">Baseline Cố Định: Loading...</div>
+        </div>
+    </div>
+
+    <!-- Main Workspace -->
+    <div class="main-workspace">
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <button class="filter-btn active" id="btn-ALL" onclick="filterDays('ALL')">Tất Cả</button>
+                <button class="filter-btn" id="btn-STD" onclick="filterDays('STD')">Chuẩn 0.10 Lot</button>
+                <button class="filter-btn" id="btn-REDUCED" onclick="filterDays('REDUCED')">Giảm Vol (<0.10)</button>
+                <button class="filter-btn" id="btn-SKIP" onclick="filterDays('SKIP')">Bỏ Qua (0.00)</button>
+            </div>
+            <div class="days-list" id="daysList"></div>
+        </div>
+
+        <div class="chart-workspace">
+            <div class="chart-header">
+                <div class="chart-title" id="chartTitle">Chọn một ngày để xem chi tiết nến M1</div>
+                <div class="chart-meta" id="chartMeta"></div>
+            </div>
+            <div class="status-banner" id="statusBanner"></div>
+            <div class="chart-container">
+                <div class="chart-legend">
+                    <div class="legend-item"><div class="legend-color" style="background:#ffd700;"></div>Giá Mốc 10h ($P_0$)</div>
+                    <div class="legend-item"><div class="legend-color" style="background:#00e5ff;"></div>Lưới DCA BUY</div>
+                    <div class="legend-item"><div class="legend-color" style="background:#ff1744;"></div>Lưới DCA SELL</div>
+                </div>
+                <div id="candlestickChart"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let reportData = null;
+        let allDailyResults = [];
+        let activeFilter = 'ALL';
+        let chartInstance = null;
+        let candlestickSeries = null;
+
+        async function initDashboard() {
+            try {
+                const res = await fetch('/api/comparison');
+                reportData = await res.json();
+
+                if (reportData.test_phase_2023_2024) {
+                    renderKPIs(reportData.test_phase_2023_2024);
+                }
+
+                const resResults = await fetch('/api/summary');
+                const resultsData = await resResults.json();
+                
+                if (resultsData.daily_results) {
+                    allDailyResults = resultsData.daily_results;
+                }
+
+                renderDaysList('ALL');
+
+                if (allDailyResults.length > 0) {
+                    selectDay(allDailyResults[0].date);
+                }
+            } catch (err) {
+                console.error("Error initializing dashboard:", err);
+            }
+        }
+
+        function renderKPIs(testPhase) {
+            const base = testPhase.baseline_unfiltered;
+            const dyn = testPhase.ai_dynamic_volume_strategy;
+
+            const pnlEl = document.getElementById('kpiPnl');
+            pnlEl.innerText = `$${dyn.net_pnl_usd.toLocaleString()} (${dyn.return_pct}%)`;
+            pnlEl.className = `val ${dyn.net_pnl_usd >= 0 ? 'green' : 'red'}`;
+
+            document.getElementById('kpiPnlSub').innerText = `Baseline 0.10 Lot: $${base.net_pnl_usd.toLocaleString()} (${base.return_pct}%)`;
+            
+            document.getElementById('kpiVolDist').innerText = `${dyn.standard_vol_days_count} / ${dyn.reduced_vol_days_count} / ${dyn.skipped_days_count}`;
+            document.getElementById('kpiVolSub').innerText = `0.10 Lot / Giảm Vol / Skip`;
+
+            document.getElementById('kpiWinRate').innerText = `${dyn.win_rate_pct}%`;
+            document.getElementById('kpiWinSub').innerText = `Baseline 0.10 Lot: ${base.win_rate_pct}%`;
+
+            document.getElementById('kpiMaxDD').innerText = `$${dyn.max_drawdown_usd.toLocaleString()} (${dyn.max_drawdown_pct}%)`;
+            document.getElementById('kpiDDSub').innerText = `Baseline 0.10 Lot: $${base.max_drawdown_usd.toLocaleString()}`;
+
+            document.getElementById('kpiSL').innerText = `${dyn.sl_hit_days} Ngày`;
+            document.getElementById('kpiSLSub').innerText = `Baseline 0.10 Lot: ${base.sl_hit_days} Ngày`;
+        }
+
+        function filterDays(filter) {
+            activeFilter = filter;
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`btn-${filter}`).classList.add('active');
+            renderDaysList(filter);
+        }
+
+        function renderDaysList(filter) {
+            const container = document.getElementById('daysList');
+            container.innerHTML = '';
+            
+            const filtered = allDailyResults.filter(item => {
+                if (filter === 'STD') return item.active_lot_size === 0.10;
+                if (filter === 'REDUCED') return item.active_lot_size > 0.00 && item.active_lot_size < 0.10;
+                if (filter === 'SKIP') return item.active_lot_size === 0.00;
+                return true;
+            });
+
+            filtered.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'day-item';
+                div.id = `day-${item.date}`;
+                div.onclick = () => selectDay(item.date);
+
+                const lot = item.active_lot_size;
+                let badgeText = lot === 0.00 ? 'SKIP 0.00' : (lot < 0.10 ? `GIẢM ${lot} L` : `CHỦẨN ${lot} L`);
+                let badgeClass = lot === 0.00 ? 'badge-skip' : (lot < 0.10 ? 'badge-reduced' : 'badge-std');
+
+                div.innerHTML = `
+                    <div class="day-info">
+                        <div class="date">${item.date} (${item.direction})</div>
+                        <div class="meta">PnL: <span style="color:${item.daily_pnl_usd >= 0 ? 'var(--green-win)' : 'var(--red-loss)'}">$${item.daily_pnl_usd}</span> | Vol: <strong style="color:var(--purple-vol)">${lot} Lot</strong></div>
+                    </div>
+                    <div class="day-badge ${badgeClass}">${badgeText}</div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        async function selectDay(dateStr) {
+            document.querySelectorAll('.day-item').forEach(el => el.classList.remove('selected'));
+            const selectedEl = document.getElementById(`day-${dateStr}`);
+            if (selectedEl) selectedEl.classList.add('selected');
+
+            const item = allDailyResults.find(d => d.date === dateStr);
+            if (!item) return;
+
+            const banner = document.getElementById('statusBanner');
+            banner.className = 'status-banner traded';
+            banner.style.background = item.active_lot_size === 0.00 ? 'rgba(255, 145, 0, 0.15)' : (item.active_lot_size < 0.10 ? 'rgba(171, 71, 188, 0.2)' : 'rgba(0, 200, 83, 0.15)');
+            banner.style.color = item.active_lot_size === 0.00 ? 'var(--orange-skip)' : (item.active_lot_size < 0.10 ? 'var(--purple-vol)' : 'var(--green-win)');
+            banner.innerText = `${item.reason || 'AI Dynamic Volume Scaling'} | Vol: ${item.active_lot_size} Lot | PnL Ngày: $${item.daily_pnl_usd}`;
+
+            document.getElementById('chartTitle').innerText = `Ngày ${dateStr} - Hướng ${item.direction} (Khối lượng: ${item.active_lot_size} Lot)`;
+            document.getElementById('chartMeta').innerHTML = `
+                <span>Giá Mốc 10h: <strong>$${item.anchor_price_10am || '--'}</strong></span>
+                <span>Bước ATR14: <strong>${item.atr14_m5_step || '--'}</strong></span>
+                <span>Khối Lượng Ngày: <strong style="color:var(--purple-vol)">${item.active_lot_size} Lot</strong></span>
+                <span>PnL Ngày: <strong style="color:${item.daily_pnl_usd >= 0 ? 'var(--green-win)' : 'var(--red-loss)'}">$${item.daily_pnl_usd}</strong></span>
+            `;
+
+            try {
+                const res = await fetch(`/api/day_chart?date=${dateStr}`);
+                const data = await res.json();
+                renderCandlestickChart(data.candles, data.anchor_price, item);
+            } catch (err) {
+                console.error("Error loading chart:", err);
+            }
+        }
+
+        function renderCandlestickChart(candles, anchorP, item) {
+            const chartDiv = document.getElementById('candlestickChart');
+            chartDiv.innerHTML = '';
+
+            chartInstance = LightweightCharts.createChart(chartDiv, {
+                layout: { background: { type: 'solid', color: '#12141d' }, textColor: '#8c93a8' },
+                grid: { vertLines: { color: '#1f2433' }, horzLines: { color: '#1f2433' } },
+                timeScale: { timeVisible: true },
+            });
+
+            candlestickSeries = chartInstance.addCandlestickSeries({
+                upColor: '#00c853', downColor: '#ff3d00', borderVisible: false, wickUpColor: '#00c853', wickDownColor: '#ff3d00'
+            });
+
+            candlestickSeries.setData(candles);
+
+            const pAnchor = anchorP || (item ? item.anchor_price_10am : 0);
+            if (pAnchor > 0) {
+                candlestickSeries.createPriceLine({
+                    price: pAnchor, color: '#ffd700', lineWidth: 2, lineStyle: LightweightCharts.LineStyle.Solid, title: `Giá Mốc 10h ($${pAnchor})`
+                });
+
+                const stepP = item ? item.atr14_m5_step : 1.5;
+                if (item && item.direction === 'BUY') {
+                    for (let k = 1; k <= Math.max(item.trades_count || 1, 3); k++) {
+                        const buyL = pAnchor - k * stepP;
+                        candlestickSeries.createPriceLine({ price: buyL, color: '#00e5ff', lineStyle: LightweightCharts.LineStyle.Dashed, title: `BUY ${k} (${item.active_lot_size}L)` });
+                    }
+                } else if (item && item.direction === 'SELL') {
+                    for (let k = 1; k <= Math.max(item.trades_count || 1, 3); k++) {
+                        const sellL = pAnchor + k * stepP;
+                        candlestickSeries.createPriceLine({ price: sellL, color: '#ff1744', lineStyle: LightweightCharts.LineStyle.Dashed, title: `SELL ${k} (${item.active_lot_size}L)` });
+                    }
+                }
+            }
+
+            chartInstance.timeScale().fitContent();
+        }
+
+        window.onload = initDashboard;
+    </script>
+</body>
+</html>

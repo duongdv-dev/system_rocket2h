@@ -1,0 +1,28 @@
+services:
+  # Service 1: Training mô hình AI Volume Optimizer (Train 2020-2023)
+  volume_train:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ai_volume_optimizer_train
+    volumes:
+      - ./output:/app/output
+      - ../:/app/data:ro
+    environment:
+      - PYTHONUNBUFFERED=1
+    command: python src/train_filter.py
+
+  # Service 2: Web UI Dashboard Dynamic Volume Scaling (Port 8003)
+  volume_web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ai_volume_optimizer_web
+    ports:
+      - "8003:8003"
+    volumes:
+      - ./output:/app/output
+      - ../:/app/data:ro
+    environment:
+      - PYTHONUNBUFFERED=1
+    command: python server.py
