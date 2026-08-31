@@ -2,9 +2,9 @@ import numpy as np
 
 class StepOptimizer:
     """
-    Master System Optimizer: Phối hợp 3 Lớp (AI Filter + Dynamic Volume + Dynamic Step Size).
+    Master System Optimizer: Phối hợp 3 Lớp (AI Filter + Dynamic Volume Config B: Base 0.40 Lot + Dynamic Step Size).
     """
-    def __init__(self, base_lot=0.10, min_lot=0.02, safe_step_mult=0.50, moderate_step_mult=0.85):
+    def __init__(self, base_lot=0.40, min_lot=0.08, safe_step_mult=0.50, moderate_step_mult=0.85):
         self.base_lot = base_lot
         self.min_lot = min_lot
         self.safe_step_mult = safe_step_mult
@@ -14,8 +14,8 @@ class StepOptimizer:
         """
         Tính đồng thời (lot_size, step_mult) cho từng ngày dựa vào P(Risk):
         - P >= skip_threshold: 0.00 Lot (SKIP), Step 1.0
-        - safe_threshold <= P < skip_threshold: Vol 0.04 - 0.07 Lot, Step 0.85 (Phòng Thủ)
-        - P < safe_threshold: Vol 0.10 Lot, Step 0.50 (Tấn Công Bứt Phá)
+        - safe_threshold <= P < skip_threshold: Vol 0.15 - 0.30 Lot (bội 0.01 Lot), Step 0.85 (Phòng Thủ)
+        - P < safe_threshold: Vol 0.40 Lot (Base Lot B), Step 0.50 (Tấn Công Bứt Phá)
         """
         if prob_risk >= skip_threshold:
             return {
@@ -28,7 +28,7 @@ class StepOptimizer:
             return {
                 "lot": round(self.base_lot, 2),
                 "step_mult": self.safe_step_mult,
-                "reason": f"🔥 TẤN CÔNG BỨT PHÁ (0.10L | Step {self.safe_step_mult}x ATR): P={prob_risk*100:.1f}% An Toàn Cao"
+                "reason": f"🔥 TẤN CÔNG BỨT PHÁ (Base {self.base_lot}L | Step {self.safe_step_mult}x ATR): P={prob_risk*100:.1f}% An Toàn Cao"
             }
 
         # Moderate risk range

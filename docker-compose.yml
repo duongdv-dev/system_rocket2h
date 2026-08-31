@@ -1,0 +1,59 @@
+services:
+  # 1. Baseline DCA System Dashboard (Port 8000)
+  dca_system:
+    build:
+      context: ./dca_system
+      dockerfile: Dockerfile
+    container_name: dca_system_web
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./dca_system/output:/app/output
+      - ./:/app/data:ro
+    environment:
+      - PYTHONUNBUFFERED=1
+
+  # 2. AI Risk Filter Dashboard (Port 8002)
+  ai_trade_filter:
+    build:
+      context: ./ai_trade_filter
+      dockerfile: Dockerfile
+    container_name: ai_trade_filter_web
+    ports:
+      - "8002:8002"
+    volumes:
+      - ./ai_trade_filter/output:/app/output
+      - ./:/app/data:ro
+    environment:
+      - PYTHONUNBUFFERED=1
+    command: python server.py
+
+  # 3. AI Dynamic Volume Optimizer Dashboard (Port 8003)
+  ai_volume_optimizer:
+    build:
+      context: ./ai_volume_optimizer
+      dockerfile: Dockerfile
+    container_name: ai_volume_optimizer_web
+    ports:
+      - "8003:8003"
+    volumes:
+      - ./ai_volume_optimizer/output:/app/output
+      - ./:/app/data:ro
+    environment:
+      - PYTHONUNBUFFERED=1
+    command: python server.py
+
+  # 4. Master System 3-Layer Combined Dashboard (Port 8004)
+  ai_step_optimizer:
+    build:
+      context: ./ai_step_optimizer
+      dockerfile: Dockerfile
+    container_name: ai_step_optimizer_web
+    ports:
+      - "8004:8004"
+    volumes:
+      - ./ai_step_optimizer/output:/app/output
+      - ./:/app/data:ro
+    environment:
+      - PYTHONUNBUFFERED=1
+    command: python server.py

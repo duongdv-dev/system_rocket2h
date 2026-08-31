@@ -13,9 +13,6 @@ from filter_backtester import FilterBacktester
 from train_filter import run_step_1_training
 
 def run_out_of_sample_comparison():
-    """
-    BƯỚC 2: BACKTEST OUT-OF-SAMPLE (2023 - 2024) VỚI CẢNH BÁO AI & GIỚI HẠN DAILY LOSS CAP 5.0%
-    """
     src_dir = os.path.dirname(os.path.abspath(__file__))
     base_dir = os.path.dirname(src_dir)
     workspace_dir = os.path.dirname(base_dir)
@@ -23,24 +20,16 @@ def run_out_of_sample_comparison():
     model_path = os.path.join(base_dir, "output", "ai_risk_model.joblib")
     meta_path = os.path.join(base_dir, "output", "ai_model_meta.json")
 
-    # 1. Kiểm tra sự tồn tại của mô hình AI đã train
     if os.path.exists(model_path):
-        print("\n" + "=" * 80)
-        print(f"  ✅ ĐÃ TÌM THẤY MÔ HÌNH AI ĐÃ TRAIN: {model_path}")
-        print("  --> Bỏ qua bước Train, NẠP TRỰC TIẾP MÔ HÌNH để tiến hành Backtest!")
-        print("=" * 80)
-        
+        print(f"✅ ĐÃ TÌM THẤY MÔ HÌNH AI ĐÃ TRAIN: {model_path}")
         meta_info = {}
         if os.path.exists(meta_path):
             with open(meta_path, 'r', encoding='utf-8') as f:
                 meta_info = json.load(f)
     else:
-        print("\n" + "=" * 80)
-        print("  ⚠️ CHƯA TÌM THẤY MÔ HÌNH AI. Bắt đầu chạy Training (2020 - 2023)...")
-        print("=" * 80)
+        print("⚠️ CHƯA TÌM THẤY MÔ HÌNH AI. Bắt đầu chạy Training (2020 - 2023)...")
         model, meta_info = run_step_1_training()
 
-    # 2. Các file dữ liệu kiểm thử (2023 - 2024 Out-of-Sample)
     possible_path_sets = [
         [
             os.path.join(workspace_dir, "XAUUSD_2023_m1.csv"),
@@ -66,24 +55,20 @@ def run_out_of_sample_comparison():
         raise FileNotFoundError("Không tìm thấy các file dữ liệu CSV 2023-2024!")
 
     print("\n" + "=" * 80)
-    print("   📊 BẮT ĐẦU BACKTEST OUT-OF-SAMPLE TRÊN TẬP DỮ LIỆU (2023 - 2024)")
-    print("   Cấu Hình Quản Trị Rủi Ro: Daily Max Loss Cap = 5.0% (-$500 USD)")
+    print("   📊 BACKTEST OUT-OF-SAMPLE (2023 - 2024) [BASE 0.40 LOT | DAILY LOSS CAP 20%]")
     print("=" * 80)
 
-    # 3. Trích xuất đặc trưng 10:00 AM cho 2023-2024
     extractor = FeatureExtractor(test_files)
     features_df, _ = extractor.extract_daily_features()
 
-    # 4. Chạy Backtest Gốc (Không Lọc) với Max Loss Cap = 5.0%
-    bt_unfiltered = FilterBacktester(test_files, ai_model_path=None, max_daily_loss_pct=5.0)
+    bt_unfiltered = FilterBacktester(test_files, ai_model_path=None, default_lot=0.40, max_daily_loss_pct=20.0)
     unfiltered_logs, unfilt_final_bal = bt_unfiltered.run_backtest()
     df_unfilt = pd.DataFrame(unfiltered_logs)
 
     cols_to_drop = [c for c in ['anchor_price_10am', 'atr14_m5_step', 'atr14_m5'] if c in df_unfilt.columns]
     df_unfilt_clean = df_unfilt.drop(columns=cols_to_drop, errors='ignore')
 
-    # 5. Chạy Backtest Đã Lọc Bằng Mô Hình AI với Max Loss Cap = 5.0%
-    bt_filtered = FilterBacktester(test_files, ai_model_path=model_path, max_daily_loss_pct=5.0)
+    bt_filtered = FilterBacktester(test_files, ai_model_path=model_path, default_lot=0.40, max_daily_loss_pct=20.0)
     merged = pd.merge(features_df, df_unfilt_clean, on='date')
 
     filtered_daily_logs = []
@@ -97,7 +82,6 @@ def run_out_of_sample_comparison():
     for idx, row in merged.iterrows():
         date_str = row['date']
         should_trade, reason = bt_filtered.evaluate_filter_decision(row)
-
         atr_val = row.get('atr14_m5', row.get('atr14_m5_step', 1.5))
 
         if should_trade:
@@ -152,7 +136,6 @@ def run_out_of_sample_comparison():
                 "max_drawdown_pct": 0.0
             })
 
-    # Tổng kết chỉ số
     df_filt_res = pd.DataFrame([l for l in filtered_daily_logs if l['status'] == 'TRADED' and l['direction'] != 'NONE'])
     unfilt_traded = df_unfilt[df_unfilt['direction'] != 'NONE']
 
@@ -179,7 +162,8 @@ def run_out_of_sample_comparison():
                 "final_equity": round(unfilt_final_bal, 2),
                 "net_pnl_usd": round(unfilt_pnl, 2),
                 "return_pct": round((unfilt_pnl / 10000.0) * 100, 2),
-                "max_daily_loss_pct_cap": 5.0,
+                "base_lot": 0.40,
+                "max_daily_loss_pct_cap": 20.0,
                 "total_trading_days": len(unfilt_traded),
                 "tp_hit_days": unfilt_tp_days,
                 "sl_hit_days": unfilt_sl_days,
@@ -192,7 +176,8 @@ def run_out_of_sample_comparison():
                 "final_equity": round(filtered_balance, 2),
                 "net_pnl_usd": round(filt_pnl, 2),
                 "return_pct": round((filt_pnl / 10000.0) * 100, 2),
-                "max_daily_loss_pct_cap": 5.0,
+                "base_lot": 0.40,
+                "max_daily_loss_pct_cap": 20.0,
                 "total_trading_days": len(df_filt_res),
                 "skipped_days_count": len(skipped_days),
                 "saved_loss_usd": round(saved_loss_total, 2),
@@ -215,18 +200,6 @@ def run_out_of_sample_comparison():
     with open(results_path, 'w', encoding='utf-8') as f:
         json.dump({"summary": comparison_report["test_phase_2023_2024"]["ai_filtered_strategy"], "daily_results": filtered_daily_logs}, f, indent=4, ensure_ascii=False)
 
-    print("\n================ OUT-OF-SAMPLE TEST RESULTS (2023 - 2024) [5% MAX DAILY LOSS CAP] ================")
-    print(f"METRIC                   | BASELINE (UNFILTERED) | AI MACHINE LEARNING FILTER")
-    print(f"-------------------------+-----------------------+-------------------")
-    print(f"Net Profit (USD)         | ${unfilt_pnl:,.2f}             | ${filt_pnl:,.2f}")
-    print(f"Total Return (%)         | {comparison_report['test_phase_2023_2024']['baseline_unfiltered']['return_pct']}%                | {comparison_report['test_phase_2023_2024']['ai_filtered_strategy']['return_pct']}%")
-    print(f"Win Rate (%)             | {unfilt_winrate:.2f}%               | {filt_winrate:.2f}%")
-    print(f"Trading Days             | {len(unfilt_traded)} days            | {len(df_filt_res)} days")
-    print(f"Skipped High Risk Days   | 0 days                | {len(skipped_days)} days")
-    print(f"Saved Loss From Bad Days | $0.00                 | ${saved_loss_total:,.2f}")
-    print(f"Max Drawdown (USD)       | ${unfilt_max_dd:,.2f}             | ${filt_max_dd:,.2f}")
-    print(f"SL 5% Hit Days           | {unfilt_sl_days} days               | {filt_sl_days} days")
-    print(f"================================================================================================")
     print(f"Report exported to: {report_path}\n")
 
 if __name__ == "__main__":

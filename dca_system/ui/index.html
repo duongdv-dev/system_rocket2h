@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>XAUUSD DCA Intraday Baseline Dashboard (5% Max Loss Cap)</title>
+    <title>XAUUSD DCA Intraday Baseline Dashboard (Base 0.40L | 20% Max Loss Cap)</title>
     <script src="https://unpkg.com/lightweight-charts@4.1.0/dist/lightweight-charts.standalone.production.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -203,8 +203,8 @@
 <body>
 
     <header>
-        <h1>⚡ XAUUSD DCA Baseline Dashboard <span>(10:00 ICT Anchor | ATR Step | 12:00 Cutoff)</span></h1>
-        <span class="tag">Max Daily Loss Cap: 5.0% (-$500 USD)</span>
+        <h1>⚡ XAUUSD DCA Baseline Dashboard <span>(Base 0.40 Lot | 10:00 ICT Anchor)</span></h1>
+        <span class="tag">Max Daily Loss Cap: 20.0% (-$2,000 USD)</span>
     </header>
 
     <div class="kpi-container" id="kpiBar">
@@ -216,7 +216,7 @@
         <div class="kpi-card">
             <div class="label">Tỷ Lệ Thắng (Win Rate)</div>
             <div class="val gold" id="kpiWinRate">Loading...</div>
-            <div class="sub" id="kpiWinDays">339 / 514 ngày</div>
+            <div class="sub" id="kpiWinDays">-- TP / -- ngày</div>
         </div>
         <div class="kpi-card">
             <div class="label">Max Drawdown (Sụt vốn)</div>
@@ -224,9 +224,9 @@
             <div class="sub" id="kpiDDPct">--% đỉnh-đáy</div>
         </div>
         <div class="kpi-card">
-            <div class="label">Số Ngày Dính Cắt Lỗ 5%</div>
+            <div class="label">Số Ngày Dính Cắt Lỗ 20%</div>
             <div class="val" id="kpiSL">Loading...</div>
-            <div class="sub">Khống chế tối đa 5% vốn/ngày</div>
+            <div class="sub">Khống chế tối đa 20% vốn/ngày</div>
         </div>
         <div class="kpi-card">
             <div class="label">Tổng Số Ngày Backtest</div>
@@ -240,7 +240,7 @@
             <div class="sidebar-header">
                 <button class="filter-btn active" id="btn-ALL" onclick="filterDays('ALL')">Tất Cả</button>
                 <button class="filter-btn" id="btn-TP" onclick="filterDays('TP')">TP Chốt Lời</button>
-                <button class="filter-btn" id="btn-SL" onclick="filterDays('SL')">Cắt Lỗ 5%</button>
+                <button class="filter-btn" id="btn-SL" onclick="filterDays('SL')">Cắt Lỗ 20%</button>
                 <button class="filter-btn" id="btn-CLOSE" onclick="filterDays('CLOSE')">Đóng 12h</button>
             </div>
             <div class="days-list" id="daysList"></div>
@@ -321,7 +321,7 @@
                 div.id = `day-${item.date}`;
                 div.onclick = () => selectDay(item.date);
 
-                let badgeText = item.tp_hit ? 'TP CHỐT LỜI' : (item.sl_hit ? 'CẮT LỖ 5%' : 'ĐÓNG 12H');
+                let badgeText = item.tp_hit ? 'TP CHỐT LỜI' : (item.sl_hit ? 'CẮT LỖ 20%' : 'ĐÓNG 12H');
                 let badgeClass = item.tp_hit ? 'badge-tp' : (item.sl_hit ? 'badge-sl' : 'badge-close');
 
                 div.innerHTML = `

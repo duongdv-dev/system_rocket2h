@@ -13,12 +13,6 @@ from volume_backtester import VolumeBacktester
 from train_filter import run_step_1_training
 
 def run_volume_optimization_comparison():
-    """
-    SO SÁNH 3 CHIẾN LƯỢC TRÊN TẬP DỮ LIỆU TEST 2023 - 2024:
-    1. Baseline Gốc: Cố định 0.10 Lot, Không lọc.
-    2. AI Risk Filter: Cố định 0.10 Lot, Lọc bỏ ngày nguy hiểm.
-    3. AI Risk Filter + Dynamic Volume Scaling: Điều chỉnh Lot linh hoạt (0.01 Lot multiples).
-    """
     src_dir = os.path.dirname(os.path.abspath(__file__))
     base_dir = os.path.dirname(src_dir)
     workspace_dir = os.path.dirname(base_dir)
@@ -61,30 +55,26 @@ def run_volume_optimization_comparison():
         raise FileNotFoundError("Không tìm thấy các file dữ liệu CSV 2023-2024!")
 
     print("\n" + "=" * 80)
-    print("   📊 BACKTEST SO SÁNH TỐI ƯU KHỐI LƯỢNG VỊ THẾ DYNAMIC VOLUME (2023 - 2024)")
+    print("   📊 BACKTEST DYNAMIC VOLUME OPTIMIZER (BASE 0.40 LOT | DAILY LOSS CAP 20%)")
     print("=" * 80)
 
     extractor = FeatureExtractor(test_files)
     features_df, _ = extractor.extract_daily_features()
 
-    bt_engine = VolumeBacktester(test_files, ai_model_path=model_path, max_daily_loss_pct=5.0)
+    bt_engine = VolumeBacktester(test_files, ai_model_path=model_path, default_lot=0.40, max_daily_loss_pct=20.0)
 
-    # 1. Baseline Unfiltered Strategy (Fixed 0.10 Lot)
     unfilt_logs, unfilt_final_bal = bt_engine.run_backtest(daily_volume_dict=None)
     df_unfilt = pd.DataFrame(unfilt_logs)
 
-    # 2. Dynamic Volume Optimization
     volume_map, decision_reasons = bt_engine.calculate_daily_dynamic_volumes(features_df)
     dyn_logs, dyn_final_bal = bt_engine.run_backtest(daily_volume_dict=volume_map)
     df_dyn = pd.DataFrame(dyn_logs)
 
-    # Merge logs with decision reasons
     for log in dyn_logs:
         d = log['date']
         log['reason'] = decision_reasons.get(d, "")
-        log['status'] = "SKIPPED" if log['active_lot_size'] == 0.00 else ("REDUCED_VOL" if log['active_lot_size'] < 0.10 else "STANDARD_VOL")
+        log['status'] = "SKIPPED" if log['active_lot_size'] == 0.00 else ("REDUCED_VOL" if log['active_lot_size'] < 0.40 else "STANDARD_VOL")
 
-    # Metrics
     df_dyn_traded = df_dyn[df_dyn['active_lot_size'] > 0.0]
     df_unfilt_traded = df_unfilt[df_unfilt['direction'] != 'NONE']
 
@@ -111,7 +101,8 @@ def run_volume_optimization_comparison():
                 "final_equity": round(unfilt_final_bal, 2),
                 "net_pnl_usd": round(unfilt_pnl, 2),
                 "return_pct": round((unfilt_pnl / 10000.0) * 100, 2),
-                "volume_mode": "Fixed 0.10 Lot",
+                "base_lot": 0.40,
+                "max_daily_loss_pct_cap": 20.0,
                 "total_trading_days": len(df_unfilt_traded),
                 "tp_hit_days": unfilt_tp,
                 "sl_hit_days": unfilt_sl,
@@ -124,11 +115,12 @@ def run_volume_optimization_comparison():
                 "final_equity": round(dyn_final_bal, 2),
                 "net_pnl_usd": round(dyn_pnl, 2),
                 "return_pct": round((dyn_pnl / 10000.0) * 100, 2),
-                "volume_mode": "Dynamic Volume (0.01 Lot Multiples)",
+                "base_lot": 0.40,
+                "max_daily_loss_pct_cap": 20.0,
                 "total_trading_days": len(df_dyn_traded),
                 "skipped_days_count": len(df_dyn[df_dyn['active_lot_size'] == 0.00]),
-                "reduced_vol_days_count": len(df_dyn[(df_dyn['active_lot_size'] > 0.00) & (df_dyn['active_lot_size'] < 0.10)]),
-                "standard_vol_days_count": len(df_dyn[df_dyn['active_lot_size'] == 0.10]),
+                "reduced_vol_days_count": len(df_dyn[(df_dyn['active_lot_size'] > 0.00) & (df_dyn['active_lot_size'] < 0.40)]),
+                "standard_vol_days_count": len(df_dyn[df_dyn['active_lot_size'] == 0.40]),
                 "tp_hit_days": dyn_tp,
                 "sl_hit_days": dyn_sl,
                 "win_rate_pct": round(dyn_winrate, 2),
@@ -150,19 +142,7 @@ def run_volume_optimization_comparison():
     with open(results_path, 'w', encoding='utf-8') as f:
         json.dump({"summary": comparison_report["test_phase_2023_2024"]["ai_dynamic_volume_strategy"], "daily_results": dyn_logs}, f, indent=4, ensure_ascii=False)
 
-    print("\n================ OUT-OF-SAMPLE DYNAMIC VOLUME RESULTS (2023 - 2024) ================")
-    print(f"METRIC                   | BASELINE (FIXED 0.10 LOT) | AI DYNAMIC VOLUME SCALING")
-    print(f"-------------------------+---------------------------+------------------------------")
-    print(f"Net Profit (USD)         | ${unfilt_pnl:,.2f}                 | ${dyn_pnl:,.2f}")
-    print(f"Total Return (%)         | {comparison_report['test_phase_2023_2024']['baseline_unfiltered']['return_pct']}%                    | {comparison_report['test_phase_2023_2024']['ai_dynamic_volume_strategy']['return_pct']}%")
-    print(f"Win Rate (%)             | {unfilt_winrate:.2f}%                   | {dyn_winrate:.2f}%")
-    print(f"Trading Days             | {len(df_unfilt_traded)} days                | {len(df_dyn_traded)} days")
-    print(f"Skipped Days (0.00 Lot)  | 0 days                    | {len(df_dyn[df_dyn['active_lot_size'] == 0.00])} days")
-    print(f"Reduced Vol Days (<0.10) | 0 days                    | {len(df_dyn[(df_dyn['active_lot_size'] > 0.00) & (df_dyn['active_lot_size'] < 0.10)])} days")
-    print(f"Standard Vol (0.10 Lot)  | 514 days                  | {len(df_dyn[df_dyn['active_lot_size'] == 0.10])} days")
-    print(f"Max Drawdown (USD)       | ${unfilt_max_dd:,.2f}                 | ${dyn_max_dd:,.2f}")
-    print(f"Max Drawdown (%)         | {comparison_report['test_phase_2023_2024']['baseline_unfiltered']['max_drawdown_pct']}%                    | {comparison_report['test_phase_2023_2024']['ai_dynamic_volume_strategy']['max_drawdown_pct']}%")
-    print(f"====================================================================================\n")
+    print(f"Report exported to: {report_path}\n")
 
 if __name__ == "__main__":
     run_volume_optimization_comparison()

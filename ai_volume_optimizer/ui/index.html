@@ -215,16 +215,15 @@
 <body>
 
     <header>
-        <h1>💎 AI Dynamic Volume Optimizer Dashboard <span>(0.01 Lot Multiples Dynamic Scaling)</span></h1>
-        <span class="tag">Dynamic Position Sizing Model</span>
+        <h1>💎 AI Dynamic Volume Optimizer Dashboard <span>(Base 0.40 Lot | 20.0% Max Loss Cap)</span></h1>
+        <span class="tag">Base 0.40L Dynamic Position Sizing</span>
     </header>
 
-    <!-- KPI Comparison Grid -->
     <div class="kpi-container" id="kpiBar">
         <div class="kpi-card">
             <div class="label">Lợi Nhuận Test (2023-2024)</div>
             <div class="val green" id="kpiPnl">Loading...</div>
-            <div class="sub" id="kpiPnlSub">Baseline Cố Định: Loading...</div>
+            <div class="sub" id="kpiPnlSub">Baseline 0.40L Cố Định: Loading...</div>
         </div>
         <div class="kpi-card">
             <div class="label">Phân Phối Khối Lượng Ngày</div>
@@ -234,27 +233,26 @@
         <div class="kpi-card">
             <div class="label">Tỷ Lệ Thắng (Win Rate)</div>
             <div class="val gold" id="kpiWinRate">Loading...</div>
-            <div class="sub" id="kpiWinSub">Baseline Cố Định: Loading...</div>
+            <div class="sub" id="kpiWinSub">Baseline 0.40L Cố Định: Loading...</div>
         </div>
         <div class="kpi-card">
             <div class="label">Max Drawdown Test</div>
             <div class="val red" id="kpiMaxDD">Loading...</div>
-            <div class="sub" id="kpiDDSub">Baseline Cố Định: Loading...</div>
+            <div class="sub" id="kpiDDSub">Baseline 0.40L Cố Định: Loading...</div>
         </div>
         <div class="kpi-card">
-            <div class="label">Số Ngày Dính SL 5%</div>
+            <div class="label">Số Ngày Dính SL 20%</div>
             <div class="val" id="kpiSL">Loading...</div>
-            <div class="sub" id="kpiSLSub">Baseline Cố Định: Loading...</div>
+            <div class="sub" id="kpiSLSub">Baseline 0.40L Cố Định: Loading...</div>
         </div>
     </div>
 
-    <!-- Main Workspace -->
     <div class="main-workspace">
         <div class="sidebar">
             <div class="sidebar-header">
                 <button class="filter-btn active" id="btn-ALL" onclick="filterDays('ALL')">Tất Cả</button>
-                <button class="filter-btn" id="btn-STD" onclick="filterDays('STD')">Chuẩn 0.10 Lot</button>
-                <button class="filter-btn" id="btn-REDUCED" onclick="filterDays('REDUCED')">Giảm Vol (<0.10)</button>
+                <button class="filter-btn" id="btn-STD" onclick="filterDays('STD')">Chuẩn 0.40 Lot</button>
+                <button class="filter-btn" id="btn-REDUCED" onclick="filterDays('REDUCED')">Giảm Vol (<0.40)</button>
                 <button class="filter-btn" id="btn-SKIP" onclick="filterDays('SKIP')">Bỏ Qua (0.00)</button>
             </div>
             <div class="days-list" id="daysList"></div>
@@ -318,19 +316,19 @@
             pnlEl.innerText = `$${dyn.net_pnl_usd.toLocaleString()} (${dyn.return_pct}%)`;
             pnlEl.className = `val ${dyn.net_pnl_usd >= 0 ? 'green' : 'red'}`;
 
-            document.getElementById('kpiPnlSub').innerText = `Baseline 0.10 Lot: $${base.net_pnl_usd.toLocaleString()} (${base.return_pct}%)`;
+            document.getElementById('kpiPnlSub').innerText = `Baseline 0.40L Cố Định: $${base.net_pnl_usd.toLocaleString()} (${base.return_pct}%)`;
             
             document.getElementById('kpiVolDist').innerText = `${dyn.standard_vol_days_count} / ${dyn.reduced_vol_days_count} / ${dyn.skipped_days_count}`;
-            document.getElementById('kpiVolSub').innerText = `0.10 Lot / Giảm Vol / Skip`;
+            document.getElementById('kpiVolSub').innerText = `0.40 Lot / Giảm Vol / Skip`;
 
             document.getElementById('kpiWinRate').innerText = `${dyn.win_rate_pct}%`;
-            document.getElementById('kpiWinSub').innerText = `Baseline 0.10 Lot: ${base.win_rate_pct}%`;
+            document.getElementById('kpiWinSub').innerText = `Baseline 0.40L Cố Định: ${base.win_rate_pct}%`;
 
             document.getElementById('kpiMaxDD').innerText = `$${dyn.max_drawdown_usd.toLocaleString()} (${dyn.max_drawdown_pct}%)`;
-            document.getElementById('kpiDDSub').innerText = `Baseline 0.10 Lot: $${base.max_drawdown_usd.toLocaleString()}`;
+            document.getElementById('kpiDDSub').innerText = `Baseline 0.40L Cố Định: $${base.max_drawdown_usd.toLocaleString()}`;
 
             document.getElementById('kpiSL').innerText = `${dyn.sl_hit_days} Ngày`;
-            document.getElementById('kpiSLSub').innerText = `Baseline 0.10 Lot: ${base.sl_hit_days} Ngày`;
+            document.getElementById('kpiSLSub').innerText = `Baseline 0.40L Cố Định: ${base.sl_hit_days} Ngày`;
         }
 
         function filterDays(filter) {
@@ -345,8 +343,8 @@
             container.innerHTML = '';
             
             const filtered = allDailyResults.filter(item => {
-                if (filter === 'STD') return item.active_lot_size === 0.10;
-                if (filter === 'REDUCED') return item.active_lot_size > 0.00 && item.active_lot_size < 0.10;
+                if (filter === 'STD') return item.active_lot_size === 0.40;
+                if (filter === 'REDUCED') return item.active_lot_size > 0.00 && item.active_lot_size < 0.40;
                 if (filter === 'SKIP') return item.active_lot_size === 0.00;
                 return true;
             });
@@ -358,8 +356,8 @@
                 div.onclick = () => selectDay(item.date);
 
                 const lot = item.active_lot_size;
-                let badgeText = lot === 0.00 ? 'SKIP 0.00' : (lot < 0.10 ? `GIẢM ${lot} L` : `CHỦẨN ${lot} L`);
-                let badgeClass = lot === 0.00 ? 'badge-skip' : (lot < 0.10 ? 'badge-reduced' : 'badge-std');
+                let badgeText = lot === 0.00 ? 'SKIP 0.00' : (lot < 0.40 ? `GIẢM ${lot} L` : `CHỦẨN ${lot} L`);
+                let badgeClass = lot === 0.00 ? 'badge-skip' : (lot < 0.40 ? 'badge-reduced' : 'badge-std');
 
                 div.innerHTML = `
                     <div class="day-info">
@@ -382,8 +380,8 @@
 
             const banner = document.getElementById('statusBanner');
             banner.className = 'status-banner traded';
-            banner.style.background = item.active_lot_size === 0.00 ? 'rgba(255, 145, 0, 0.15)' : (item.active_lot_size < 0.10 ? 'rgba(171, 71, 188, 0.2)' : 'rgba(0, 200, 83, 0.15)');
-            banner.style.color = item.active_lot_size === 0.00 ? 'var(--orange-skip)' : (item.active_lot_size < 0.10 ? 'var(--purple-vol)' : 'var(--green-win)');
+            banner.style.background = item.active_lot_size === 0.00 ? 'rgba(255, 145, 0, 0.15)' : (item.active_lot_size < 0.40 ? 'rgba(171, 71, 188, 0.2)' : 'rgba(0, 200, 83, 0.15)');
+            banner.style.color = item.active_lot_size === 0.00 ? 'var(--orange-skip)' : (item.active_lot_size < 0.40 ? 'var(--purple-vol)' : 'var(--green-win)');
             banner.innerText = `${item.reason || 'AI Dynamic Volume Scaling'} | Vol: ${item.active_lot_size} Lot | PnL Ngày: $${item.daily_pnl_usd}`;
 
             document.getElementById('chartTitle').innerText = `Ngày ${dateStr} - Hướng ${item.direction} (Khối lượng: ${item.active_lot_size} Lot)`;

@@ -6,9 +6,11 @@ import numpy as np
 from datetime import datetime, time
 
 class DCABacktester:
-    def __init__(self, data_paths, initial_balance=10000.0, default_lot=0.10, lot_usd_per_point=100.0, max_daily_loss_pct=5.0):
+    def __init__(self, data_paths, initial_balance=10000.0, default_lot=0.40, lot_usd_per_point=100.0, max_daily_loss_pct=20.0):
         """
         Master DCA Strategy Backtester supporting Dynamic Volume and Dynamic Step Size.
+        - Default Base Lot: 0.40 Lot
+        - Daily Max Loss Cap: 20.0% (-$2,000 USD on $10,000 equity)
         """
         self.data_paths = data_paths
         self.initial_balance = initial_balance
@@ -57,11 +59,6 @@ class DCABacktester:
         return m5_df
 
     def run_backtest(self, daily_config_dict=None, step_multiplier=1.0):
-        """
-        Run daily DCA backtest.
-        :param daily_config_dict: Optional dict mapping date_str -> {'lot': float, 'step_mult': float}
-        :param step_multiplier: Global fallback step multiplier if daily_config_dict is None
-        """
         df = self.load_and_preprocess_data()
         m5_df = self.compute_m5_atr14(df)
         
@@ -95,7 +92,6 @@ class DCABacktester:
 
             raw_atr = max(raw_atr, 0.1)
 
-            # Extract dynamic lot size and dynamic step size
             if daily_config_dict and date_str in daily_config_dict:
                 cfg = daily_config_dict[date_str]
                 if isinstance(cfg, dict):

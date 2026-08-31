@@ -13,10 +13,10 @@ from dca_backtester import DCABacktester
 from volume_optimizer import VolumeOptimizer
 
 class VolumeBacktester(DCABacktester):
-    def __init__(self, data_paths, ai_model_path=None, initial_balance=10000.0, default_lot=0.10, max_daily_loss_pct=5.0):
+    def __init__(self, data_paths, ai_model_path=None, initial_balance=10000.0, default_lot=0.40, max_daily_loss_pct=20.0):
         super().__init__(data_paths, initial_balance, default_lot, lot_usd_per_point=100.0, max_daily_loss_pct=max_daily_loss_pct)
         self.ai_model_data = None
-        self.vol_optimizer = VolumeOptimizer(base_lot=default_lot, min_lot=0.02, max_lot=default_lot)
+        self.vol_optimizer = VolumeOptimizer(base_lot=default_lot, min_lot=0.08, max_lot=default_lot)
 
         base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         if ai_model_path and os.path.exists(ai_model_path):
@@ -27,17 +27,13 @@ class VolumeBacktester(DCABacktester):
                 self.ai_model_data = joblib.load(default_model_p)
 
     def calculate_daily_dynamic_volumes(self, features_df):
-        """
-        Calculates dynamic lot size (multiples of 0.01 lot) for each day based on AI predicted P(Risk).
-        Returns a dict: {date_str: lot_size}
-        """
         volume_map = {}
         decision_reasons = {}
 
         if not self.ai_model_data:
             for _, row in features_df.iterrows():
                 volume_map[row['date']] = self.default_lot
-                decision_reasons[row['date']] = "Cố định 0.10 Lot (Chưa có AI)"
+                decision_reasons[row['date']] = f"Cố định {self.default_lot} Lot"
             return volume_map, decision_reasons
 
         model = self.ai_model_data["model"]
@@ -51,7 +47,6 @@ class VolumeBacktester(DCABacktester):
             
             prob_risk = float(model.predict_proba(X_input)[0][1])
 
-            # Compute dynamic lot size using VolumeOptimizer
             active_lot = self.vol_optimizer.compute_bucket_lot(prob_risk, skip_threshold=skip_threshold, safe_threshold=0.20)
             volume_map[date_str] = active_lot
 

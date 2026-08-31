@@ -6,16 +6,7 @@ import numpy as np
 from datetime import datetime, time
 
 class DCABacktester:
-    def __init__(self, data_paths, initial_balance=10000.0, default_lot=0.10, lot_usd_per_point=100.0, max_daily_loss_pct=5.0):
-        """
-        DCA Strategy Backtester for XAUUSD with Dynamic Volume Support.
-        
-        :param data_paths: List of paths to M1 CSV files
-        :param initial_balance: Starting account equity in USD
-        :param default_lot: Standard volume size per DCA position (default 0.10 Lot)
-        :param lot_usd_per_point: USD profit/loss per 1.0 price unit move per 1.0 Lot size ($100 per 1.0 Lot = $10 per 0.1 Lot)
-        :param max_daily_loss_pct: Max allowed daily loss in % of starting daily equity (default 5.0%)
-        """
+    def __init__(self, data_paths, initial_balance=10000.0, default_lot=0.40, lot_usd_per_point=100.0, max_daily_loss_pct=20.0):
         self.data_paths = data_paths
         self.initial_balance = initial_balance
         self.default_lot = default_lot
@@ -63,10 +54,6 @@ class DCABacktester:
         return m5_df
 
     def run_backtest(self, daily_volume_dict=None):
-        """
-        Run daily DCA backtest across all available trading days.
-        :param daily_volume_dict: Optional dict mapping date_str -> lot_size (e.g. {'2023-01-03': 0.05})
-        """
         df = self.load_and_preprocess_data()
         m5_df = self.compute_m5_atr14(df)
         
@@ -100,13 +87,11 @@ class DCABacktester:
 
             atr_step = max(atr_step, 0.1)
 
-            # Determine lot size for today (default or dynamic)
             if daily_volume_dict and date_str in daily_volume_dict:
                 active_lot = float(daily_volume_dict[date_str])
             else:
                 active_lot = self.default_lot
 
-            # Ensure lot size is a multiple of 0.01
             active_lot = round(active_lot, 2)
 
             direction = "NONE"
@@ -120,8 +105,6 @@ class DCABacktester:
 
             start_day_equity = cumulative_balance
             max_allowed_loss_usd = start_day_equity * (self.max_daily_loss_pct / 100.0)
-
-            # Calculate USD value per point for active lot size
             usd_per_point = active_lot * self.lot_usd_per_point
 
             if active_lot > 0.0:

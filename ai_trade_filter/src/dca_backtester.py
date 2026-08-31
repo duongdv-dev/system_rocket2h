@@ -6,16 +6,7 @@ import numpy as np
 from datetime import datetime, time
 
 class DCABacktester:
-    def __init__(self, data_paths, initial_balance=10000.0, default_lot=0.1, lot_usd_per_point=10.0, max_daily_loss_pct=5.0):
-        """
-        DCA Strategy Backtester for XAUUSD (2020-2024)
-        
-        :param data_paths: List of paths to M1 CSV files
-        :param initial_balance: Starting account equity in USD
-        :param default_lot: Fixed volume size per DCA position (default 0.1)
-        :param lot_usd_per_point: USD profit/loss per 1.0 price unit move per lot size (0.1 lot = $10/point)
-        :param max_daily_loss_pct: Max allowed daily loss in % of starting daily equity (default 5.0%)
-        """
+    def __init__(self, data_paths, initial_balance=10000.0, default_lot=0.40, lot_usd_per_point=100.0, max_daily_loss_pct=20.0):
         self.data_paths = data_paths
         self.initial_balance = initial_balance
         self.default_lot = default_lot
@@ -24,7 +15,6 @@ class DCABacktester:
         self.tz_ict = pytz.timezone("Asia/Ho_Chi_Minh")
 
     def load_and_preprocess_data(self):
-        """Load M1 CSV files, convert timestamps to ICT datetime, combine and sort."""
         df_list = []
         for path in self.data_paths:
             if not os.path.exists(path):
@@ -38,26 +28,15 @@ class DCABacktester:
             raise FileNotFoundError("No input data CSV files found!")
             
         full_df = pd.concat(df_list, ignore_index=True)
-        
-        # Convert timestamp (ms UTC) to ICT datetime
-        print("Converting timestamps to Asia/Ho_Chi_Minh (ICT)...")
         full_df['dt_utc'] = pd.to_datetime(full_df['timestamp'], unit='ms', utc=True)
         full_df['dt_ict'] = full_df['dt_utc'].dt.tz_convert(self.tz_ict)
-        
         full_df = full_df.sort_values('dt_ict').reset_index(drop=True)
         full_df['date_str'] = full_df['dt_ict'].dt.strftime('%Y-%m-%d')
         full_df['time'] = full_df['dt_ict'].dt.time
-        
         return full_df
 
     def compute_m5_atr14(self, df):
-        """
-        Resample M1 data to M5 and compute ATR(14).
-        Returns M5 dataframe indexed by datetime ICT with column 'atr14'.
-        """
-        print("Resampling M1 to M5 and calculating ATR(14)...")
         df_resample = df.set_index('dt_ict')
-        
         m5_df = df_resample.resample('5min', closed='left', label='left').agg({
             'open': 'first',
             'high': 'max',
@@ -66,19 +45,15 @@ class DCABacktester:
             'volume': 'sum'
         }).dropna()
 
-        # True Range calculation
         prev_close = m5_df['close'].shift(1)
         tr1 = m5_df['high'] - m5_df['low']
         tr2 = (m5_df['high'] - prev_close).abs()
         tr3 = (m5_df['low'] - prev_close).abs()
-        
         m5_df['tr'] = np.maximum(tr1, np.maximum(tr2, tr3))
         m5_df['atr14'] = m5_df['tr'].rolling(window=14).mean()
-        
         return m5_df
 
     def run_backtest(self):
-        """Run daily DCA backtest across all available trading days."""
         df = self.load_and_preprocess_data()
         m5_df = self.compute_m5_atr14(df)
         
@@ -123,6 +98,7 @@ class DCABacktester:
 
             start_day_equity = cumulative_balance
             max_allowed_loss_usd = start_day_equity * (self.max_daily_loss_pct / 100.0)
+            usd_per_point = self.default_lot * self.lot_usd_per_point
 
             for idx, bar in window_10_12.iterrows():
                 if session_closed:
@@ -149,11 +125,11 @@ class DCABacktester:
                     if curr_max_k > max_level:
                         for k in range(max_level + 1, curr_max_k + 1):
                             entry_p = anchor_price - k * atr_step
-                            positions.append({'level': k, 'entry_price': entry_p})
+                            positions.append({'level': k, 'entry_price': entry_p, 'lot': self.default_lot})
                         max_level = curr_max_k
 
                     if positions:
-                        worst_floating = sum((b_low - pos['entry_price']) * self.lot_usd_per_point for pos in positions)
+                        worst_floating = sum((b_low - pos['entry_price']) * usd_per_point for pos in positions)
                         if worst_floating < max_drawdown_usd:
                             max_drawdown_usd = worst_floating
 
@@ -164,7 +140,7 @@ class DCABacktester:
                             break
 
                     if b_high >= anchor_price:
-                        daily_pnl = sum((anchor_price - pos['entry_price']) * self.lot_usd_per_point for pos in positions)
+                        daily_pnl = sum((anchor_price - pos['entry_price']) * usd_per_point for pos in positions)
                         tp_hit = True
                         session_closed = True
                         break
@@ -174,11 +150,11 @@ class DCABacktester:
                     if curr_max_k > max_level:
                         for k in range(max_level + 1, curr_max_k + 1):
                             entry_p = anchor_price + k * atr_step
-                            positions.append({'level': k, 'entry_price': entry_p})
+                            positions.append({'level': k, 'entry_price': entry_p, 'lot': self.default_lot})
                         max_level = curr_max_k
 
                     if positions:
-                        worst_floating = sum((pos['entry_price'] - b_high) * self.lot_usd_per_point for pos in positions)
+                        worst_floating = sum((pos['entry_price'] - b_high) * usd_per_point for pos in positions)
                         if worst_floating < max_drawdown_usd:
                             max_drawdown_usd = worst_floating
 
@@ -189,7 +165,7 @@ class DCABacktester:
                             break
 
                     if b_low <= anchor_price:
-                        daily_pnl = sum((pos['entry_price'] - anchor_price) * self.lot_usd_per_point for pos in positions)
+                        daily_pnl = sum((pos['entry_price'] - anchor_price) * usd_per_point for pos in positions)
                         tp_hit = True
                         session_closed = True
                         break
@@ -199,9 +175,9 @@ class DCABacktester:
                 exit_price = float(last_bar['close'])
 
                 if direction == "BUY" and positions:
-                    daily_pnl = sum((exit_price - pos['entry_price']) * self.lot_usd_per_point for pos in positions)
+                    daily_pnl = sum((exit_price - pos['entry_price']) * usd_per_point for pos in positions)
                 elif direction == "SELL" and positions:
-                    daily_pnl = sum((pos['entry_price'] - exit_price) * self.lot_usd_per_point for pos in positions)
+                    daily_pnl = sum((pos['entry_price'] - exit_price) * usd_per_point for pos in positions)
                 else:
                     daily_pnl = 0.0
                 

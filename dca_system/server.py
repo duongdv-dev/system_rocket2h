@@ -28,7 +28,8 @@ def export_dca_results(daily_logs, final_balance, output_path):
         "final_balance_usd": round(final_balance, 2),
         "total_pnl_usd": round(net_pnl, 2),
         "total_return_pct": round((net_pnl / initial_balance) * 100, 2),
-        "max_daily_loss_pct_cap": 5.0,
+        "base_lot": 0.40,
+        "max_daily_loss_pct_cap": 20.0,
         "total_trading_days": len(traded_days),
         "tp_hit_days": tp_days,
         "sl_hit_days": sl_days,
@@ -49,8 +50,7 @@ def export_dca_results(daily_logs, final_balance, output_path):
     print(f"Exported baseline DCA results to: {output_path}")
 
 def run_dca_baseline_backtest():
-    """Run baseline DCA backtest with 5% max daily loss cap."""
-    print("Running baseline DCA backtest with 5.0% max daily loss cap...")
+    print("Running baseline DCA backtest with Base 0.40 Lot and 20.0% max daily loss cap...")
     from src.dca_backtester import DCABacktester
     workspace_dir = os.path.dirname(BASE_DIR)
     possible_paths = [
@@ -69,9 +69,9 @@ def run_dca_baseline_backtest():
     backtester = DCABacktester(
         data_paths=selected_paths,
         initial_balance=10000.0,
-        default_lot=0.1,
-        lot_usd_per_point=10.0,
-        max_daily_loss_pct=5.0
+        default_lot=0.40,
+        lot_usd_per_point=100.0,
+        max_daily_loss_pct=20.0
     )
     logs, final_bal = backtester.run_backtest()
     export_dca_results(logs, final_bal, OUTPUT_JSON)
@@ -127,7 +127,7 @@ class DCADashboardHandler(SimpleHTTPRequestHandler):
             selected_paths = possible_paths[0]
 
         try:
-            bt = DCABacktester(selected_paths, max_daily_loss_pct=5.0)
+            bt = DCABacktester(selected_paths, default_lot=0.40, max_daily_loss_pct=20.0)
             full_df = bt.load_and_preprocess_data()
             day_m1 = full_df[full_df['date_str'] == date_str].copy()
 

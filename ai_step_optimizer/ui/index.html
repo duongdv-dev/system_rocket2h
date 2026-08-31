@@ -215,8 +215,8 @@
 <body>
 
     <header>
-        <h1>⚡ Master System Dashboard <span>(AI Risk Filter + Dynamic Volume + Dynamic Step Size)</span></h1>
-        <span class="tag">Master 3-Layer System</span>
+        <h1>⚡ Master System Dashboard <span>(AI Risk Filter + Base 0.40L Dynamic Vol + Adaptive Step)</span></h1>
+        <span class="tag">Config B: 20.0% Max Daily Loss Cap (-$2,000 USD)</span>
     </header>
 
     <!-- KPI Comparison Grid -->
@@ -224,7 +224,7 @@
         <div class="kpi-card">
             <div class="label">Lợi Nhuận Test (2023-2024)</div>
             <div class="val green" id="kpiPnl">Loading...</div>
-            <div class="sub" id="kpiPnlSub">Baseline Gốc: Loading...</div>
+            <div class="sub" id="kpiPnlSub">Baseline Gốc 0.40L: Loading...</div>
         </div>
         <div class="kpi-card">
             <div class="label">Phân Phối Chế Độ Ngày</div>
@@ -234,17 +234,17 @@
         <div class="kpi-card">
             <div class="label">Tỷ Lệ Thắng (Win Rate)</div>
             <div class="val gold" id="kpiWinRate">Loading...</div>
-            <div class="sub" id="kpiWinSub">Baseline Gốc: Loading...</div>
+            <div class="sub" id="kpiWinSub">Baseline Gốc 0.40L: Loading...</div>
         </div>
         <div class="kpi-card">
             <div class="label">Max Drawdown Test</div>
             <div class="val red" id="kpiMaxDD">Loading...</div>
-            <div class="sub" id="kpiDDSub">Baseline Gốc: Loading...</div>
+            <div class="sub" id="kpiDDSub">Baseline Gốc 0.40L: Loading...</div>
         </div>
         <div class="kpi-card">
-            <div class="label">Số Ngày Dính SL 5%</div>
+            <div class="label">Số Ngày Dính SL 20%</div>
             <div class="val" id="kpiSL">Loading...</div>
-            <div class="sub" id="kpiSLSub">Baseline Gốc: Loading...</div>
+            <div class="sub" id="kpiSLSub">Baseline Gốc 0.40L: Loading...</div>
         </div>
     </div>
 
@@ -318,19 +318,19 @@
             pnlEl.innerText = `$${master.net_pnl_usd.toLocaleString()} (${master.return_pct}%)`;
             pnlEl.className = `val ${master.net_pnl_usd >= 0 ? 'green' : 'red'}`;
 
-            document.getElementById('kpiPnlSub').innerText = `Baseline Gốc: $${base.net_pnl_usd.toLocaleString()} (${base.return_pct}%)`;
+            document.getElementById('kpiPnlSub').innerText = `Baseline 0.40L Gốc: $${base.net_pnl_usd.toLocaleString()} (${base.return_pct}%)`;
             
             document.getElementById('kpiModeDist').innerText = `${master.attack_days_count} / ${master.defense_days_count} / ${master.skipped_days_count}`;
             document.getElementById('kpiModeSub').innerText = `Attack / Defense / Skip`;
 
             document.getElementById('kpiWinRate').innerText = `${master.win_rate_pct}%`;
-            document.getElementById('kpiWinSub').innerText = `Baseline Gốc: ${base.win_rate_pct}%`;
+            document.getElementById('kpiWinSub').innerText = `Baseline 0.40L Gốc: ${base.win_rate_pct}%`;
 
             document.getElementById('kpiMaxDD').innerText = `$${master.max_drawdown_usd.toLocaleString()} (${master.max_drawdown_pct}%)`;
-            document.getElementById('kpiDDSub').innerText = `Baseline Gốc: $${base.max_drawdown_usd.toLocaleString()}`;
+            document.getElementById('kpiDDSub').innerText = `Baseline 0.40L Gốc: $${base.max_drawdown_usd.toLocaleString()}`;
 
             document.getElementById('kpiSL').innerText = `${master.sl_hit_days} Ngày`;
-            document.getElementById('kpiSLSub').innerText = `Baseline Gốc: ${base.sl_hit_days} Ngày`;
+            document.getElementById('kpiSLSub').innerText = `Baseline 0.40L Gốc: ${base.sl_hit_days} Ngày`;
         }
 
         function filterDays(filter) {
