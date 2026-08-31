@@ -1,0 +1,28 @@
+services:
+  # Service 1: Training mô hình AI Master System (Train 2020-2023)
+  master_train:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ai_step_optimizer_train
+    volumes:
+      - ./output:/app/output
+      - ../:/app/data:ro
+    environment:
+      - PYTHONUNBUFFERED=1
+    command: python src/train_filter.py
+
+  # Service 2: Web UI Dashboard Master System (Port 8004)
+  master_web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ai_step_optimizer_web
+    ports:
+      - "8004:8004"
+    volumes:
+      - ./output:/app/output
+      - ../:/app/data:ro
+    environment:
+      - PYTHONUNBUFFERED=1
+    command: python server.py
