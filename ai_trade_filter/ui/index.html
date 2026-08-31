@@ -239,7 +239,7 @@
 
     <header>
         <h1>🤖 AI Risk Filter Dashboard <span>(Train: 2020-2023 | Test Out-of-Sample: 2023-2024)</span></h1>
-        <span class="tag">Scikit-Learn RandomForest Model</span>
+        <span class="tag">5.0% Max Loss Cap (-$500 USD)</span>
     </header>
 
     <!-- Training Metadata Card -->
@@ -275,7 +275,7 @@
             <div class="sub" id="kpiDDSub">Baseline Chưa Lọc: Loading...</div>
         </div>
         <div class="kpi-card">
-            <div class="label">Số Ngày Dính SL 10%</div>
+            <div class="label">Số Ngày Dính SL 5%</div>
             <div class="val" id="kpiSL">Loading...</div>
             <div class="sub" id="kpiSLSub">Baseline Chưa Lọc: Loading...</div>
         </div>
@@ -288,7 +288,7 @@
                 <button class="filter-btn active" id="btn-ALL" onclick="filterDays('ALL')">Tất Cả</button>
                 <button class="filter-btn" id="btn-TRADED" onclick="filterDays('TRADED')">AI Duyệt Đánh</button>
                 <button class="filter-btn" id="btn-SKIPPED" onclick="filterDays('SKIPPED')">Bị AI Lọc (Skip)</button>
-                <button class="filter-btn" id="btn-SL" onclick="filterDays('SL')">SL 10%</button>
+                <button class="filter-btn" id="btn-SL" onclick="filterDays('SL')">Cắt Lỗ 5%</button>
             </div>
             <div class="days-list" id="daysList"></div>
         </div>
@@ -409,7 +409,7 @@
                 div.onclick = () => selectDay(item.date);
 
                 const isSkipped = item.status === 'SKIPPED';
-                let badgeText = isSkipped ? 'BỎ QUA (SKIP)' : (item.tp_hit ? 'TP CHỐT LỜI' : (item.sl_hit ? 'SL 10%' : 'ĐÓNG 12H'));
+                let badgeText = isSkipped ? 'BỎ QUA (SKIP)' : (item.tp_hit ? 'TP CHỐT LỜI' : (item.sl_hit ? 'CẮT LỖ 5%' : 'ĐÓNG 12H'));
                 let badgeClass = isSkipped ? 'badge-skip' : (item.tp_hit ? 'badge-tp' : (item.sl_hit ? 'badge-sl' : 'badge-close'));
 
                 div.innerHTML = `

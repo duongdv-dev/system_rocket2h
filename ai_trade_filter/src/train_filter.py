@@ -16,12 +16,12 @@ from filter_backtester import FilterBacktester
 
 def run_step_1_training():
     """
-    BƯỚC 1: TRAINING MÔ HÌNH AI CHUẨN XÁC CAO - CHỈ LỌC CÁC NGÀY THUA LỖ NẶNG (SL 10% HOẶC PNL < -100 USD)
-    - Loại bỏ việc lọc nhầm các ngày thắng TP.
-    - Tập trung 100% tài lực nhận diện mầm mống của các ngày dính Cắt Lỗ 10%.
+    BƯỚC 1: TRAINING MÔ HÌNH AI VỚI NGƯỠNG NHẠY CẢM RỦI RO CAO (TARGET 5% SL DAYS)
+    - Tối ưu hóa Risk Threshold P >= 0.38 - 0.40 để CHẶN ĐỨNG TRIỆT ĐỂ 100% CÁC NGÀY DÍNH CẮT LỖ 5%.
+    - Phạt x30 cho các ngày dính Cắt Lỗ 5%.
     """
     print("\n" + "=" * 80)
-    print("   🤖 HUẤN LUYỆN MÔ HÌNH AI TINH CHỈNH - BẢO VỆ NGÀY THẮNG & CHẶN SL 10%")
+    print("   🤖 TRAINING MÔ HÌNH AI - SIẾT NẶNG NGƯỠNG NHẠY CẢM CHẶN 100% NGÀY SL 5%")
     print("=" * 80)
 
     src_dir = os.path.dirname(os.path.abspath(__file__))
@@ -62,8 +62,8 @@ def run_step_1_training():
     extractor = FeatureExtractor(train_files)
     features_df, _ = extractor.extract_daily_features()
 
-    # 2. Chạy mô phỏng DCA thô trên 2020-2023
-    bt_unfiltered = FilterBacktester(train_files, ai_model_path=None, filter_rules=None)
+    # 2. Chạy mô phỏng DCA thô với Cap 5.0%
+    bt_unfiltered = FilterBacktester(train_files, ai_model_path=None, filter_rules=None, max_daily_loss_pct=5.0)
     unfiltered_logs, baseline_final_bal = bt_unfiltered.run_backtest()
     df_logs = pd.DataFrame(unfiltered_logs)
 
@@ -72,12 +72,12 @@ def run_step_1_training():
 
     df_dataset = pd.merge(features_df, df_logs_clean, on='date')
 
-    # CHỈ ĐÁNH NHÃN 'skip' NẾU LÀ NGÀY THUA LỖ NẶNG (daily_pnl_usd < -100.0 HOẶC dính SL 10%)
-    df_dataset['label'] = np.where((df_dataset['daily_pnl_usd'] < -100.0) | (df_dataset['sl_hit'] == True), 'skip', 'trade')
+    # ĐÁNH NHÃN 'skip' NẾU LỖ PnL < -20.0 HOẶC DÍNH SL 5%
+    df_dataset['label'] = np.where((df_dataset['daily_pnl_usd'] < -20.0) | (df_dataset['sl_hit'] == True), 'skip', 'trade')
     df_dataset['target'] = (df_dataset['label'] == 'skip').astype(int)
 
-    # Đánh trọng số phạt cực nặng (x25.0) cho ngày dính Cắt Lỗ SL 10%
-    sample_weights = np.where(df_dataset['sl_hit'] == True, 25.0, 1.0)
+    # Trọng số phạt đặc biệt x30.0 cho ngày dính Cắt Lỗ SL 5%
+    sample_weights = np.where(df_dataset['sl_hit'] == True, 30.0, 1.0)
 
     skip_count = (df_dataset['label'] == 'skip').sum()
     trade_count = (df_dataset['label'] == 'trade').sum()
@@ -108,7 +108,7 @@ def run_step_1_training():
 
     ai_model = RandomForestClassifier(
         n_estimators=300,
-        max_depth=4,
+        max_depth=5,
         min_samples_leaf=2,
         class_weight='balanced',
         random_state=42
@@ -121,13 +121,12 @@ def run_step_1_training():
     importances = ai_model.feature_importances_
     feat_imp = {col: round(float(imp), 4) for col, imp in zip(feature_cols, importances)}
 
-    # Tối ưu hóa Ngưỡng Cảnh Báo Rủi Ro (Optimal Risk Threshold)
-    # Tìm ngưỡng rủi ro ưu tiên cao nhất cho việc BẢO VỆ NGÀY THẮNG & CHẶN ĐỨNG NGÀY THUA SL
-    best_thresh = 0.55
+    # Tối ưu hóa Ngưỡng Risk Threshold Siết Nhạy Cảm (P >= 0.38)
+    best_thresh = 0.38
     best_score = -999999.0
     best_stats = {}
 
-    for thresh in np.arange(0.40, 0.70, 0.02):
+    for thresh in np.arange(0.32, 0.46, 0.01):
         filt_bal = 10000.0
         peak_bal = 10000.0
         max_dd = 0.0
@@ -154,8 +153,8 @@ def run_step_1_training():
                     skipped_good += 1
 
         net_pnl = filt_bal - 10000.0
-        # Score penalty: Phạt CỰC NẶNG (x30) nếu lọc nhầm ngày thắng TP, Thưởng CỰC LỚN (x1500) nếu chặn được SL 10%
-        score = net_pnl + (sl_skipped * 1500.0) - (skipped_good * 30.0)
+        # Score priority: Cực kỳ ưu tiên chặn ngày SL 5%
+        score = net_pnl + (sl_skipped * 3000.0) - (skipped_good * 15.0)
 
         if score > best_score:
             best_score = score
@@ -180,9 +179,9 @@ def run_step_1_training():
     }, model_file)
 
     meta_info = {
-        "model_type": "RandomForestClassifier (Precision Targeted)",
+        "model_type": "RandomForestClassifier (High-Sensitivity 5% SL Targeted)",
         "n_estimators": 300,
-        "max_depth": 4,
+        "max_depth": 5,
         "train_period": "2020 - 2023",
         "train_days_count": len(df_dataset),
         "total_bad_days_in_train": int(skip_count),
@@ -196,14 +195,13 @@ def run_step_1_training():
     with open(meta_file, 'w', encoding='utf-8') as f:
         json.dump(meta_info, f, indent=4, ensure_ascii=False)
 
-    print("\n================ TỔNG KẾT TRAINING AI TINH CHỈNH ================")
-    print(f"✅ Mô Hình AI Trained       : RandomForestClassifier (Precision Targeted)")
-    print(f"✅ Đánh Nhãn 2020-2023      : {trade_count} Safe ('trade') | {skip_count} Severe Loss ('skip')")
+    print("\n================ TỔNG KẾT TRAINING SIẾT NGƯỠNG NHẠY CẢM SL 5% ================")
+    print(f"✅ Mô Hình AI Trained       : RandomForestClassifier (5% SL Target)")
+    print(f"✅ Ngưỡng Cảnh Báo Siết Nặng: P(skip) >= {best_thresh}")
     print(f"✅ Đánh Giá ROC-AUC Score   : {auc_score:.4f}")
-    print(f"✅ Ngưỡng Cảnh Báo Rủi Ro  : P(skip) >= {best_thresh}")
-    print(f"✅ Lợi Nhuận Train (2020-23): Baseline=${best_stats['train_baseline_pnl']:,.2f} --> AI Filtered=${best_stats['train_filtered_pnl']:,.2f}")
+    print(f"✅ Số Ngày SL 5% Chặn Được : {best_stats.get('sl_days_skipped', 0)} ngày")
     print(f"✅ File Model AI Lưu Tại   : {model_file}")
-    print("=================================================================\n")
+    print("===============================================================================\n")
 
     return ai_model, meta_info
 
