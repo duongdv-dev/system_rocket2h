@@ -1,0 +1,28 @@
+services:
+  # Service 1: Training mô hình AI (Bước 1: Train 2020-2023 & xuất ai_risk_model.joblib)
+  ai_train:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ai_trade_filter_train
+    volumes:
+      - ./output:/app/output
+      - ../:/app/data:ro
+    environment:
+      - PYTHONUNBUFFERED=1
+    command: python src/train_filter.py
+
+  # Service 2: Web UI Dashboard & Backtest Out-of-Sample (2023-2024)
+  ai_web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ai_trade_filter_web
+    ports:
+      - "8002:8002"
+    volumes:
+      - ./output:/app/output
+      - ../:/app/data:ro
+    environment:
+      - PYTHONUNBUFFERED=1
+    command: python server.py

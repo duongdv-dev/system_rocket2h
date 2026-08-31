@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  dca_backtest_web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: dca_backtester_web_ui
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./output:/app/output
+      - ../:/app/data:ro
+    environment:
+      - PYTHONUNBUFFERED=1
+    command: python server.py

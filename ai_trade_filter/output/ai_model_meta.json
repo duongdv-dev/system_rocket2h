@@ -1,0 +1,25 @@
+{
+    "model_type": "RandomForestClassifier",
+    "n_estimators": 300,
+    "max_depth": 4,
+    "train_period": "2020 - 2023",
+    "train_days_count": 1032,
+    "total_bad_days_in_train": 151,
+    "total_safe_days_in_train": 881,
+    "roc_auc_score": 0.8452,
+    "feature_importances": {
+        "atr_ratio_20d": 0.2584,
+        "range_to_atr_ratio": 0.1607,
+        "trend_to_atr_ratio": 0.2065,
+        "morning_vol_std": 0.3183,
+        "day_of_week": 0.0562
+    },
+    "optimal_risk_threshold": 0.51,
+    "training_performance": {
+        "train_baseline_pnl": -830.68,
+        "train_filtered_pnl": 7931.57,
+        "train_max_dd": 541.71,
+        "bad_days_skipped": 127,
+        "good_days_skipped": 258
+    }
+}
