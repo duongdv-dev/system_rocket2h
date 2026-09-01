@@ -6,9 +6,11 @@ import numpy as np
 from datetime import datetime, time
 
 class DCABacktester:
-    def __init__(self, data_paths, initial_balance=10000.0, default_lot=0.60, lot_usd_per_point=100.0, max_daily_loss_pct=20.0):
+    def __init__(self, data_paths, initial_balance=10000.0, default_lot=1.20, lot_usd_per_point=100.0, max_daily_loss_pct=30.0):
         """
-        Master DCA Strategy Backtester (Solution A: Golden Window 10:00 - 12:00 ICT | Base 0.60 Lot | Daily Cap 20%)
+        Master DCA Strategy Backtester (High-Yield Super-Aggressive Mode: Target +300% to +500% Return)
+        - Base Lot: 1.20 Lot
+        - Daily Max Loss Cap: 30.0% (-$3,000 USD on $10,000 equity)
         """
         self.data_paths = data_paths
         self.initial_balance = initial_balance
