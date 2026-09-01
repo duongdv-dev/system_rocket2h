@@ -6,9 +6,9 @@ import numpy as np
 from datetime import datetime, time
 
 class DCABacktester:
-    def __init__(self, data_paths, initial_balance=10000.0, default_lot=1.00, lot_usd_per_point=100.0, max_daily_loss_pct=25.0, use_compounding=True):
+    def __init__(self, data_paths, initial_balance=10000.0, default_lot=0.60, lot_usd_per_point=100.0, max_daily_loss_pct=20.0, use_compounding=True):
         """
-        Master System Ultra-Growth Backtester (Target +500% to +1000% Net Return | Auto Equity Compounding)
+        Master System Ultra-Growth Backtester (10:00 - 19:15 ICT Window | Auto Equity Compounding)
         """
         self.data_paths = data_paths
         self.initial_balance = initial_balance
@@ -73,13 +73,13 @@ class DCABacktester:
                 continue
 
             target_10am = time(10, 0, 0)
-            target_12pm = time(12, 0, 0)
+            target_1915pm = time(19, 15, 0)
 
-            window_10_12 = day_m1[(day_m1['time'] >= target_10am) & (day_m1['time'] <= target_12pm)].copy()
-            if window_10_12.empty:
+            window_10_1915 = day_m1[(day_m1['time'] >= target_10am) & (day_m1['time'] <= target_1915pm)].copy()
+            if window_10_1915.empty:
                 continue
 
-            bar_10am = window_10_12.iloc[0]
+            bar_10am = window_10_1915.iloc[0]
             anchor_price = float(bar_10am['open'])
             anchor_dt = bar_10am['dt_ict']
 
@@ -127,7 +127,7 @@ class DCABacktester:
             usd_per_point = active_lot * self.lot_usd_per_point
 
             if active_lot > 0.0:
-                for idx, bar in window_10_12.iterrows():
+                for idx, bar in window_10_1915.iterrows():
                     if session_closed:
                         break
 
@@ -147,72 +147,72 @@ class DCABacktester:
                             sell_dist = b_high - anchor_price
                             direction = "BUY" if buy_dist >= sell_dist else "SELL"
 
-                    if direction == "BUY":
-                        curr_max_k = int(np.floor((anchor_price - b_low) / atr_step))
-                        if curr_max_k > max_level:
-                            for k in range(max_level + 1, curr_max_k + 1):
-                                entry_p = anchor_price - k * atr_step
-                                positions.append({'level': k, 'entry_price': entry_p, 'lot': active_lot})
-                            max_level = curr_max_k
+                if direction == "BUY":
+                    curr_max_k = int(np.floor((anchor_price - b_low) / atr_step))
+                    if curr_max_k > max_level:
+                        for k in range(max_level + 1, curr_max_k + 1):
+                            entry_p = anchor_price - k * atr_step
+                            positions.append({'level': k, 'entry_price': entry_p, 'lot': active_lot})
+                        max_level = curr_max_k
 
-                        if positions:
-                            worst_floating = sum((b_low - pos['entry_price']) * usd_per_point for pos in positions)
-                            if worst_floating < max_drawdown_usd:
-                                max_drawdown_usd = worst_floating
+                    if positions:
+                        worst_floating = sum((b_low - pos['entry_price']) * usd_per_point for pos in positions)
+                        if worst_floating < max_drawdown_usd:
+                            max_drawdown_usd = worst_floating
 
-                            if abs(worst_floating) >= max_allowed_loss_usd and worst_floating < 0:
-                                daily_pnl = -max_allowed_loss_usd
-                                sl_hit = True
-                                session_closed = True
-                                break
-
-                        if b_high >= anchor_price:
-                            daily_pnl = sum((anchor_price - pos['entry_price']) * usd_per_point for pos in positions)
-                            tp_hit = True
+                        if abs(worst_floating) >= max_allowed_loss_usd and worst_floating < 0:
+                            daily_pnl = -max_allowed_loss_usd
+                            sl_hit = True
                             session_closed = True
                             break
 
-                    elif direction == "SELL":
-                        curr_max_k = int(np.floor((b_high - anchor_price) / atr_step))
-                        if curr_max_k > max_level:
-                            for k in range(max_level + 1, curr_max_k + 1):
-                                entry_p = anchor_price + k * atr_step
-                                positions.append({'level': k, 'entry_price': entry_p, 'lot': active_lot})
-                            max_level = curr_max_k
+                    if b_high >= anchor_price:
+                        daily_pnl = sum((anchor_price - pos['entry_price']) * usd_per_point for pos in positions)
+                        tp_hit = True
+                        session_closed = True
+                        break
 
-                        if positions:
-                            worst_floating = sum((pos['entry_price'] - b_high) * usd_per_point for pos in positions)
-                            if worst_floating < max_drawdown_usd:
-                                max_drawdown_usd = worst_floating
+                elif direction == "SELL":
+                    curr_max_k = int(np.floor((b_high - anchor_price) / atr_step))
+                    if curr_max_k > max_level:
+                        for k in range(max_level + 1, curr_max_k + 1):
+                            entry_p = anchor_price + k * atr_step
+                            positions.append({'level': k, 'entry_price': entry_p, 'lot': active_lot})
+                        max_level = curr_max_k
 
-                            if abs(worst_floating) >= max_allowed_loss_usd and worst_floating < 0:
-                                daily_pnl = -max_allowed_loss_usd
-                                sl_hit = True
-                                session_closed = True
-                                break
+                    if positions:
+                        worst_floating = sum((pos['entry_price'] - b_high) * usd_per_point for pos in positions)
+                        if worst_floating < max_drawdown_usd:
+                            max_drawdown_usd = worst_floating
 
-                        if b_low <= anchor_price:
-                            daily_pnl = sum((pos['entry_price'] - anchor_price) * usd_per_point for pos in positions)
-                            tp_hit = True
+                        if abs(worst_floating) >= max_allowed_loss_usd and worst_floating < 0:
+                            daily_pnl = -max_allowed_loss_usd
+                            sl_hit = True
                             session_closed = True
                             break
 
-                if not session_closed:
-                    last_bar = window_10_12.iloc[-1]
-                    exit_price = float(last_bar['close'])
+                    if b_low <= anchor_price:
+                        daily_pnl = sum((pos['entry_price'] - anchor_price) * usd_per_point for pos in positions)
+                        tp_hit = True
+                        session_closed = True
+                        break
 
-                    if direction == "BUY" and positions:
-                        daily_pnl = sum((exit_price - pos['entry_price']) * usd_per_point for pos in positions)
-                    elif direction == "SELL" and positions:
-                        daily_pnl = sum((pos['entry_price'] - exit_price) * usd_per_point for pos in positions)
-                    else:
-                        daily_pnl = 0.0
-                    
-                    session_closed = True
+            if not session_closed:
+                last_bar = window_10_1915.iloc[-1]
+                exit_price = float(last_bar['close'])
 
-                if daily_pnl < -max_allowed_loss_usd:
-                    daily_pnl = -max_allowed_loss_usd
-                    sl_hit = True
+                if direction == "BUY" and positions:
+                    daily_pnl = sum((exit_price - pos['entry_price']) * usd_per_point for pos in positions)
+                elif direction == "SELL" and positions:
+                    daily_pnl = sum((pos['entry_price'] - exit_price) * usd_per_point for pos in positions)
+                else:
+                    daily_pnl = 0.0
+                
+                session_closed = True
+
+            if daily_pnl < -max_allowed_loss_usd:
+                daily_pnl = -max_allowed_loss_usd
+                sl_hit = True
 
             cumulative_balance += daily_pnl
             if cumulative_balance > peak_cumulative_equity:
