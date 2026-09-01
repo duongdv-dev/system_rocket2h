@@ -14,9 +14,10 @@ from train_filter import run_step_1_training
 
 def run_master_system_comparison():
     """
-    HIGH-YIELD MASTER SYSTEM MODE: TARGET +300% TO +500% RETURN (2023 - 2024)
-    - Base Lot: 1.20 Lot
-    - Daily Max Loss Cap: 30.0% (-$3,000 USD)
+    MASTER SYSTEM MODE (TIGHTENED STEP 0.65x ATR & DYNAMIC VOLUME 0.35L - 0.60L)
+    - Base Lot: 0.60 Lot
+    - Min Defense Lot: 0.35 Lot
+    - Daily Max Loss Cap: 20.0% (-$2,000 USD)
     - Trading Window: 10:00 - 12:00 ICT
     """
     src_dir = os.path.dirname(os.path.abspath(__file__))
@@ -61,13 +62,13 @@ def run_master_system_comparison():
         raise FileNotFoundError("Không tìm thấy các file dữ liệu CSV 2023-2024!")
 
     print("\n" + "=" * 80)
-    print("   📊 BACKTEST HIGH-YIELD MASTER SYSTEM (BASE 1.20 LOT | DAILY LOSS CAP 30%)")
+    print("   📊 BACKTEST MASTER SYSTEM (TIGHTENED STEP 0.65x ATR | BASE 0.60 LOT | DAILY CAP 20%)")
     print("=" * 80)
 
     extractor = FeatureExtractor(test_files)
     features_df, _ = extractor.extract_daily_features()
 
-    bt_engine = StepBacktester(test_files, ai_model_path=model_path, default_lot=1.20, max_daily_loss_pct=30.0)
+    bt_engine = StepBacktester(test_files, ai_model_path=model_path, default_lot=0.60, max_daily_loss_pct=20.0)
 
     unfilt_logs, unfilt_final_bal = bt_engine.run_backtest(daily_config_dict=None, step_multiplier=1.0)
     df_unfilt = pd.DataFrame(unfilt_logs)
@@ -80,7 +81,7 @@ def run_master_system_comparison():
         d = log['date']
         cfg = master_config_map.get(d, {})
         log['reason'] = cfg.get('reason', "")
-        log['status'] = "SKIPPED" if log['active_lot_size'] == 0.00 else ("ATTACK" if log['step_multiplier'] < 0.70 else "DEFENSE")
+        log['status'] = "SKIPPED" if log['active_lot_size'] == 0.00 else ("ATTACK" if log['step_multiplier'] < 0.60 else "DEFENSE")
 
     df_master_traded = df_master[df_master['active_lot_size'] > 0.0]
     df_unfilt_traded = df_unfilt[df_unfilt['direction'] != 'NONE']
@@ -108,8 +109,8 @@ def run_master_system_comparison():
                 "final_equity": round(unfilt_final_bal, 2),
                 "net_pnl_usd": round(unfilt_pnl, 2),
                 "return_pct": round((unfilt_pnl / 10000.0) * 100, 2),
-                "base_lot": 1.20,
-                "max_daily_loss_pct_cap": 30.0,
+                "base_lot": 0.60,
+                "max_daily_loss_pct_cap": 20.0,
                 "total_trading_days": len(df_unfilt_traded),
                 "tp_hit_days": unfilt_tp,
                 "sl_hit_days": unfilt_sl,
@@ -122,14 +123,14 @@ def run_master_system_comparison():
                 "final_equity": round(master_final_bal, 2),
                 "net_pnl_usd": round(master_pnl, 2),
                 "return_pct": round((master_pnl / 10000.0) * 100, 2),
-                "mode": "High-Yield Master System (Base 1.20 Lot | Daily Cap 30.0% | Target +300% to +500%)",
-                "base_lot": 1.20,
-                "max_daily_loss_pct_cap": 30.0,
+                "mode": "Master System (Tightened Step 0.65x ATR | Vol 0.35L - 0.60L | Daily Cap 20.0%)",
+                "base_lot": 0.60,
+                "max_daily_loss_pct_cap": 20.0,
                 "trading_window": "10:00 - 12:00 ICT",
                 "total_trading_days": len(df_master_traded),
                 "skipped_days_count": len(df_master[df_master['active_lot_size'] == 0.00]),
-                "attack_days_count": len(df_master[df_master['step_multiplier'] < 0.70]),
-                "defense_days_count": len(df_master[(df_master['active_lot_size'] > 0.00) & (df_master['step_multiplier'] >= 0.70)]),
+                "attack_days_count": len(df_master[df_master['step_multiplier'] < 0.60]),
+                "defense_days_count": len(df_master[(df_master['active_lot_size'] > 0.00) & (df_master['step_multiplier'] >= 0.60)]),
                 "tp_hit_days": master_tp,
                 "sl_hit_days": master_sl,
                 "win_rate_pct": round(master_winrate, 2),
@@ -151,18 +152,18 @@ def run_master_system_comparison():
     with open(results_path, 'w', encoding='utf-8') as f:
         json.dump({"summary": comparison_report["test_phase_2023_2024"]["master_system_combined"], "daily_results": master_logs}, f, indent=4, ensure_ascii=False)
 
-    print("\n================ OUT-OF-SAMPLE MASTER SYSTEM RESULTS (HIGH-YIELD 1.20L | CAP 30%) ================")
-    print(f"METRIC                   | BASELINE (1.20L UNFILTERED) | MASTER SYSTEM HIGH-YIELD (BASE 1.20L)")
-    print(f"-------------------------+------------------------------+--------------------------------------")
+    print("\n================ OUT-OF-SAMPLE MASTER SYSTEM RESULTS (TIGHTENED STEP 0.65x ATR) ================")
+    print(f"METRIC                   | BASELINE (0.60L UNFILTERED) | MASTER SYSTEM (TIGHTENED STEP 0.65x ATR)")
+    print(f"-------------------------+------------------------------+-----------------------------------------")
     print(f"Net Profit (USD)         | ${unfilt_pnl:,.2f}                | ${master_pnl:,.2f}")
     print(f"Total Return (%)         | {comparison_report['test_phase_2023_2024']['baseline_unfiltered']['return_pct']}%               | {comparison_report['test_phase_2023_2024']['master_system_combined']['return_pct']}%")
     print(f"Win Rate (%)             | {unfilt_winrate:.2f}%                  | {master_winrate:.2f}%")
     print(f"Trading Days             | {len(df_unfilt_traded)} days               | {len(df_master_traded)} days")
     print(f"Skipped Days (0.00 Lot)  | 0 days                   | {len(df_master[df_master['active_lot_size'] == 0.00])} days")
-    print(f"Attack Days (0.50 Step)  | 0 days                   | {len(df_master[df_master['step_multiplier'] < 0.70])} days")
-    print(f"Defense Days (0.85 Step) | 0 days                   | {len(df_master[(df_master['active_lot_size'] > 0.00) & (df_master['step_multiplier'] >= 0.70)])} days")
+    print(f"Attack Days (0.50 Step)  | 0 days                   | {len(df_master[df_master['step_multiplier'] < 0.60])} days")
+    print(f"Defense Days (0.65 Step) | 0 days                   | {len(df_master[(df_master['active_lot_size'] > 0.00) & (df_master['step_multiplier'] >= 0.60)])} days")
     print(f"Max Drawdown (USD)       | ${unfilt_max_dd:,.2f}                | ${master_max_dd:,.2f}")
-    print(f"SL 30% Hit Days          | {unfilt_sl} days                  | {master_sl} days")
+    print(f"SL 20% Hit Days          | {unfilt_sl} days                  | {master_sl} days")
     print(f"====================================================================================================\n")
 
 if __name__ == "__main__":
