@@ -6,15 +6,9 @@ import numpy as np
 from datetime import datetime, time
 
 class DCABacktester:
-    def __init__(self, data_paths, initial_balance=10000.0, default_lot=0.40, lot_usd_per_point=100.0, max_daily_loss_pct=20.0):
+    def __init__(self, data_paths, initial_balance=10000.0, default_lot=0.20, lot_usd_per_point=100.0, max_daily_loss_pct=15.0):
         """
-        DCA Strategy Backtester for XAUUSD (2020-2024)
-        
-        :param data_paths: List of paths to M1 CSV files
-        :param initial_balance: Starting account equity in USD
-        :param default_lot: Fixed volume size per DCA position (default 0.40 Lot)
-        :param lot_usd_per_point: USD profit/loss per 1.0 price unit move per lot size (0.1 lot = $10/point)
-        :param max_daily_loss_pct: Max allowed daily loss in % of starting daily equity (default 20.0%)
+        DCA Strategy Backtester for XAUUSD (10:00 - 19:15 ICT Window)
         """
         self.data_paths = data_paths
         self.initial_balance = initial_balance
@@ -78,13 +72,13 @@ class DCABacktester:
                 continue
 
             target_10am = time(10, 0, 0)
-            target_12pm = time(12, 0, 0)
+            target_1915pm = time(19, 15, 0)
 
-            window_10_12 = day_m1[(day_m1['time'] >= target_10am) & (day_m1['time'] <= target_12pm)].copy()
-            if window_10_12.empty:
+            window_session = day_m1[(day_m1['time'] >= target_10am) & (day_m1['time'] <= target_1915pm)].copy()
+            if window_session.empty:
                 continue
 
-            bar_10am = window_10_12.iloc[0]
+            bar_10am = window_session.iloc[0]
             anchor_price = float(bar_10am['open'])
             anchor_dt = bar_10am['dt_ict']
 
@@ -109,7 +103,7 @@ class DCABacktester:
             max_allowed_loss_usd = start_day_equity * (self.max_daily_loss_pct / 100.0)
             usd_per_point = self.default_lot * self.lot_usd_per_point
 
-            for idx, bar in window_10_12.iterrows():
+            for idx, bar in window_session.iterrows():
                 if session_closed:
                     break
 
@@ -180,7 +174,7 @@ class DCABacktester:
                         break
 
             if not session_closed:
-                last_bar = window_10_12.iloc[-1]
+                last_bar = window_session.iloc[-1]
                 exit_price = float(last_bar['close'])
 
                 if direction == "BUY" and positions:
