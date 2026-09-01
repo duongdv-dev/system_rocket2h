@@ -2,11 +2,11 @@ import numpy as np
 
 class StepOptimizer:
     """
-    Master System Optimizer (Phase 5: Extended 10:00-19:15 ICT Window + Auto Equity Compounding):
-    - Base Lot: 0.20 Lot (Initial)
-    - Min Lot: 0.04 Lot
+    Master System Optimizer (Solution A: Golden Window 10:00-12:00 ICT | Base 0.60 Lot):
+    - Base Lot: 0.60 Lot
+    - Min Lot: 0.12 Lot
     """
-    def __init__(self, base_lot=0.20, min_lot=0.04, safe_step_mult=0.50, moderate_step_mult=0.85):
+    def __init__(self, base_lot=0.60, min_lot=0.12, safe_step_mult=0.50, moderate_step_mult=0.85):
         self.base_lot = base_lot
         self.min_lot = min_lot
         self.safe_step_mult = safe_step_mult

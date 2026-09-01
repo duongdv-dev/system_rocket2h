@@ -6,19 +6,15 @@ import numpy as np
 from datetime import datetime, time
 
 class DCABacktester:
-    def __init__(self, data_paths, initial_balance=10000.0, default_lot=0.20, lot_usd_per_point=100.0, max_daily_loss_pct=15.0, use_compounding=True):
+    def __init__(self, data_paths, initial_balance=10000.0, default_lot=0.60, lot_usd_per_point=100.0, max_daily_loss_pct=20.0):
         """
-        Master DCA Strategy Backtester (Phase 5: Extended Session 10:00 - 19:15 ICT + Auto Equity Compounding)
-        - Session Window: 10:00 AM - 19:15 PM ICT (Covers European session)
-        - Default Base Lot: 0.20 Lot (Scaled by Equity Compounding)
-        - Daily Max Loss Cap: 15.0% (-$1,500 USD on $10,000 equity)
+        Master DCA Strategy Backtester (Solution A: Golden Window 10:00 - 12:00 ICT | Base 0.60 Lot | Daily Cap 20%)
         """
         self.data_paths = data_paths
         self.initial_balance = initial_balance
         self.default_lot = default_lot
         self.lot_usd_per_point = lot_usd_per_point
         self.max_daily_loss_pct = max_daily_loss_pct
-        self.use_compounding = use_compounding
         self.tz_ict = pytz.timezone("Asia/Ho_Chi_Minh")
 
     def load_and_preprocess_data(self):
@@ -76,13 +72,13 @@ class DCABacktester:
                 continue
 
             target_10am = time(10, 0, 0)
-            target_1915pm = time(19, 15, 0)
+            target_12pm = time(12, 0, 0)
 
-            window_session = day_m1[(day_m1['time'] >= target_10am) & (day_m1['time'] <= target_1915pm)].copy()
-            if window_session.empty:
+            window_10_12 = day_m1[(day_m1['time'] >= target_10am) & (day_m1['time'] <= target_12pm)].copy()
+            if window_10_12.empty:
                 continue
 
-            bar_10am = window_session.iloc[0]
+            bar_10am = window_10_12.iloc[0]
             anchor_price = float(bar_10am['open'])
             anchor_dt = bar_10am['dt_ict']
 
@@ -94,29 +90,16 @@ class DCABacktester:
 
             raw_atr = max(raw_atr, 0.1)
 
-            # Auto Equity Compounding Ratio
-            start_day_equity = cumulative_balance
-            compound_ratio = (start_day_equity / self.initial_balance) if self.use_compounding else 1.0
-            effective_base_lot = round(self.default_lot * compound_ratio, 2)
-            effective_base_lot = max(0.04, effective_base_lot)
-
             if daily_config_dict and date_str in daily_config_dict:
                 cfg = daily_config_dict[date_str]
                 if isinstance(cfg, dict):
-                    raw_lot = float(cfg.get('lot', self.default_lot))
-                    # Scale dynamic lot by compound ratio if raw_lot > 0
-                    if raw_lot > 0:
-                        active_lot = round(raw_lot * compound_ratio, 2)
-                        active_lot = max(0.04, active_lot)
-                    else:
-                        active_lot = 0.00
+                    active_lot = float(cfg.get('lot', self.default_lot))
                     active_step_mult = float(cfg.get('step_mult', step_multiplier))
                 else:
-                    raw_lot = float(cfg)
-                    active_lot = round(raw_lot * compound_ratio, 2) if raw_lot > 0 else 0.00
+                    active_lot = float(cfg)
                     active_step_mult = step_multiplier
             else:
-                active_lot = effective_base_lot
+                active_lot = self.default_lot
                 active_step_mult = step_multiplier
 
             active_lot = round(active_lot, 2)
@@ -132,11 +115,13 @@ class DCABacktester:
             daily_pnl = 0.0
             max_drawdown_usd = 0.0
 
+            start_day_equity = cumulative_balance
             max_allowed_loss_usd = start_day_equity * (self.max_daily_loss_pct / 100.0)
+
             usd_per_point = active_lot * self.lot_usd_per_point
 
             if active_lot > 0.0:
-                for idx, bar in window_session.iterrows():
+                for idx, bar in window_10_12.iterrows():
                     if session_closed:
                         break
 
@@ -207,7 +192,7 @@ class DCABacktester:
                             break
 
                 if not session_closed:
-                    last_bar = window_session.iloc[-1]
+                    last_bar = window_10_12.iloc[-1]
                     exit_price = float(last_bar['close'])
 
                     if direction == "BUY" and positions:

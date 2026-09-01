@@ -14,9 +14,7 @@ from train_filter import run_step_1_training
 
 def run_master_system_comparison():
     """
-    BACKTEST PHASE 5: MỞ RỘNG KHUNG GIỜ 10:00 - 19:15 ICT (PHIÊN ÂU) + LÃI KÉP AUTO COMPOUNDING
-    - Initial Base Lot: 0.20 Lot (Lãi kép tăng trưởng theo equity)
-    - Daily Max Loss Cap: 15.0% (-$1,500 USD)
+    SOLUTION A: GOLDEN DCA WINDOW (10:00 - 12:00 ICT) | BASE 0.60 LOT | DAILY LOSS CAP 20.0%
     """
     src_dir = os.path.dirname(os.path.abspath(__file__))
     base_dir = os.path.dirname(src_dir)
@@ -60,13 +58,13 @@ def run_master_system_comparison():
         raise FileNotFoundError("Không tìm thấy các file dữ liệu CSV 2023-2024!")
 
     print("\n" + "=" * 80)
-    print("   📊 BACKTEST MASTER SYSTEM PHASE 5 (10:00-19:15 ICT | BASE 0.20L AUTO COMPOUNDING | CAP 15%)")
+    print("   📊 BACKTEST MASTER SYSTEM SOLUTION A (10:00-12:00 ICT | BASE 0.60 LOT | DAILY LOSS CAP 20%)")
     print("=" * 80)
 
     extractor = FeatureExtractor(test_files)
     features_df, _ = extractor.extract_daily_features()
 
-    bt_engine = StepBacktester(test_files, ai_model_path=model_path, default_lot=0.20, max_daily_loss_pct=15.0, use_compounding=True)
+    bt_engine = StepBacktester(test_files, ai_model_path=model_path, default_lot=0.60, max_daily_loss_pct=20.0)
 
     unfilt_logs, unfilt_final_bal = bt_engine.run_backtest(daily_config_dict=None, step_multiplier=1.0)
     df_unfilt = pd.DataFrame(unfilt_logs)
@@ -107,9 +105,8 @@ def run_master_system_comparison():
                 "final_equity": round(unfilt_final_bal, 2),
                 "net_pnl_usd": round(unfilt_pnl, 2),
                 "return_pct": round((unfilt_pnl / 10000.0) * 100, 2),
-                "base_lot": 0.20,
-                "max_daily_loss_pct_cap": 15.0,
-                "trading_window": "10:00 - 19:15 ICT",
+                "base_lot": 0.60,
+                "max_daily_loss_pct_cap": 20.0,
                 "total_trading_days": len(df_unfilt_traded),
                 "tp_hit_days": unfilt_tp,
                 "sl_hit_days": unfilt_sl,
@@ -122,10 +119,10 @@ def run_master_system_comparison():
                 "final_equity": round(master_final_bal, 2),
                 "net_pnl_usd": round(master_pnl, 2),
                 "return_pct": round((master_pnl / 10000.0) * 100, 2),
-                "mode": "Phase 5 Master System (10:00-19:15 ICT | Base 0.20L Compounded | Daily Cap 15.0%)",
-                "base_lot": 0.20,
-                "max_daily_loss_pct_cap": 15.0,
-                "trading_window": "10:00 - 19:15 ICT",
+                "mode": "Solution A Master System (10:00-12:00 ICT | Base 0.60 Lot | Daily Cap 20.0%)",
+                "base_lot": 0.60,
+                "max_daily_loss_pct_cap": 20.0,
+                "trading_window": "10:00 - 12:00 ICT",
                 "total_trading_days": len(df_master_traded),
                 "skipped_days_count": len(df_master[df_master['active_lot_size'] == 0.00]),
                 "attack_days_count": len(df_master[df_master['step_multiplier'] < 0.70]),
@@ -151,9 +148,9 @@ def run_master_system_comparison():
     with open(results_path, 'w', encoding='utf-8') as f:
         json.dump({"summary": comparison_report["test_phase_2023_2024"]["master_system_combined"], "daily_results": master_logs}, f, indent=4, ensure_ascii=False)
 
-    print("\n================ OUT-OF-SAMPLE MASTER SYSTEM RESULTS (PHASE 5: 10:00-19:15 ICT | COMPOUNDED) ================")
-    print(f"METRIC                   | BASELINE (0.20L UNFILTERED) | MASTER SYSTEM (PHASE 5 AUTO COMPOUNDING)")
-    print(f"-------------------------+------------------------------+------------------------------------------")
+    print("\n================ OUT-OF-SAMPLE MASTER SYSTEM RESULTS (SOLUTION A: 10:00-12:00 ICT | BASE 0.60L) ================")
+    print(f"METRIC                   | BASELINE (0.60L UNFILTERED) | MASTER SYSTEM (SOLUTION A BASE 0.60L)")
+    print(f"-------------------------+------------------------------+--------------------------------------")
     print(f"Net Profit (USD)         | ${unfilt_pnl:,.2f}                | ${master_pnl:,.2f}")
     print(f"Total Return (%)         | {comparison_report['test_phase_2023_2024']['baseline_unfiltered']['return_pct']}%               | {comparison_report['test_phase_2023_2024']['master_system_combined']['return_pct']}%")
     print(f"Win Rate (%)             | {unfilt_winrate:.2f}%                  | {master_winrate:.2f}%")
@@ -162,8 +159,8 @@ def run_master_system_comparison():
     print(f"Attack Days (0.50 Step)  | 0 days                   | {len(df_master[df_master['step_multiplier'] < 0.70])} days")
     print(f"Defense Days (0.85 Step) | 0 days                   | {len(df_master[(df_master['active_lot_size'] > 0.00) & (df_master['step_multiplier'] >= 0.70)])} days")
     print(f"Max Drawdown (USD)       | ${unfilt_max_dd:,.2f}                | ${master_max_dd:,.2f}")
-    print(f"SL 15% Hit Days          | {unfilt_sl} days                  | {master_sl} days")
-    print(f"========================================================================================================\n")
+    print(f"SL 20% Hit Days          | {unfilt_sl} days                  | {master_sl} days")
+    print(f"====================================================================================================\n")
 
 if __name__ == "__main__":
     run_master_system_comparison()

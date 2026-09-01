@@ -2,10 +2,10 @@ import numpy as np
 
 class VolumeOptimizer:
     """
-    Module Tối Ưu Hóa Khối Lượng Vị Thế Động (Base 0.40 Lot).
+    Module Tối Ưu Hóa Khối Lượng Vị Thế Động (Base 0.60 Lot).
     Quy đổi khối lượng thực tế về BỘI SỐ CHUẨN CỦA 0.01 LOT.
     """
-    def __init__(self, base_lot=0.40, min_lot=0.08, max_lot=0.40):
+    def __init__(self, base_lot=0.60, min_lot=0.12, max_lot=0.60):
         self.base_lot = base_lot
         self.min_lot = min_lot
         self.max_lot = max_lot

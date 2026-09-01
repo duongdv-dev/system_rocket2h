@@ -55,20 +55,20 @@ def run_out_of_sample_comparison():
         raise FileNotFoundError("Không tìm thấy các file dữ liệu CSV 2023-2024!")
 
     print("\n" + "=" * 80)
-    print("   📊 BACKTEST OUT-OF-SAMPLE (2023 - 2024) [BASE 0.40 LOT | DAILY LOSS CAP 20%]")
+    print("   📊 BACKTEST OUT-OF-SAMPLE (2023 - 2024) [BASE 0.60 LOT | DAILY LOSS CAP 20%]")
     print("=" * 80)
 
     extractor = FeatureExtractor(test_files)
     features_df, _ = extractor.extract_daily_features()
 
-    bt_unfiltered = FilterBacktester(test_files, ai_model_path=None, default_lot=0.40, max_daily_loss_pct=20.0)
+    bt_unfiltered = FilterBacktester(test_files, ai_model_path=None, default_lot=0.60, max_daily_loss_pct=20.0)
     unfiltered_logs, unfilt_final_bal = bt_unfiltered.run_backtest()
     df_unfilt = pd.DataFrame(unfiltered_logs)
 
     cols_to_drop = [c for c in ['anchor_price_10am', 'atr14_m5_step', 'atr14_m5'] if c in df_unfilt.columns]
     df_unfilt_clean = df_unfilt.drop(columns=cols_to_drop, errors='ignore')
 
-    bt_filtered = FilterBacktester(test_files, ai_model_path=model_path, default_lot=0.40, max_daily_loss_pct=20.0)
+    bt_filtered = FilterBacktester(test_files, ai_model_path=model_path, default_lot=0.60, max_daily_loss_pct=20.0)
     merged = pd.merge(features_df, df_unfilt_clean, on='date')
 
     filtered_daily_logs = []
@@ -162,7 +162,7 @@ def run_out_of_sample_comparison():
                 "final_equity": round(unfilt_final_bal, 2),
                 "net_pnl_usd": round(unfilt_pnl, 2),
                 "return_pct": round((unfilt_pnl / 10000.0) * 100, 2),
-                "base_lot": 0.40,
+                "base_lot": 0.60,
                 "max_daily_loss_pct_cap": 20.0,
                 "total_trading_days": len(unfilt_traded),
                 "tp_hit_days": unfilt_tp_days,
@@ -176,7 +176,7 @@ def run_out_of_sample_comparison():
                 "final_equity": round(filtered_balance, 2),
                 "net_pnl_usd": round(filt_pnl, 2),
                 "return_pct": round((filt_pnl / 10000.0) * 100, 2),
-                "base_lot": 0.40,
+                "base_lot": 0.60,
                 "max_daily_loss_pct_cap": 20.0,
                 "total_trading_days": len(df_filt_res),
                 "skipped_days_count": len(skipped_days),

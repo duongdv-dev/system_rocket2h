@@ -13,10 +13,10 @@ from dca_backtester import DCABacktester
 from volume_optimizer import VolumeOptimizer
 
 class VolumeBacktester(DCABacktester):
-    def __init__(self, data_paths, ai_model_path=None, initial_balance=10000.0, default_lot=0.40, max_daily_loss_pct=20.0):
+    def __init__(self, data_paths, ai_model_path=None, initial_balance=10000.0, default_lot=0.60, max_daily_loss_pct=20.0):
         super().__init__(data_paths, initial_balance, default_lot, lot_usd_per_point=100.0, max_daily_loss_pct=max_daily_loss_pct)
         self.ai_model_data = None
-        self.vol_optimizer = VolumeOptimizer(base_lot=default_lot, min_lot=0.08, max_lot=default_lot)
+        self.vol_optimizer = VolumeOptimizer(base_lot=default_lot, min_lot=0.12, max_lot=default_lot)
 
         base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         if ai_model_path and os.path.exists(ai_model_path):

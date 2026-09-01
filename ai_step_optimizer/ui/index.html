@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Master System Phase 5 Dashboard (Port 8004)</title>
+    <title>Master System Dashboard Solution A (Port 8004)</title>
     <script src="https://unpkg.com/lightweight-charts@4.1.0/dist/lightweight-charts.standalone.production.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -52,8 +52,8 @@
         }
 
         header .tag {
-            background: rgba(0, 200, 83, 0.15);
-            color: var(--green-win);
+            background: rgba(255, 215, 0, 0.15);
+            color: var(--accent-gold);
             font-size: 0.75rem;
             padding: 4px 8px;
             border-radius: 4px;
@@ -215,8 +215,8 @@
 <body>
 
     <header>
-        <h1>⚡ Master System Phase 5 <span>(Khung 10:00 - 19:15 ICT + Auto Equity Compounding)</span></h1>
-        <span class="tag">Base 0.20L Compounded | Daily Loss Cap 15.0%</span>
+        <h1>⚡ Master System Solution A <span>(Golden DCA Window 10:00 - 12:00 ICT)</span></h1>
+        <span class="tag">Base 0.60 Lot | 20.0% Max Daily Loss Cap (-$2,000 USD)</span>
     </header>
 
     <!-- KPI Comparison Grid -->
@@ -224,7 +224,7 @@
         <div class="kpi-card">
             <div class="label">Lợi Nhuận Test (2023-2024)</div>
             <div class="val green" id="kpiPnl">Loading...</div>
-            <div class="sub" id="kpiPnlSub">Baseline Gốc: Loading...</div>
+            <div class="sub" id="kpiPnlSub">Baseline Gốc 0.60L: Loading...</div>
         </div>
         <div class="kpi-card">
             <div class="label">Phân Phối Chế Độ Ngày</div>
@@ -234,17 +234,17 @@
         <div class="kpi-card">
             <div class="label">Tỷ Lệ Thắng (Win Rate)</div>
             <div class="val gold" id="kpiWinRate">Loading...</div>
-            <div class="sub" id="kpiWinSub">Baseline Gốc: Loading...</div>
+            <div class="sub" id="kpiWinSub">Baseline Gốc 0.60L: Loading...</div>
         </div>
         <div class="kpi-card">
             <div class="label">Max Drawdown Test</div>
             <div class="val red" id="kpiMaxDD">Loading...</div>
-            <div class="sub" id="kpiDDSub">Baseline Gốc: Loading...</div>
+            <div class="sub" id="kpiDDSub">Baseline Gốc 0.60L: Loading...</div>
         </div>
         <div class="kpi-card">
-            <div class="label">Số Ngày Dính SL 15%</div>
+            <div class="label">Số Ngày Dính SL 20%</div>
             <div class="val" id="kpiSL">Loading...</div>
-            <div class="sub" id="kpiSLSub">Baseline Gốc: Loading...</div>
+            <div class="sub" id="kpiSLSub">Baseline Gốc 0.60L: Loading...</div>
         </div>
     </div>
 
@@ -262,7 +262,7 @@
 
         <div class="chart-workspace">
             <div class="chart-header">
-                <div class="chart-title" id="chartTitle">Chọn một ngày để xem chi tiết nến M1 (10:00 - 19:15 ICT)</div>
+                <div class="chart-title" id="chartTitle">Chọn một ngày để xem chi tiết nến M1 (10:00 - 12:00 ICT)</div>
                 <div class="chart-meta" id="chartMeta"></div>
             </div>
             <div class="status-banner" id="statusBanner"></div>
@@ -318,19 +318,19 @@
             pnlEl.innerText = `$${master.net_pnl_usd.toLocaleString()} (${master.return_pct}%)`;
             pnlEl.className = `val ${master.net_pnl_usd >= 0 ? 'green' : 'red'}`;
 
-            document.getElementById('kpiPnlSub').innerText = `Baseline Gốc: $${base.net_pnl_usd.toLocaleString()} (${base.return_pct}%)`;
+            document.getElementById('kpiPnlSub').innerText = `Baseline 0.60L Gốc: $${base.net_pnl_usd.toLocaleString()} (${base.return_pct}%)`;
             
             document.getElementById('kpiModeDist').innerText = `${master.attack_days_count} / ${master.defense_days_count} / ${master.skipped_days_count}`;
             document.getElementById('kpiModeSub').innerText = `Attack / Defense / Skip`;
 
             document.getElementById('kpiWinRate').innerText = `${master.win_rate_pct}%`;
-            document.getElementById('kpiWinSub').innerText = `Baseline Gốc: ${base.win_rate_pct}%`;
+            document.getElementById('kpiWinSub').innerText = `Baseline 0.60L Gốc: ${base.win_rate_pct}%`;
 
             document.getElementById('kpiMaxDD').innerText = `$${master.max_drawdown_usd.toLocaleString()} (${master.max_drawdown_pct}%)`;
-            document.getElementById('kpiDDSub').innerText = `Baseline Gốc: $${base.max_drawdown_usd.toLocaleString()}`;
+            document.getElementById('kpiDDSub').innerText = `Baseline 0.60L Gốc: $${base.max_drawdown_usd.toLocaleString()}`;
 
             document.getElementById('kpiSL').innerText = `${master.sl_hit_days} Ngày`;
-            document.getElementById('kpiSLSub').innerText = `Baseline Gốc: ${base.sl_hit_days} Ngày`;
+            document.getElementById('kpiSLSub').innerText = `Baseline 0.60L Gốc: ${base.sl_hit_days} Ngày`;
         }
 
         function filterDays(filter) {
@@ -383,13 +383,13 @@
             banner.className = 'status-banner traded';
             banner.style.background = item.status === 'SKIPPED' ? 'rgba(255, 145, 0, 0.15)' : (item.status === 'ATTACK' ? 'rgba(0, 200, 83, 0.15)' : 'rgba(171, 71, 188, 0.2)');
             banner.style.color = item.status === 'SKIPPED' ? 'var(--orange-skip)' : (item.status === 'ATTACK' ? 'var(--green-win)' : 'var(--purple-vol)');
-            banner.innerText = `${item.reason || 'Phase 5 Master System'} | Vol Compounded: ${item.active_lot_size} Lot | Step: ${item.atr14_m5_step} (${item.step_multiplier}x ATR) | PnL Ngày: $${item.daily_pnl_usd}`;
+            banner.innerText = `${item.reason || 'Master System Solution A'} | Vol: ${item.active_lot_size} Lot | Step: ${item.atr14_m5_step} (${item.step_multiplier}x ATR) | PnL Ngày: $${item.daily_pnl_usd}`;
 
-            document.getElementById('chartTitle').innerText = `Ngày ${dateStr} - Hướng ${item.direction} (Vol: ${item.active_lot_size}L | Step: ${item.atr14_m5_step} | 10:00 - 19:15 ICT)`;
+            document.getElementById('chartTitle').innerText = `Ngày ${dateStr} - Hướng ${item.direction} (Vol: ${item.active_lot_size}L | Step: ${item.atr14_m5_step} | 10:00 - 12:00 ICT)`;
             document.getElementById('chartMeta').innerHTML = `
                 <span>Giá Mốc 10h: <strong>$${item.anchor_price_10am || '--'}</strong></span>
                 <span>Bước Step: <strong style="color:var(--accent-gold)">${item.atr14_m5_step || '--'} (${item.step_multiplier}x ATR)</strong></span>
-                <span>Khối Lượng Lãi Kép: <strong style="color:var(--purple-vol)">${item.active_lot_size} Lot</strong></span>
+                <span>Khối Lượng Ngày: <strong style="color:var(--purple-vol)">${item.active_lot_size} Lot</strong></span>
                 <span>PnL Ngày: <strong style="color:${item.daily_pnl_usd >= 0 ? 'var(--green-win)' : 'var(--red-loss)'}">$${item.daily_pnl_usd}</strong></span>
             `;
 

@@ -13,10 +13,10 @@ from dca_backtester import DCABacktester
 from step_optimizer import StepOptimizer
 
 class StepBacktester(DCABacktester):
-    def __init__(self, data_paths, ai_model_path=None, initial_balance=10000.0, default_lot=0.20, max_daily_loss_pct=15.0, use_compounding=True):
-        super().__init__(data_paths, initial_balance, default_lot, lot_usd_per_point=100.0, max_daily_loss_pct=max_daily_loss_pct, use_compounding=use_compounding)
+    def __init__(self, data_paths, ai_model_path=None, initial_balance=10000.0, default_lot=0.60, max_daily_loss_pct=20.0):
+        super().__init__(data_paths, initial_balance, default_lot, lot_usd_per_point=100.0, max_daily_loss_pct=max_daily_loss_pct)
         self.ai_model_data = None
-        self.step_optimizer = StepOptimizer(base_lot=default_lot, min_lot=0.04, safe_step_mult=0.50, moderate_step_mult=0.85)
+        self.step_optimizer = StepOptimizer(base_lot=default_lot, min_lot=0.12, safe_step_mult=0.50, moderate_step_mult=0.85)
 
         base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         if ai_model_path and os.path.exists(ai_model_path):

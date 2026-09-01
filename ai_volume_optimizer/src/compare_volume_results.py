@@ -55,13 +55,13 @@ def run_volume_optimization_comparison():
         raise FileNotFoundError("Không tìm thấy các file dữ liệu CSV 2023-2024!")
 
     print("\n" + "=" * 80)
-    print("   📊 BACKTEST DYNAMIC VOLUME OPTIMIZER (BASE 0.40 LOT | DAILY LOSS CAP 20%)")
+    print("   📊 BACKTEST DYNAMIC VOLUME OPTIMIZER (BASE 0.60 LOT | DAILY LOSS CAP 20%)")
     print("=" * 80)
 
     extractor = FeatureExtractor(test_files)
     features_df, _ = extractor.extract_daily_features()
 
-    bt_engine = VolumeBacktester(test_files, ai_model_path=model_path, default_lot=0.40, max_daily_loss_pct=20.0)
+    bt_engine = VolumeBacktester(test_files, ai_model_path=model_path, default_lot=0.60, max_daily_loss_pct=20.0)
 
     unfilt_logs, unfilt_final_bal = bt_engine.run_backtest(daily_volume_dict=None)
     df_unfilt = pd.DataFrame(unfilt_logs)
@@ -73,7 +73,7 @@ def run_volume_optimization_comparison():
     for log in dyn_logs:
         d = log['date']
         log['reason'] = decision_reasons.get(d, "")
-        log['status'] = "SKIPPED" if log['active_lot_size'] == 0.00 else ("REDUCED_VOL" if log['active_lot_size'] < 0.40 else "STANDARD_VOL")
+        log['status'] = "SKIPPED" if log['active_lot_size'] == 0.00 else ("REDUCED_VOL" if log['active_lot_size'] < 0.60 else "STANDARD_VOL")
 
     df_dyn_traded = df_dyn[df_dyn['active_lot_size'] > 0.0]
     df_unfilt_traded = df_unfilt[df_unfilt['direction'] != 'NONE']
@@ -101,7 +101,7 @@ def run_volume_optimization_comparison():
                 "final_equity": round(unfilt_final_bal, 2),
                 "net_pnl_usd": round(unfilt_pnl, 2),
                 "return_pct": round((unfilt_pnl / 10000.0) * 100, 2),
-                "base_lot": 0.40,
+                "base_lot": 0.60,
                 "max_daily_loss_pct_cap": 20.0,
                 "total_trading_days": len(df_unfilt_traded),
                 "tp_hit_days": unfilt_tp,
@@ -115,12 +115,12 @@ def run_volume_optimization_comparison():
                 "final_equity": round(dyn_final_bal, 2),
                 "net_pnl_usd": round(dyn_pnl, 2),
                 "return_pct": round((dyn_pnl / 10000.0) * 100, 2),
-                "base_lot": 0.40,
+                "base_lot": 0.60,
                 "max_daily_loss_pct_cap": 20.0,
                 "total_trading_days": len(df_dyn_traded),
                 "skipped_days_count": len(df_dyn[df_dyn['active_lot_size'] == 0.00]),
-                "reduced_vol_days_count": len(df_dyn[(df_dyn['active_lot_size'] > 0.00) & (df_dyn['active_lot_size'] < 0.40)]),
-                "standard_vol_days_count": len(df_dyn[df_dyn['active_lot_size'] == 0.40]),
+                "reduced_vol_days_count": len(df_dyn[(df_dyn['active_lot_size'] > 0.00) & (df_dyn['active_lot_size'] < 0.60)]),
+                "standard_vol_days_count": len(df_dyn[df_dyn['active_lot_size'] == 0.60]),
                 "tp_hit_days": dyn_tp,
                 "sl_hit_days": dyn_sl,
                 "win_rate_pct": round(dyn_winrate, 2),

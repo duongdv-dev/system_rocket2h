@@ -11,7 +11,7 @@ sys.path.append(os.path.join(base_dir, "src"))
 from dca_backtester import DCABacktester
 
 class FilterBacktester(DCABacktester):
-    def __init__(self, data_paths, ai_model_path=None, filter_rules=None, initial_balance=10000.0, default_lot=0.40, lot_usd_per_point=100.0, max_daily_loss_pct=20.0):
+    def __init__(self, data_paths, ai_model_path=None, filter_rules=None, initial_balance=10000.0, default_lot=0.60, lot_usd_per_point=100.0, max_daily_loss_pct=20.0):
         super().__init__(data_paths, initial_balance, default_lot, lot_usd_per_point, max_daily_loss_pct)
         self.ai_model_data = None
         self.filter_rules = filter_rules
