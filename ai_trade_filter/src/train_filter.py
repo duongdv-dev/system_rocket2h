@@ -21,7 +21,7 @@ def run_step_1_training():
     - Phạt x30 cho các ngày dính Cắt Lỗ 5%.
     """
     print("\n" + "=" * 80)
-    print("   🤖 TRAINING MÔ HÌNH AI - SIẾT NẶNG NGƯỠNG NHẠY CẢM CHẶN 100% NGÀY SL 5%")
+    print("   🤖 TRAINING MÔ HÌNH AI RISK FILTER - CHẶN CÁC NGÀY DÍNH CẮT LỖ (DAILY LOSS CAP 15%)")
     print("=" * 80)
 
     src_dir = os.path.dirname(os.path.abspath(__file__))
