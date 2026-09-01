@@ -4,24 +4,24 @@
     "max_depth": 5,
     "train_period": "2020 - 2023",
     "train_days_count": 1032,
-    "total_bad_days_in_train": 205,
-    "total_safe_days_in_train": 827,
-    "roc_auc_score": 0.6711,
+    "total_bad_days_in_train": 147,
+    "total_safe_days_in_train": 885,
+    "roc_auc_score": 0.885,
     "feature_importances": {
-        "atr_ratio_20d": 0.2409,
-        "directional_intensity": 0.1788,
-        "range_to_atr_ratio": 0.1895,
-        "trend_to_atr_ratio": 0.1601,
-        "morning_vol_std": 0.1964,
-        "day_of_week": 0.0343
+        "atr_ratio_20d": 0.2094,
+        "directional_intensity": 0.161,
+        "range_to_atr_ratio": 0.13,
+        "trend_to_atr_ratio": 0.1509,
+        "morning_vol_std": 0.2838,
+        "day_of_week": 0.0649
     },
-    "optimal_risk_threshold": 0.46,
+    "optimal_risk_threshold": 0.45,
     "training_performance": {
-        "train_baseline_pnl": 4404.57,
-        "train_filtered_pnl": 24006.11,
-        "train_max_dd": 1226.19,
-        "bad_days_skipped": 93,
-        "good_days_skipped": 198,
-        "sl_days_skipped": 37
+        "train_baseline_pnl": 8407.47,
+        "train_filtered_pnl": 56693.02,
+        "train_max_dd": 0.0,
+        "bad_days_skipped": 147,
+        "good_days_skipped": 444,
+        "sl_days_skipped": 147
     }
 }
