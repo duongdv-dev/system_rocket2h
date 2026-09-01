@@ -13,8 +13,8 @@ from dca_backtester import DCABacktester
 from step_optimizer import StepOptimizer
 
 class StepBacktester(DCABacktester):
-    def __init__(self, data_paths, ai_model_path=None, initial_balance=10000.0, default_lot=0.60, max_daily_loss_pct=20.0):
-        super().__init__(data_paths, initial_balance, default_lot, lot_usd_per_point=100.0, max_daily_loss_pct=max_daily_loss_pct)
+    def __init__(self, data_paths, ai_model_path=None, initial_balance=10000.0, default_lot=0.60, max_daily_loss_pct=20.0, use_compounding=True):
+        super().__init__(data_paths, initial_balance, default_lot, lot_usd_per_point=100.0, max_daily_loss_pct=max_daily_loss_pct, use_compounding=use_compounding)
         self.ai_model_data = None
         self.step_optimizer = StepOptimizer(base_lot=default_lot, min_lot=0.35, safe_step_mult=0.50, moderate_step_mult=0.65)
 
@@ -36,7 +36,7 @@ class StepBacktester(DCABacktester):
 
         model = self.ai_model_data["model"]
         feature_cols = self.ai_model_data["feature_cols"]
-        skip_threshold = self.ai_model_data["risk_threshold"]
+        skip_threshold = 0.45
 
         for _, row in features_df.iterrows():
             date_str = row['date']

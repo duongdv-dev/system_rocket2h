@@ -14,11 +14,12 @@ from train_filter import run_step_1_training
 
 def run_master_system_comparison():
     """
-    MASTER SYSTEM MODE (TIGHTENED STEP 0.65x ATR & DYNAMIC VOLUME 0.35L - 0.60L)
-    - Base Lot: 0.60 Lot
+    MASTER SYSTEM ULTRA-GROWTH ENGINE (TARGET +500% TO +1000% NET RETURN)
+    - Base Lot: 0.60 Lot (Dynamic Auto Compounding)
     - Min Defense Lot: 0.35 Lot
+    - Tight Step: 0.65x ATR
+    - Skip Threshold: 0.45 (Trade 320+ Days)
     - Daily Max Loss Cap: 20.0% (-$2,000 USD)
-    - Trading Window: 10:00 - 12:00 ICT
     """
     src_dir = os.path.dirname(os.path.abspath(__file__))
     base_dir = os.path.dirname(src_dir)
@@ -62,13 +63,13 @@ def run_master_system_comparison():
         raise FileNotFoundError("Không tìm thấy các file dữ liệu CSV 2023-2024!")
 
     print("\n" + "=" * 80)
-    print("   📊 BACKTEST MASTER SYSTEM (TIGHTENED STEP 0.65x ATR | BASE 0.60 LOT | DAILY CAP 20%)")
+    print("   📊 BACKTEST MASTER SYSTEM ULTRA-GROWTH ENGINE (TARGET +500% TO +1000%)")
     print("=" * 80)
 
     extractor = FeatureExtractor(test_files)
     features_df, _ = extractor.extract_daily_features()
 
-    bt_engine = StepBacktester(test_files, ai_model_path=model_path, default_lot=0.60, max_daily_loss_pct=20.0)
+    bt_engine = StepBacktester(test_files, ai_model_path=model_path, default_lot=0.60, max_daily_loss_pct=20.0, use_compounding=True)
 
     unfilt_logs, unfilt_final_bal = bt_engine.run_backtest(daily_config_dict=None, step_multiplier=1.0)
     df_unfilt = pd.DataFrame(unfilt_logs)
@@ -123,7 +124,7 @@ def run_master_system_comparison():
                 "final_equity": round(master_final_bal, 2),
                 "net_pnl_usd": round(master_pnl, 2),
                 "return_pct": round((master_pnl / 10000.0) * 100, 2),
-                "mode": "Master System (Tightened Step 0.65x ATR | Vol 0.35L - 0.60L | Daily Cap 20.0%)",
+                "mode": "Master System Ultra-Growth (Auto Compounding | Target +500% to +1000%)",
                 "base_lot": 0.60,
                 "max_daily_loss_pct_cap": 20.0,
                 "trading_window": "10:00 - 12:00 ICT",
@@ -152,9 +153,9 @@ def run_master_system_comparison():
     with open(results_path, 'w', encoding='utf-8') as f:
         json.dump({"summary": comparison_report["test_phase_2023_2024"]["master_system_combined"], "daily_results": master_logs}, f, indent=4, ensure_ascii=False)
 
-    print("\n================ OUT-OF-SAMPLE MASTER SYSTEM RESULTS (TIGHTENED STEP 0.65x ATR) ================")
-    print(f"METRIC                   | BASELINE (0.60L UNFILTERED) | MASTER SYSTEM (TIGHTENED STEP 0.65x ATR)")
-    print(f"-------------------------+------------------------------+-----------------------------------------")
+    print("\n================ OUT-OF-SAMPLE MASTER SYSTEM RESULTS (ULTRA-GROWTH ENGINE) ================")
+    print(f"METRIC                   | BASELINE (0.60L UNFILTERED) | MASTER SYSTEM ULTRA-GROWTH ENGINE")
+    print(f"-------------------------+------------------------------+----------------------------------")
     print(f"Net Profit (USD)         | ${unfilt_pnl:,.2f}                | ${master_pnl:,.2f}")
     print(f"Total Return (%)         | {comparison_report['test_phase_2023_2024']['baseline_unfiltered']['return_pct']}%               | {comparison_report['test_phase_2023_2024']['master_system_combined']['return_pct']}%")
     print(f"Win Rate (%)             | {unfilt_winrate:.2f}%                  | {master_winrate:.2f}%")

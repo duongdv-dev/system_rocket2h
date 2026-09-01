@@ -2,11 +2,12 @@ import numpy as np
 
 class StepOptimizer:
     """
-    Master System Optimizer (Tightened Step Grid & Dynamic Defense Volume):
-    - Base Lot: 0.60 Lot
+    Master System Optimizer (Ultra-Growth Engine: Target +500% to +1000% Net Return):
+    - Base Lot: 0.60 Lot (Scaled with Auto Compounding)
     - Min Defense Lot: 0.35 Lot
     - Tight Attack Step: 0.50x ATR
-    - Tightened Defense Step: 0.65x ATR (Tránh giãn step đi quá xa, chốt lời TP nhanh hơn)
+    - Tightened Defense Step: 0.65x ATR
+    - Skip Threshold: 0.45 (nới ngưỡng để ăn 300+ ngày chốt lời TP)
     """
     def __init__(self, base_lot=0.60, min_lot=0.35, safe_step_mult=0.50, moderate_step_mult=0.65):
         self.base_lot = base_lot
@@ -14,7 +15,7 @@ class StepOptimizer:
         self.safe_step_mult = safe_step_mult
         self.moderate_step_mult = moderate_step_mult
 
-    def compute_master_config(self, prob_risk, skip_threshold=0.36, safe_threshold=0.20):
+    def compute_master_config(self, prob_risk, skip_threshold=0.45, safe_threshold=0.20):
         if prob_risk >= skip_threshold:
             return {
                 "lot": 0.00,

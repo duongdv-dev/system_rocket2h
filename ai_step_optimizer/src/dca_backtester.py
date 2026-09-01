@@ -6,15 +6,16 @@ import numpy as np
 from datetime import datetime, time
 
 class DCABacktester:
-    def __init__(self, data_paths, initial_balance=10000.0, default_lot=0.60, lot_usd_per_point=100.0, max_daily_loss_pct=20.0):
+    def __init__(self, data_paths, initial_balance=10000.0, default_lot=1.00, lot_usd_per_point=100.0, max_daily_loss_pct=25.0, use_compounding=True):
         """
-        Master DCA Strategy Backtester (Tightened Step 0.65x ATR & Optimized Defense Volume)
+        Master System Ultra-Growth Backtester (Target +500% to +1000% Net Return | Auto Equity Compounding)
         """
         self.data_paths = data_paths
         self.initial_balance = initial_balance
         self.default_lot = default_lot
         self.lot_usd_per_point = lot_usd_per_point
         self.max_daily_loss_pct = max_daily_loss_pct
+        self.use_compounding = use_compounding
         self.tz_ict = pytz.timezone("Asia/Ho_Chi_Minh")
 
     def load_and_preprocess_data(self):
@@ -90,19 +91,24 @@ class DCABacktester:
 
             raw_atr = max(raw_atr, 0.1)
 
+            if self.use_compounding:
+                compound_scale = max(cumulative_balance / self.initial_balance, 0.5)
+            else:
+                compound_scale = 1.0
+
             if daily_config_dict and date_str in daily_config_dict:
                 cfg = daily_config_dict[date_str]
                 if isinstance(cfg, dict):
-                    active_lot = float(cfg.get('lot', self.default_lot))
+                    base_cfg_lot = float(cfg.get('lot', self.default_lot))
                     active_step_mult = float(cfg.get('step_mult', step_multiplier))
                 else:
-                    active_lot = float(cfg)
+                    base_cfg_lot = float(cfg)
                     active_step_mult = step_multiplier
             else:
-                active_lot = self.default_lot
+                base_cfg_lot = self.default_lot
                 active_step_mult = step_multiplier
 
-            active_lot = round(active_lot, 2)
+            active_lot = round(base_cfg_lot * compound_scale, 2)
             atr_step = raw_atr * active_step_mult
             atr_step = max(atr_step, 0.1)
 
