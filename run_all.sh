@@ -9,16 +9,19 @@ BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$BASE_DIR"
 
 echo ""
-echo "📌 [BƯỚC 1/2]: HUẤN LUYỆN TOÀN BỘ MÔ HÌNH AI (2020 - 2023)..."
+echo "📌 [BƯỚC 1/2]: HUẤN LUYỆN TOÀN BỘ MÔ HÌNH AI & BACKTEST OUT-OF-SAMPLE (2023-2024)..."
 
-echo "  -> Training AI Risk Filter (Giai đoạn 2)..."
+echo "  -> Running AI Risk Filter (Giai đoạn 2)..."
 docker compose -f ai_trade_filter/docker-compose.yml run --rm ai_train
+docker compose -f ai_trade_filter/docker-compose.yml run --rm ai_train python src/compare_results.py
 
-echo "  -> Training AI Dynamic Volume (Giai đoạn 3)..."
+echo "  -> Running AI Dynamic Volume (Giai đoạn 3)..."
 docker compose -f ai_volume_optimizer/docker-compose.yml run --rm volume_train
+docker compose -f ai_volume_optimizer/docker-compose.yml run --rm volume_train python src/compare_volume_results.py
 
-echo "  -> Training Master System 3-Layer (Giai đoạn 4)..."
+echo "  -> Running Master System 3-Layer (Giai đoạn 4 & 5)..."
 docker compose -f ai_step_optimizer/docker-compose.yml run --rm master_train
+docker compose -f ai_step_optimizer/docker-compose.yml run --rm master_train python src/compare_step_results.py
 
 echo ""
 echo "📌 [BƯỚC 2/2]: KHỞI CHẠY DOCKER DASHBOARDS TRÊN CÁC PORT..."

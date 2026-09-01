@@ -42,8 +42,7 @@ class MasterDashboardHandler(SimpleHTTPRequestHandler):
             super().do_GET()
 
     def send_json_file(self, file_path):
-        if not os.path.exists(file_path):
-            ensure_master_backtest_executed()
+        ensure_master_backtest_executed()
             
         if os.path.exists(file_path):
             self.send_response(200)
@@ -63,34 +62,23 @@ class MasterDashboardHandler(SimpleHTTPRequestHandler):
             self.send_error(400, "Missing date parameter")
             return
 
+        model_path = os.path.join(OUTPUT_DIR, "ai_risk_model.joblib")
         possible_path_sets = [
-            [
-                os.path.join(DATA_DIR, "XAUUSD_2023_m1.csv"),
-                os.path.join(DATA_DIR, "XAUUSD_2024_m1.csv")
-            ],
-            [
-                os.path.join(base_dir, "..", "XAUUSD_2023_m1.csv"),
-                os.path.join(base_dir, "..", "XAUUSD_2024_m1.csv")
-            ],
-            [
-                "/app/data/XAUUSD_2023_m1.csv",
-                "/app/data/XAUUSD_2024_m1.csv"
-            ]
+            [os.path.join(DATA_DIR, "XAUUSD_2023_m1.csv"), os.path.join(DATA_DIR, "XAUUSD_2024_m1.csv")],
+            ["/app/data/XAUUSD_2023_m1.csv", "/app/data/XAUUSD_2024_m1.csv"]
         ]
-
-        test_files = None
+        selected_paths = None
         for path_set in possible_path_sets:
             if all(os.path.exists(p) for p in path_set):
-                test_files = path_set
+                selected_paths = path_set
                 break
-
-        if not test_files:
-            self.send_error(404, "Test CSV files not found")
-            return
+        if not selected_paths:
+            selected_paths = possible_paths[0]
 
         try:
-            extractor = FeatureExtractor(test_files)
-            full_df = extractor.load_data()
+            from step_backtester import StepBacktester
+            bt = StepBacktester(selected_paths, ai_model_path=model_path, default_lot=0.20, max_daily_loss_pct=15.0, use_compounding=True)
+            full_df = bt.load_and_preprocess_data()
             day_m1 = full_df[full_df['date_str'] == date_str].copy()
 
             if day_m1.empty:
@@ -130,10 +118,7 @@ def run_server(port=8004):
     ensure_master_backtest_executed()
     server_address = ('', port)
     httpd = HTTPServer(server_address, MasterDashboardHandler)
-    print(f"\n==================================================================")
-    print(f"🚀 Master System Dashboard Running on Port {port}")
-    print(f"👉 Open in browser: http://localhost:{port}")
-    print(f"==================================================================\n")
+    print(f"Master System Server running on port {port}")
     httpd.serve_forever()
 
 if __name__ == "__main__":
