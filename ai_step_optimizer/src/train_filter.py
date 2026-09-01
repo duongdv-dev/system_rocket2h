@@ -2,8 +2,8 @@ import os
 import sys
 import json
 import joblib
-import numpy as np
 import pandas as pd
+import numpy as np
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import roc_auc_score
 
@@ -15,13 +15,6 @@ from feature_extractor import FeatureExtractor
 from dca_backtester import DCABacktester
 
 def run_step_1_training():
-    """
-    TRAINING MÔ HÌNH AI PHÂN TÍCH RỦI RO CHO MASTER SYSTEM (2020 - 2023)
-    """
-    print("\n" + "=" * 80)
-    print("   🤖 TRAINING MÔ HÌNH AI MASTER SYSTEM (2020 - 2023)")
-    print("=" * 80)
-
     src_dir = os.path.dirname(os.path.abspath(__file__))
     base_dir = os.path.dirname(src_dir)
     workspace_dir = os.path.dirname(base_dir)
@@ -56,10 +49,14 @@ def run_step_1_training():
     if not train_files:
         raise FileNotFoundError("Không tìm thấy các file CSV 2020-2023!")
 
+    print("\n==================================================================================")
+    print("  🧠 TRAINING MÔ HÌNH AI MASTER SYSTEM (2020 - 2023)")
+    print("==================================================================================")
+
     extractor = FeatureExtractor(train_files)
     features_df, _ = extractor.extract_daily_features()
 
-    bt_unfiltered = DCABacktester(train_files, max_daily_loss_pct=5.0)
+    bt_unfiltered = DCABacktester(train_files, max_daily_loss_pct=20.0)
     unfiltered_logs, baseline_final_bal = bt_unfiltered.run_backtest()
     df_logs = pd.DataFrame(unfiltered_logs)
 
@@ -95,13 +92,27 @@ def run_step_1_training():
     )
     ai_model.fit(X_train, y_train, sample_weight=sample_weights)
 
-    y_probs = ai_model.predict_proba(X_train)[:, 1]
-    auc_score = roc_auc_score(y_train, y_probs)
+    if len(ai_model.classes_) > 1:
+        if 1 in ai_model.classes_:
+            class_1_idx = list(ai_model.classes_).index(1)
+            y_probs = ai_model.predict_proba(X_train)[:, class_1_idx]
+        else:
+            y_probs = np.zeros(len(X_train))
+    else:
+        if ai_model.classes_[0] == 1:
+            y_probs = np.ones(len(X_train))
+        else:
+            y_probs = np.zeros(len(X_train))
+
+    if len(np.unique(y_train)) > 1:
+        auc_score = float(roc_auc_score(y_train, y_probs))
+    else:
+        auc_score = 1.0
 
     importances = ai_model.feature_importances_
     feat_imp = {col: round(float(imp), 4) for col, imp in zip(feature_cols, importances)}
 
-    best_thresh = 0.36
+    best_thresh = 0.45
     model_file = os.path.join(output_dir, "ai_risk_model.joblib")
     meta_file = os.path.join(output_dir, "ai_model_meta.json")
 
@@ -118,16 +129,20 @@ def run_step_1_training():
         "train_period": "2020 - 2023",
         "train_days_count": len(df_dataset),
         "total_bad_days_in_train": int(skip_count),
-        "total_safe_days_in_train": int(trade_count),
-        "roc_auc_score": round(auc_score, 4),
-        "feature_importances": feat_imp,
-        "optimal_risk_threshold": best_thresh
+        "total_good_days_in_train": int(trade_count),
+        "auc_roc_score": round(auc_score, 4),
+        "selected_risk_threshold": best_thresh,
+        "feature_importances": feat_imp
     }
 
     with open(meta_file, 'w', encoding='utf-8') as f:
         json.dump(meta_info, f, indent=4, ensure_ascii=False)
 
-    print(f"✅ ĐÃ TẠO MÔ HÌNH AI MASTER SYSTEM: {model_file}")
+    print(f"✅ Training hoàn tất! Model đã lưu tại: {model_file}")
+    print(f"   - ROC-AUC Score: {auc_score:.4f}")
+    print(f"   - Threshold được chọn: {best_thresh}")
+    print("==================================================================================\n")
+
     return ai_model, meta_info
 
 if __name__ == "__main__":

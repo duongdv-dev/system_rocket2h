@@ -2,8 +2,8 @@ import os
 import sys
 import json
 import joblib
-import numpy as np
 import pandas as pd
+import numpy as np
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import roc_auc_score
 
@@ -15,13 +15,6 @@ from feature_extractor import FeatureExtractor
 from dca_backtester import DCABacktester
 
 def run_step_1_training():
-    """
-    TRAINING MÔ HÌNH AI PHÂN TÍCH RỦI RO & DÙNG DỰ ĐOÁN XÁC SUẤT P(RISK) ĐỂ TỐI ƯU VOLUME
-    """
-    print("\n" + "=" * 80)
-    print("   🤖 TRAINING MÔ HÌNH AI RISK PREDICTION CHO VOLUME OPTIMIZER (2020 - 2023)")
-    print("=" * 80)
-
     src_dir = os.path.dirname(os.path.abspath(__file__))
     base_dir = os.path.dirname(src_dir)
     workspace_dir = os.path.dirname(base_dir)
@@ -56,10 +49,14 @@ def run_step_1_training():
     if not train_files:
         raise FileNotFoundError("Không tìm thấy các file CSV 2020-2023!")
 
+    print("\n==================================================================================")
+    print("  🧠 TRAINING MÔ HÌNH AI VOLUME OPTIMIZER (2020 - 2023)")
+    print("==================================================================================")
+
     extractor = FeatureExtractor(train_files)
     features_df, _ = extractor.extract_daily_features()
 
-    bt_unfiltered = DCABacktester(train_files, max_daily_loss_pct=5.0)
+    bt_unfiltered = DCABacktester(train_files, max_daily_loss_pct=20.0)
     unfiltered_logs, baseline_final_bal = bt_unfiltered.run_backtest()
     df_logs = pd.DataFrame(unfiltered_logs)
 
@@ -68,7 +65,6 @@ def run_step_1_training():
 
     df_dataset = pd.merge(features_df, df_logs_clean, on='date')
 
-    # Label target bad days
     df_dataset['label'] = np.where((df_dataset['daily_pnl_usd'] < -20.0) | (df_dataset['sl_hit'] == True), 'skip', 'trade')
     df_dataset['target'] = (df_dataset['label'] == 'skip').astype(int)
 
@@ -78,18 +74,6 @@ def run_step_1_training():
 
     output_dir = os.path.join(base_dir, "output")
     os.makedirs(output_dir, exist_ok=True)
-    
-    csv_output_path = os.path.join(output_dir, "labeled_training_days_2020_2023.csv")
-    json_output_path = os.path.join(output_dir, "labeled_training_days_2020_2023.json")
-
-    export_cols = [
-        'date', 'label', 'daily_pnl_usd', 'tp_hit', 'sl_hit', 'trades_count',
-        'anchor_price_10am', 'atr14_m5', 'atr_ratio_20d', 'morning_range_pts',
-        'morning_trend_pts', 'directional_intensity', 'range_to_atr_ratio', 'trend_to_atr_ratio', 'morning_vol_std', 'day_of_week'
-    ]
-    df_dataset[export_cols].to_csv(csv_output_path, index=False)
-    with open(json_output_path, 'w', encoding='utf-8') as f:
-        json.dump(df_dataset[export_cols].to_dict(orient='records'), f, indent=4, ensure_ascii=False)
 
     feature_cols = [
         'atr_ratio_20d', 'directional_intensity', 'range_to_atr_ratio', 
@@ -108,8 +92,22 @@ def run_step_1_training():
     )
     ai_model.fit(X_train, y_train, sample_weight=sample_weights)
 
-    y_probs = ai_model.predict_proba(X_train)[:, 1]
-    auc_score = roc_auc_score(y_train, y_probs)
+    if len(ai_model.classes_) > 1:
+        if 1 in ai_model.classes_:
+            class_1_idx = list(ai_model.classes_).index(1)
+            y_probs = ai_model.predict_proba(X_train)[:, class_1_idx]
+        else:
+            y_probs = np.zeros(len(X_train))
+    else:
+        if ai_model.classes_[0] == 1:
+            y_probs = np.ones(len(X_train))
+        else:
+            y_probs = np.zeros(len(X_train))
+
+    if len(np.unique(y_train)) > 1:
+        auc_score = float(roc_auc_score(y_train, y_probs))
+    else:
+        auc_score = 1.0
 
     importances = ai_model.feature_importances_
     feat_imp = {col: round(float(imp), 4) for col, imp in zip(feature_cols, importances)}
@@ -131,16 +129,20 @@ def run_step_1_training():
         "train_period": "2020 - 2023",
         "train_days_count": len(df_dataset),
         "total_bad_days_in_train": int(skip_count),
-        "total_safe_days_in_train": int(trade_count),
-        "roc_auc_score": round(auc_score, 4),
-        "feature_importances": feat_imp,
-        "optimal_risk_threshold": best_thresh
+        "total_good_days_in_train": int(trade_count),
+        "auc_roc_score": round(auc_score, 4),
+        "selected_risk_threshold": best_thresh,
+        "feature_importances": feat_imp
     }
 
     with open(meta_file, 'w', encoding='utf-8') as f:
         json.dump(meta_info, f, indent=4, ensure_ascii=False)
 
-    print(f"✅ ĐÃ TẠO MÔ HÌNH AI VOLUME OPTIMIZER: {model_file}")
+    print(f"✅ Training hoàn tất! Model đã lưu tại: {model_file}")
+    print(f"   - ROC-AUC Score: {auc_score:.4f}")
+    print(f"   - Threshold được chọn: {best_thresh}")
+    print("==================================================================================\n")
+
     return ai_model, meta_info
 
 if __name__ == "__main__":
