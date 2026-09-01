@@ -4,16 +4,16 @@
     "max_depth": 5,
     "train_period": "2020 - 2023",
     "train_days_count": 1032,
-    "total_bad_days_in_train": 229,
-    "total_safe_days_in_train": 803,
-    "roc_auc_score": 0.733,
+    "total_bad_days_in_train": 276,
+    "total_safe_days_in_train": 756,
+    "roc_auc_score": 0.782,
     "feature_importances": {
-        "atr_ratio_20d": 0.2119,
-        "directional_intensity": 0.1522,
-        "range_to_atr_ratio": 0.1427,
-        "trend_to_atr_ratio": 0.1565,
-        "morning_vol_std": 0.2752,
-        "day_of_week": 0.0615
+        "atr_ratio_20d": 0.2125,
+        "directional_intensity": 0.1506,
+        "range_to_atr_ratio": 0.1576,
+        "trend_to_atr_ratio": 0.169,
+        "morning_vol_std": 0.2712,
+        "day_of_week": 0.0391
     },
     "optimal_risk_threshold": 0.36
 }
