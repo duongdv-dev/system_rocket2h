@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SYSTEM ROCKET 2H - Single Trade 1% Target System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --card-border: rgba(255, 255, 255, 0.1);
+            --primary: #38bdf8;
+            --primary-glow: rgba(56, 189, 248, 0.3);
+            --accent-green: #10b981;
+            --accent-red: #f43f5e;
+            --accent-gold: #fbbf24;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            min-height: 100vh;
+            padding: 24px;
+            background-image: 
+                radial-gradient(at 10% 10%, rgba(56, 189, 248, 0.12) 0px, transparent 50%),
+                radial-gradient(at 90% 90%, rgba(16, 185, 129, 0.08) 0px, transparent 50%);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            padding: 20px 24px;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            backdrop-filter: blur(12px);
+        }
+
+        .title-area h1 {
+            font-size: 24px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .title-area p {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .controls-area {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        label {
+            font-size: 14px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        select {
+            background: rgba(15, 23, 42, 0.8);
+            color: var(--text-main);
+            border: 1px solid var(--card-border);
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 14px;
+            outline: none;
+            cursor: pointer;
+        }
+
+        select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px var(--primary-glow);
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .metric-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 20px;
+            backdrop-filter: blur(12px);
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(56, 189, 248, 0.4);
+        }
+
+        .metric-title {
+            font-size: 13px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+
+        }
+
+        .metric-value {
+            font-size: 26px;
+            font-weight: 700;
+            margin-top: 8px;
+
+        }
+
+        .metric-sub {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .val-green { color: var(--accent-green); }
+        .val-red { color: var(--accent-red); }
+        .val-gold { color: var(--accent-gold); }
+        .val-blue { color: var(--primary); }
+
+        .charts-container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+
+        @media (max-width: 1024px) {
+            .charts-container { grid-template-columns: 1fr; }
+        }
+
+        .chart-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 20px;
+            backdrop-filter: blur(12px);
+        }
+
+        .chart-card h2 {
+            font-size: 16px;
+            margin-bottom: 16px;
+            color: var(--text-main);
+        }
+
+        .table-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 20px;
+            backdrop-filter: blur(12px);
+            overflow-x: auto;
+        }
+
+        .table-card h2 {
+            font-size: 16px;
+            margin-bottom: 16px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            text-align: left;
+        }
+
+        th {
+            background: rgba(15, 23, 42, 0.6);
+            color: var(--text-muted);
+            padding: 12px 14px;
+            font-weight: 600;
+            border-bottom: 1px solid var(--card-border);
+        }
+
+        td {
+            padding: 12px 14px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        tr:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .badge-tp { background: rgba(16, 185, 129, 0.2); color: var(--accent-green); border: 1px solid rgba(16, 185, 129, 0.3); }
+        .badge-cutoff { background: rgba(244, 63, 94, 0.2); color: var(--accent-red); border: 1px solid rgba(244, 63, 94, 0.3); }
+        .badge-skip { background: rgba(251, 191, 36, 0.2); color: var(--accent-gold); border: 1px solid rgba(251, 191, 36, 0.3); }
+        .badge-noentry { background: rgba(148, 163, 184, 0.2); color: var(--text-muted); border: 1px solid rgba(148, 163, 184, 0.3); }
+
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="title-area">
+            <h1>🎯 SYSTEM ROCKET 2H - Single Trade 1% System</h1>
+            <p>Phiên trưa 10:00 - 12:00 ICT | 1 Lệnh Pend Limit/ngày | TP Cố định 1% Vốn | SL Time Cutoff 12h00</p>
+        </div>
+        <div class="controls-area">
+            <div>
+                <label for="kSelect">Entry Distance (k × ATR):</label>
+                <select id="kSelect" onchange="renderDashboard()">
+                    <option value="0.8">k = 0.8 ATR</option>
+                    <option value="1.0">k = 1.0 ATR</option>
+                    <option value="1.2" selected>k = 1.2 ATR (Recommended)</option>
+                    <option value="1.5">k = 1.5 ATR</option>
+                    <option value="1.8">k = 1.8 ATR</option>
+                    <option value="2.0">k = 2.0 ATR</option>
+                    <option value="2.5">k = 2.5 ATR</option>
+                </select>
+            </div>
+            <div>
+                <label for="modeSelect">Chế độ AI Risk Filter:</label>
+                <select id="modeSelect" onchange="renderDashboard()">
+                    <option value="ai_filter" selected>Single-Trade + AI Risk Filter (2020-2023)</option>
+                    <option value="baseline">Single-Trade Baseline (Không dùng AI)</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- METRICS GRID -->
+    <div class="metrics-grid">
+        <div class="metric-card">
+            <div class="metric-title">Tổng Lợi Nhuận (2023-2025)</div>
+            <div class="metric-value val-green" id="m-net-pnl">$0.00</div>
+            <div class="metric-sub" id="m-return-pct">+0.00% Return</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-title">Tỷ lệ Thắng TP (Win Rate)</div>
+            <div class="metric-value val-blue" id="m-win-rate">0.0%</div>
+            <div class="metric-sub" id="m-tp-count">0 / 0 ngày có lệnh</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-title">Tỷ lệ Khớp Lệnh (Fill Rate)</div>
+            <div class="metric-value val-gold" id="m-fill-rate">0.0%</div>
+            <div class="metric-sub" id="m-active-count">0 / 0 ngày giao dịch</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-title">Max Drawdown (Sụt Giảm Vốn)</div>
+            <div class="metric-value val-red" id="m-max-dd">0.00%</div>
+            <div class="metric-sub" id="m-max-dd-usd">-$0.00 USD</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-title">Profit Factor</div>
+            <div class="metric-value" id="m-profit-factor">0.00</div>
+            <div class="metric-sub">Tổng Lời / Tổng Lỗ</div>
+        </div>
+    </div>
+
+    <!-- CHARTS AREA -->
+    <div class="charts-container">
+        <div class="chart-card">
+            <h2>📈 Đường Cong Tăng Trưởng Tài Sản (Equity Curve 2023 - 2025)</h2>
+            <canvas id="equityChart" height="220"></canvas>
+        </div>
+        <div class="chart-card">
+            <h2>📊 So Sánh Bảng KPIs Các Mức k</h2>
+            <table style="font-size: 12px;">
+                <thead>
+                    <tr>
+                        <th>k ATR</th>
+                        <th>Return</th>
+                        <th>Win Rate</th>
+                        <th>Fill Rate</th>
+                        <th>Max DD</th>
+                    </tr>
+                </thead>
+                <tbody id="comparisonTableBody">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- DAILY TRADE LOGS TABLE -->
+    <div class="table-card">
+        <h2>📋 Nhật Ký Giao Dịch Chi Tiết Theo Ngày (2023 - 2025)</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Ngày</th>
+                    <th>10h Open ($P_0$)</th>
+                    <th>ATR M5</th>
+                    <th>Distance ($D_{entry}$)</th>
+                    <th>Vol (Lot)</th>
+                    <th>Vị Thế</th>
+                    <th>Kết Quả Session</th>
+                    <th>PnL ($)</th>
+                    <th>PnL (%)</th>
+                    <th>Số Dư ($)</th>
+                    <th>Max DD ($)</th>
+                </tr>
+            </thead>
+            <tbody id="logsTableBody">
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        let globalData = null;
+        let equityChartInstance = null;
+
+        async function fetchResults() {
+            try {
+                const res = await fetch('/api/results');
+                globalData = await res.json();
+                renderDashboard();
+            } catch (err) {
+                console.error("Lỗi tải dữ liệu:", err);
+            }
+        }
+
+        function renderDashboard() {
+            if (!globalData || !globalData.kpis_summary) return;
+
+            const kVal = parseFloat(document.getElementById('kSelect').value);
+            const mode = document.getElementById('modeSelect').value;
+
+            const modeLabel = mode === 'ai_filter' ? 'Single-Trade + AI Filter' : 'Single-Trade Baseline';
+            const currentKpi = globalData.kpis_summary.find(item => item.k_multiplier === kVal && item.mode === modeLabel);
+
+            if (currentKpi) {
+                document.getElementById('m-net-pnl').innerText = `$${currentKpi.net_profit_usd.toLocaleString()}`;
+                document.getElementById('m-net-pnl').className = currentKpi.net_profit_usd >= 0 ? 'metric-value val-green' : 'metric-value val-red';
+                document.getElementById('m-return-pct').innerText = `${currentKpi.return_pct >= 0 ? '+' : ''}${currentKpi.return_pct}% Return`;
+
+                document.getElementById('m-win-rate').innerText = `${currentKpi.win_rate_pct}%`;
+                document.getElementById('m-tp-count').innerText = `${currentKpi.tp_hit_days} TP / ${currentKpi.active_trades} ngày khớp`;
+
+                document.getElementById('m-fill-rate').innerText = `${currentKpi.fill_rate_pct}%`;
+                document.getElementById('m-active-count').innerText = `${currentKpi.active_trades} / ${currentKpi.total_days} ngày giao dịch`;
+
+                document.getElementById('m-max-dd').innerText = `${currentKpi.max_drawdown_pct}%`;
+                document.getElementById('m-max-dd-usd').innerText = `-$${currentKpi.max_drawdown_usd.toLocaleString()} USD`;
+
+                document.getElementById('m-profit-factor').innerText = currentKpi.profit_factor;
+            }
+
+            renderComparisonTable(modeLabel);
+
+            const logKey = `k_${kVal}_${mode === 'ai_filter' ? 'ai_filter' : 'baseline'}`;
+            const logs = globalData.detailed_logs[logKey] || [];
+            renderLogsTable(logs);
+            renderEquityChart(logs);
+        }
+
+        function renderComparisonTable(currentModeLabel) {
+            const tbody = document.getElementById('comparisonTableBody');
+            tbody.innerHTML = '';
+
+            const filteredKpis = globalData.kpis_summary.filter(item => item.mode === currentModeLabel);
+            filteredKpis.forEach(row => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><strong>k = ${row.k_multiplier}</strong></td>
+                    <td class="${row.return_pct >= 0 ? 'val-green' : 'val-red'}">${row.return_pct >= 0 ? '+' : ''}${row.return_pct}%</td>
+                    <td>${row.win_rate_pct}%</td>
+                    <td>${row.fill_rate_pct}%</td>
+                    <td class="val-red">${row.max_drawdown_pct}%</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function renderLogsTable(logs) {
+            const tbody = document.getElementById('logsTableBody');
+            tbody.innerHTML = '';
+
+            logs.forEach(log => {
+                const tr = document.createElement('tr');
+
+                let resultBadge = '';
+                if (log.direction === 'SKIP') {
+                    resultBadge = '<span class="badge badge-skip">AI SKIP</span>';
+                } else if (log.direction === 'NO_ENTRY') {
+                    resultBadge = '<span class="badge badge-noentry">Không Khớp</span>';
+                } else if (log.tp_hit) {
+                    resultBadge = '<span class="badge badge-tp">TP (+1.0%)</span>';
+                } else if (log.cutoff_hit) {
+                    resultBadge = `<span class="badge badge-cutoff">12h Cutoff (${log.daily_pnl_usd >= 0 ? '+' : ''}${log.daily_pnl_usd}$)</span>`;
+                }
+
+                tr.innerHTML = `
+                    <td>${log.date}</td>
+                    <td>$${log.anchor_price_10am}</td>
+                    <td>${log.atr14_m5}</td>
+                    <td>${log.entry_distance_pts}</td>
+                    <td>${log.active_lot_size > 0 ? log.active_lot_size + ' Lot' : '-'}</td>
+                    <td><strong>${log.direction}</strong></td>
+                    <td>${resultBadge}</td>
+                    <td class="${log.daily_pnl_usd > 0 ? 'val-green' : (log.daily_pnl_usd < 0 ? 'val-red' : '')}">
+                        ${log.daily_pnl_usd > 0 ? '+' : ''}${log.daily_pnl_usd}$
+                    </td>
+                    <td class="${log.daily_pnl_pct > 0 ? 'val-green' : (log.daily_pnl_pct < 0 ? 'val-red' : '')}">
+                        ${log.daily_pnl_pct > 0 ? '+' : ''}${log.daily_pnl_pct}%
+                    </td>
+                    <td>$${log.ending_equity_usd.toLocaleString()}</td>
+                    <td class="val-red">-$${log.max_drawdown_usd}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function renderEquityChart(logs) {
+            const ctx = document.getElementById('equityChart').getContext('2d');
+
+            const labels = logs.map(l => l.date);
+            const dataPts = logs.map(l => l.ending_equity_usd);
+
+            if (equityChartInstance) {
+                equityChartInstance.destroy();
+            }
+
+            equityChartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Số Dư Tài Khoản ($)',
+                        data: dataPts,
+                        borderColor: '#38bdf8',
+                        backgroundColor: 'rgba(56, 189, 248, 0.1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.1,
+                        pointRadius: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        x: {
+                            grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                            ticks: { color: '#94a3b8', maxTicksLimit: 12 }
+                        },
+                        y: {
+                            grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                            ticks: { color: '#94a3b8' }
+                        }
+                    }
+                }
+            });
+        }
+
+        window.onload = fetchResults;
+    </script>
+</body>
+</html>
