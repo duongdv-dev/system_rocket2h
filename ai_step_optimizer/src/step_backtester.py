@@ -43,7 +43,12 @@ class StepBacktester(DCABacktester):
             feat_vals = [float(row[c]) for c in feature_cols]
             X_input = pd.DataFrame([feat_vals], columns=feature_cols)
             
-            prob_risk = float(model.predict_proba(X_input)[0][1])
+            probs = model.predict_proba(X_input)[0]
+            if len(model.classes_) > 1 and 1 in model.classes_:
+                class_1_idx = list(model.classes_).index(1)
+                prob_risk = float(probs[class_1_idx])
+            else:
+                prob_risk = 1.0 if model.classes_[0] == 1 else 0.0
 
             cfg = self.step_optimizer.compute_master_config(prob_risk, skip_threshold=skip_threshold, safe_threshold=0.20)
             config_map[date_str] = cfg
