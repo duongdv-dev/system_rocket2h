@@ -1,0 +1,19 @@
+{
+    "model_type": "RandomForestClassifier (Single-Trade Risk Filter)",
+    "n_estimators": 300,
+    "max_depth": 5,
+    "train_period": "2020 - 2023",
+    "train_days_count": 1032,
+    "total_bad_days_in_train": 344,
+    "total_good_days_in_train": 688,
+    "auc_roc_score": 0.8134,
+    "selected_risk_threshold": 0.38,
+    "feature_importances": {
+        "atr_ratio_20d": 0.235,
+        "directional_intensity": 0.1727,
+        "range_to_atr_ratio": 0.1513,
+        "trend_to_atr_ratio": 0.1689,
+        "morning_vol_std": 0.2296,
+        "day_of_week": 0.0425
+    }
+}
