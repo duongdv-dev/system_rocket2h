@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SYSTEM ROCKET 2H - Single Trade 1% Target System</title>
+    <title>SYSTEM ROCKET 2H - Single Trade System Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
             --bg-dark: #0f172a;
-            --card-bg: rgba(30, 41, 59, 0.7);
+            --card-bg: rgba(30, 41, 59, 0.75);
             --card-border: rgba(255, 255, 255, 0.1);
             --primary: #38bdf8;
             --primary-glow: rgba(56, 189, 248, 0.3);
@@ -33,7 +32,7 @@
             min-height: 100vh;
             padding: 24px;
             background-image: 
-                radial-gradient(at 10% 10%, rgba(56, 189, 248, 0.12) 0px, transparent 50%),
+                radial-gradient(at 10% 10%, rgba(56, 189, 248, 0.1) 0px, transparent 50%),
                 radial-gradient(at 90% 90%, rgba(16, 185, 129, 0.08) 0px, transparent 50%);
         }
 
@@ -76,7 +75,7 @@
         }
 
         select {
-            background: rgba(15, 23, 42, 0.8);
+            background: rgba(15, 23, 42, 0.85);
             color: var(--text-main);
             border: 1px solid var(--card-border);
             padding: 8px 14px;
@@ -105,12 +104,6 @@
             border-radius: 16px;
             padding: 20px;
             backdrop-filter: blur(12px);
-            transition: transform 0.2s ease, border-color 0.2s ease;
-        }
-
-        .metric-card:hover {
-            transform: translateY(-2px);
-            border-color: rgba(56, 189, 248, 0.4);
         }
 
         .metric-title {
@@ -118,14 +111,12 @@
             color: var(--text-muted);
             text-transform: uppercase;
             letter-spacing: 0.5px;
-
         }
 
         .metric-value {
             font-size: 26px;
             font-weight: 700;
             margin-top: 8px;
-
         }
 
         .metric-sub {
@@ -139,43 +130,20 @@
         .val-gold { color: var(--accent-gold); }
         .val-blue { color: var(--primary); }
 
-        .charts-container {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 20px;
-            margin-bottom: 24px;
-        }
-
-        @media (max-width: 1024px) {
-            .charts-container { grid-template-columns: 1fr; }
-        }
-
-        .chart-card {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 16px;
-            padding: 20px;
-            backdrop-filter: blur(12px);
-        }
-
-        .chart-card h2 {
-            font-size: 16px;
-            margin-bottom: 16px;
-            color: var(--text-main);
-        }
-
         .table-card {
             background: var(--card-bg);
             border: 1px solid var(--card-border);
             border-radius: 16px;
             padding: 20px;
             backdrop-filter: blur(12px);
+            margin-bottom: 24px;
             overflow-x: auto;
         }
 
         .table-card h2 {
             font-size: 16px;
             margin-bottom: 16px;
+            color: var(--primary);
         }
 
         table {
@@ -186,7 +154,7 @@
         }
 
         th {
-            background: rgba(15, 23, 42, 0.6);
+            background: rgba(15, 23, 42, 0.7);
             color: var(--text-muted);
             padding: 12px 14px;
             font-weight: 600;
@@ -199,7 +167,7 @@
         }
 
         tr:hover {
-            background: rgba(255, 255, 255, 0.02);
+            background: rgba(255, 255, 255, 0.03);
         }
 
         .badge {
@@ -215,22 +183,26 @@
         .badge-skip { background: rgba(251, 191, 36, 0.2); color: var(--accent-gold); border: 1px solid rgba(251, 191, 36, 0.3); }
         .badge-noentry { background: rgba(148, 163, 184, 0.2); color: var(--text-muted); border: 1px solid rgba(148, 163, 184, 0.3); }
 
+        .logs-container {
+            max-height: 500px;
+            overflow-y: auto;
+        }
     </style>
 </head>
 <body>
 
     <div class="header">
         <div class="title-area">
-            <h1>🎯 SYSTEM ROCKET 2H - Single Trade 1% System</h1>
-            <p>Phiên trưa 10:00 - 12:00 ICT | 1 Lệnh Pend Limit/ngày | TP Cố định 1% Vốn | SL Time Cutoff 12h00</p>
+            <h1>🎯 SYSTEM ROCKET 2H - Single Trade System</h1>
+            <p id="targetSubTitle">Phiên trưa 10:00 - 12:00 ICT | 1 Lệnh Pend Limit/ngày | SL Time Cutoff 12h00</p>
         </div>
         <div class="controls-area">
             <div>
                 <label for="kSelect">Entry Distance (k × ATR):</label>
                 <select id="kSelect" onchange="renderDashboard()">
                     <option value="0.8">k = 0.8 ATR</option>
-                    <option value="1.0">k = 1.0 ATR</option>
-                    <option value="1.2" selected>k = 1.2 ATR (Recommended)</option>
+                    <option value="1.0" selected>k = 1.0 ATR (Recommended)</option>
+                    <option value="1.2">k = 1.2 ATR</option>
                     <option value="1.5">k = 1.5 ATR</option>
                     <option value="1.8">k = 1.8 ATR</option>
                     <option value="2.0">k = 2.0 ATR</option>
@@ -240,7 +212,8 @@
             <div>
                 <label for="modeSelect">Chế độ AI Risk Filter:</label>
                 <select id="modeSelect" onchange="renderDashboard()">
-                    <option value="ai_filter" selected>Single-Trade + AI Risk Filter (2020-2023)</option>
+                    <option value="ai_moderate" selected>Single-Trade + AI Moderate (0.50)</option>
+                    <option value="ai_strict">Single-Trade + AI Strict (0.38)</option>
                     <option value="baseline">Single-Trade Baseline (Không dùng AI)</option>
                 </select>
             </div>
@@ -276,57 +249,54 @@
         </div>
     </div>
 
-    <!-- CHARTS AREA -->
-    <div class="charts-container">
-        <div class="chart-card">
-            <h2>📈 Đường Cong Tăng Trưởng Tài Sản (Equity Curve 2023 - 2025)</h2>
-            <canvas id="equityChart" height="220"></canvas>
-        </div>
-        <div class="chart-card">
-            <h2>📊 So Sánh Bảng KPIs Các Mức k</h2>
-            <table style="font-size: 12px;">
-                <thead>
-                    <tr>
-                        <th>k ATR</th>
-                        <th>Return</th>
-                        <th>Win Rate</th>
-                        <th>Fill Rate</th>
-                        <th>Max DD</th>
-                    </tr>
-                </thead>
-                <tbody id="comparisonTableBody">
-                </tbody>
-            </table>
-        </div>
+    <!-- FULL COMPARISON TABLE -->
+    <div class="table-card">
+        <h2>📊 Bảng Thống Kê So Sánh KPIs Tất Cả Kịch Bản (2023 - 2025)</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>k ATR</th>
+                    <th>Chế Độ (Mode)</th>
+                    <th>Lợi Nhuận (%)</th>
+                    <th>Lợi Nhuận ($)</th>
+                    <th>Win Rate (%)</th>
+                    <th>Fill Rate (%)</th>
+                    <th>Max Drawdown (%)</th>
+                    <th>Profit Factor</th>
+                </tr>
+            </thead>
+            <tbody id="comparisonTableBody">
+            </tbody>
+        </table>
     </div>
 
     <!-- DAILY TRADE LOGS TABLE -->
     <div class="table-card">
         <h2>📋 Nhật Ký Giao Dịch Chi Tiết Theo Ngày (2023 - 2025)</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Ngày</th>
-                    <th>10h Open ($P_0$)</th>
-                    <th>ATR M5</th>
-                    <th>Distance ($D_{entry}$)</th>
-                    <th>Vol (Lot)</th>
-                    <th>Vị Thế</th>
-                    <th>Kết Quả Session</th>
-                    <th>PnL ($)</th>
-                    <th>PnL (%)</th>
-                    <th>Số Dư ($)</th>
-                    <th>Max DD ($)</th>
-                </tr>
-            </thead>
-            <tbody id="logsTableBody">
-            </tbody>
-        </table>
+        <div class="logs-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Ngày</th>
+                        <th>10h Open ($P_0$)</th>
+                        <th>ATR M5</th>
+                        <th>Distance ($D_{entry}$)</th>
+                        <th>Vol (Lot)</th>
+                        <th>Vị Thế</th>
+                        <th>Kết Quả Session</th>
+                        <th>PnL ($)</th>
+                        <th>Số Dư ($)</th>
+                        <th>Max DD ($)</th>
+                    </tr>
+                </thead>
+                <tbody id="logsTableBody">
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <script>
         let globalData = null;
-        let equityChartInstance = null;
 
         async function fetchResults() {
             try {
@@ -338,13 +308,24 @@
             }
         }
 
+        function getModeLabel(modeVal) {
+            if (modeVal === 'ai_moderate') return 'Single-Trade + AI Moderate (0.50)';
+            if (modeVal === 'ai_strict') return 'Single-Trade + AI Strict (0.38)';
+            return 'Single-Trade Baseline';
+        }
+
         function renderDashboard() {
             if (!globalData || !globalData.kpis_summary) return;
 
-            const kVal = parseFloat(document.getElementById('kSelect').value);
-            const mode = document.getElementById('modeSelect').value;
+            if (globalData.target_tp_pct) {
+                document.getElementById('targetSubTitle').innerText = 
+                    `Phiên trưa 10:00 - 12:00 ICT | Target TP: ${globalData.target_tp_pct}%/ngày | SL Time Cutoff 12h00`;
+            }
 
-            const modeLabel = mode === 'ai_filter' ? 'Single-Trade + AI Filter' : 'Single-Trade Baseline';
+            const kVal = parseFloat(document.getElementById('kSelect').value);
+            const modeVal = document.getElementById('modeSelect').value;
+            const modeLabel = getModeLabel(modeVal);
+
             const currentKpi = globalData.kpis_summary.find(item => item.k_multiplier === kVal && item.mode === modeLabel);
 
             if (currentKpi) {
@@ -364,27 +345,28 @@
                 document.getElementById('m-profit-factor').innerText = currentKpi.profit_factor;
             }
 
-            renderComparisonTable(modeLabel);
+            renderComparisonTable();
 
-            const logKey = `k_${kVal}_${mode === 'ai_filter' ? 'ai_filter' : 'baseline'}`;
+            const logKey = `k_${kVal}_${modeVal}`;
             const logs = globalData.detailed_logs[logKey] || [];
             renderLogsTable(logs);
-            renderEquityChart(logs);
         }
 
-        function renderComparisonTable(currentModeLabel) {
+        function renderComparisonTable() {
             const tbody = document.getElementById('comparisonTableBody');
             tbody.innerHTML = '';
 
-            const filteredKpis = globalData.kpis_summary.filter(item => item.mode === currentModeLabel);
-            filteredKpis.forEach(row => {
+            globalData.kpis_summary.forEach(row => {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td><strong>k = ${row.k_multiplier}</strong></td>
-                    <td class="${row.return_pct >= 0 ? 'val-green' : 'val-red'}">${row.return_pct >= 0 ? '+' : ''}${row.return_pct}%</td>
+                    <td>${row.mode}</td>
+                    <td class="${row.return_pct >= 0 ? 'val-green' : 'val-red'}"><strong>${row.return_pct >= 0 ? '+' : ''}${row.return_pct}%</strong></td>
+                    <td class="${row.net_profit_usd >= 0 ? 'val-green' : 'val-red'}">$${row.net_profit_usd.toLocaleString()}</td>
                     <td>${row.win_rate_pct}%</td>
                     <td>${row.fill_rate_pct}%</td>
                     <td class="val-red">${row.max_drawdown_pct}%</td>
+                    <td>${row.profit_factor}</td>
                 `;
                 tbody.appendChild(tr);
             });
@@ -403,7 +385,7 @@
                 } else if (log.direction === 'NO_ENTRY') {
                     resultBadge = '<span class="badge badge-noentry">Không Khớp</span>';
                 } else if (log.tp_hit) {
-                    resultBadge = '<span class="badge badge-tp">TP (+1.0%)</span>';
+                    resultBadge = `<span class="badge badge-tp">TP (${log.daily_pnl_pct > 0 ? '+' + log.daily_pnl_pct + '%' : ''})</span>`;
                 } else if (log.cutoff_hit) {
                     resultBadge = `<span class="badge badge-cutoff">12h Cutoff (${log.daily_pnl_usd >= 0 ? '+' : ''}${log.daily_pnl_usd}$)</span>`;
                 }
@@ -417,60 +399,12 @@
                     <td><strong>${log.direction}</strong></td>
                     <td>${resultBadge}</td>
                     <td class="${log.daily_pnl_usd > 0 ? 'val-green' : (log.daily_pnl_usd < 0 ? 'val-red' : '')}">
-                        ${log.daily_pnl_usd > 0 ? '+' : ''}${log.daily_pnl_usd}$
-                    </td>
-                    <td class="${log.daily_pnl_pct > 0 ? 'val-green' : (log.daily_pnl_pct < 0 ? 'val-red' : '')}">
-                        ${log.daily_pnl_pct > 0 ? '+' : ''}${log.daily_pnl_pct}%
+                        ${log.daily_pnl_usd > 0 ? '+' : ''}$${log.daily_pnl_usd.toLocaleString()}
                     </td>
                     <td>$${log.ending_equity_usd.toLocaleString()}</td>
-                    <td class="val-red">-$${log.max_drawdown_usd}</td>
+                    <td class="val-red">-$${log.max_drawdown_usd.toLocaleString()}</td>
                 `;
                 tbody.appendChild(tr);
-            });
-        }
-
-        function renderEquityChart(logs) {
-            const ctx = document.getElementById('equityChart').getContext('2d');
-
-            const labels = logs.map(l => l.date);
-            const dataPts = logs.map(l => l.ending_equity_usd);
-
-            if (equityChartInstance) {
-                equityChartInstance.destroy();
-            }
-
-            equityChartInstance = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Số Dư Tài Khoản ($)',
-                        data: dataPts,
-                        borderColor: '#38bdf8',
-                        backgroundColor: 'rgba(56, 189, 248, 0.1)',
-                        borderWidth: 2,
-                        fill: true,
-                        tension: 0.1,
-                        pointRadius: 0
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false }
-                    },
-                    scales: {
-                        x: {
-                            grid: { color: 'rgba(255, 255, 255, 0.05)' },
-                            ticks: { color: '#94a3b8', maxTicksLimit: 12 }
-                        },
-                        y: {
-                            grid: { color: 'rgba(255, 255, 255, 0.05)' },
-                            ticks: { color: '#94a3b8' }
-                        }
-                    }
-                }
             });
         }
 
