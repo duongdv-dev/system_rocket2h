@@ -19,8 +19,13 @@ class SingleTradeBacktester:
         self.lot_usd_per_point = lot_usd_per_point
         self.use_compounding = use_compounding
         self.tz_ict = pytz.timezone("Asia/Ho_Chi_Minh")
+        self._cached_df = None
+        self._cached_m5_df = None
 
     def load_and_preprocess_data(self):
+        if self._cached_df is not None:
+            return self._cached_df
+
         df_list = []
         for path in self.data_paths:
             if not os.path.exists(path):
@@ -39,9 +44,13 @@ class SingleTradeBacktester:
         full_df = full_df.sort_values('dt_ict').reset_index(drop=True)
         full_df['date_str'] = full_df['dt_ict'].dt.strftime('%Y-%m-%d')
         full_df['time'] = full_df['dt_ict'].dt.time
+        self._cached_df = full_df
         return full_df
 
     def compute_m5_atr14(self, df):
+        if self._cached_m5_df is not None:
+            return self._cached_m5_df
+
         df_resample = df.set_index('dt_ict')
         m5_df = df_resample.resample('5min', closed='left', label='left').agg({
             'open': 'first',
@@ -57,6 +66,7 @@ class SingleTradeBacktester:
         tr3 = (m5_df['low'] - prev_close).abs()
         m5_df['tr'] = np.maximum(tr1, np.maximum(tr2, tr3))
         m5_df['atr14'] = m5_df['tr'].rolling(window=14).mean()
+        self._cached_m5_df = m5_df
         return m5_df
 
     def run_backtest(self, k_multiplier=1.5, daily_skip_dict=None):
