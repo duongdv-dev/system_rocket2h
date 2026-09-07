@@ -57,3 +57,19 @@ services:
     environment:
       - PYTHONUNBUFFERED=1
     command: python server.py
+
+  # 5. Master System 13-Step AI Dashboard (Port 8005)
+  master_13step_system:
+    build:
+      context: ./master_13step_system
+      dockerfile: Dockerfile
+    container_name: master_13step_system_web
+    ports:
+      - "8005:8005"
+    volumes:
+      - ./master_13step_system/output:/app/output
+      - ./:/app/data:ro
+    environment:
+      - PYTHONUNBUFFERED=1
+    command: python server.py
+

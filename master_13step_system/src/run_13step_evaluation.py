@@ -9,11 +9,24 @@ def run_evaluation():
     print("=" * 70)
 
     base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    test_paths = [
-        os.path.join(base_dir, "XAUUSD_2023_m1.csv"),
-        os.path.join(base_dir, "XAUUSD_2024_m1.csv"),
-        os.path.join(base_dir, "XAUUSD_2025_m1.csv")
-    ]
+    files = ["XAUUSD_2023_m1.csv", "XAUUSD_2024_m1.csv", "XAUUSD_2025_m1.csv"]
+    
+    test_paths = []
+    for f in files:
+        possible_paths = [
+            os.path.join(base_dir, f),
+            os.path.join("/app/data", f),
+            os.path.join("/app", f),
+            os.path.join(".", f)
+        ]
+        found = False
+        for p in possible_paths:
+            if os.path.exists(p):
+                test_paths.append(p)
+                found = True
+                break
+        if not found:
+            print(f"Warning: {f} not found in candidate locations.")
 
     output_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "output")
     os.makedirs(output_dir, exist_ok=True)

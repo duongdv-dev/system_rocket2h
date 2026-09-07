@@ -13,12 +13,24 @@ def train_master_ai():
     print("=" * 70)
 
     base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    train_paths = [
-        os.path.join(base_dir, "XAUUSD_2020_m1.csv"),
-        os.path.join(base_dir, "XAUUSD_2021_m1.csv"),
-        os.path.join(base_dir, "XAUUSD_2022_m1.csv"),
-        os.path.join(base_dir, "XAUUSD_2023_m1.csv")
-    ]
+    files = ["XAUUSD_2020_m1.csv", "XAUUSD_2021_m1.csv", "XAUUSD_2022_m1.csv", "XAUUSD_2023_m1.csv"]
+    
+    train_paths = []
+    for f in files:
+        possible_paths = [
+            os.path.join(base_dir, f),
+            os.path.join("/app/data", f),
+            os.path.join("/app", f),
+            os.path.join(".", f)
+        ]
+        found = False
+        for p in possible_paths:
+            if os.path.exists(p):
+                train_paths.append(p)
+                found = True
+                break
+        if not found:
+            print(f"Warning: {f} not found in candidate locations.")
 
     extractor = FeatureExtractor(train_paths)
     features_df, raw_m1_df = extractor.extract_daily_features()

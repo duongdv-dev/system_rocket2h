@@ -19,9 +19,9 @@ echo "  -> Running AI Dynamic Volume (Giai đoạn 3)..."
 docker compose -f ai_volume_optimizer/docker-compose.yml run --rm volume_train
 docker compose -f ai_volume_optimizer/docker-compose.yml run --rm volume_train python src/compare_volume_results.py
 
-echo "  -> Running Master System 3-Layer (Giai đoạn 4 & 5)..."
-docker compose -f ai_step_optimizer/docker-compose.yml run --rm master_train
-docker compose -f ai_step_optimizer/docker-compose.yml run --rm master_train python src/compare_step_results.py
+echo "  -> Running Master System 13-Step AI (Cổng 8005)..."
+docker compose -f master_13step_system/docker-compose.yml run --rm master_13step_web python src/train_master_model.py
+docker compose -f master_13step_system/docker-compose.yml run --rm master_13step_web python src/run_13step_evaluation.py
 
 echo ""
 echo "📌 [BƯỚC 2/2]: KHỞI CHẠY DOCKER DASHBOARDS TRÊN CÁC PORT..."
@@ -29,10 +29,11 @@ docker compose up -d --build
 
 echo ""
 echo "=========================================================================="
-echo "🎉 TẤT CẢ 4 BẢNG ĐIỀU KHIỂN WEB UI ĐÃ SẴN SÀNG:"
+echo "🎉 TẤT CẢ 5 BẢNG ĐIỀU KHIỂN WEB UI ĐÃ SẴN SÀNG:"
 echo "=========================================================================="
-echo "  1. DCA Baseline Dashboard   : http://localhost:8000 (hoặc http://66.154.127.117:8000/)"
-echo "  2. AI Risk Filter Dashboard : http://localhost:8002 (hoặc http://66.154.127.117:8002/)"
-echo "  3. Dynamic Volume Dashboard  : http://localhost:8003 (hoặc http://66.154.127.117:8003/)"
-echo "  4. Master System Dashboard  : http://localhost:8004 (hoặc http://66.154.127.117:8004/)"
+echo "  1. DCA Baseline Dashboard    : http://localhost:8000"
+echo "  2. AI Risk Filter Dashboard  : http://localhost:8002"
+echo "  3. Dynamic Volume Dashboard   : http://localhost:8003"
+echo "  4. Master System 3-Layer UI  : http://localhost:8004"
+echo "  5. Master 13-Step AI UI      : http://localhost:8005"
 echo "=========================================================================="
