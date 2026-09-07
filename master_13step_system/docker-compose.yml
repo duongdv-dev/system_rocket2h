@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  master_13step_web:
+    build: .
+    ports:
+      - "8005:8005"
+    volumes:
+      - ./output:/app/output
+      - ../XAUUSD_2020_m1.csv:/app/XAUUSD_2020_m1.csv
+      - ../XAUUSD_2021_m1.csv:/app/XAUUSD_2021_m1.csv
+      - ../XAUUSD_2022_m1.csv:/app/XAUUSD_2022_m1.csv
+      - ../XAUUSD_2023_m1.csv:/app/XAUUSD_2023_m1.csv
+      - ../XAUUSD_2024_m1.csv:/app/XAUUSD_2024_m1.csv
+      - ../XAUUSD_2025_m1.csv:/app/XAUUSD_2025_m1.csv
+    restart: always

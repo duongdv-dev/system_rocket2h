@@ -12,7 +12,7 @@ if current_dir not in sys.path:
 from feature_extractor import FeatureExtractor
 from single_trade_backtester import SingleTradeBacktester
 
-def evaluate_2023_2025(target_tp_pct=10.0):
+def evaluate_2023_2024(target_tp_pct=0.5):
     src_dir = os.path.dirname(os.path.abspath(__file__))
     base_dir = os.path.dirname(src_dir)
     workspace_dir = os.path.dirname(base_dir)
@@ -20,18 +20,15 @@ def evaluate_2023_2025(target_tp_pct=10.0):
     possible_path_sets = [
         [
             os.path.join(workspace_dir, "XAUUSD_2023_m1.csv"),
-            os.path.join(workspace_dir, "XAUUSD_2024_m1.csv"),
-            os.path.join(workspace_dir, "XAUUSD_2025_m1.csv")
+            os.path.join(workspace_dir, "XAUUSD_2024_m1.csv")
         ],
         [
             os.path.join(base_dir, "..", "XAUUSD_2023_m1.csv"),
-            os.path.join(base_dir, "..", "XAUUSD_2024_m1.csv"),
-            os.path.join(base_dir, "..", "XAUUSD_2025_m1.csv")
+            os.path.join(base_dir, "..", "XAUUSD_2024_m1.csv")
         ],
         [
             "/app/data/XAUUSD_2023_m1.csv",
-            "/app/data/XAUUSD_2024_m1.csv",
-            "/app/data/XAUUSD_2025_m1.csv"
+            "/app/data/XAUUSD_2024_m1.csv"
         ]
     ]
 
@@ -42,10 +39,10 @@ def evaluate_2023_2025(target_tp_pct=10.0):
             break
 
     if not test_files:
-        raise FileNotFoundError("Không tìm thấy các file CSV 2023-2025 để đánh giá!")
+        raise FileNotFoundError("Không tìm thấy các file CSV 2023-2024 để đánh giá!")
 
     print("\n==================================================================================")
-    print(f"  🚀 EVALUATING SINGLE-TRADE {target_tp_pct}% PROFIT TARGET SYSTEM (2023 - 2025)")
+    print(f"  🚀 EVALUATING SINGLE-TRADE {target_tp_pct}% PROFIT TARGET SYSTEM (2023 - 2024)")
     print("==================================================================================")
 
     output_dir = os.path.join(base_dir, "output")
@@ -91,7 +88,7 @@ def evaluate_2023_2025(target_tp_pct=10.0):
 
     bt = SingleTradeBacktester(test_files, initial_balance=10000.0, target_tp_pct=target_tp_pct)
     
-    k_values = [0.8, 1.0, 1.2, 1.5, 1.8, 2.0, 2.5]
+    k_values = [0.4, 0.5, 0.6, 0.8, 1.0, 1.2]
     summary_results = []
     detailed_logs_by_k = {}
 
@@ -160,7 +157,7 @@ def evaluate_2023_2025(target_tp_pct=10.0):
     df_summary.to_csv(csv_path, index=False)
     
     export_payload = {
-        "evaluation_period": "2023 - 2025",
+        "evaluation_period": "2023 - 2024",
         "target_tp_pct": target_tp_pct,
         "kpis_summary": summary_results,
         "detailed_logs": detailed_logs_by_k
@@ -170,7 +167,7 @@ def evaluate_2023_2025(target_tp_pct=10.0):
         json.dump(export_payload, f, indent=4, ensure_ascii=False)
 
     print("\n==================================================================================")
-    print(f"📊 BẢNG TỔNG HỢP HIỆU NĂNG STRATEGY SINGLE-TRADE {target_tp_pct}% PROFIT (2023 - 2025)")
+    print(f"📊 BẢNG TỔNG HỢP HIỆU NĂNG STRATEGY SINGLE-TRADE {target_tp_pct}% PROFIT (2023 - 2024)")
     print("==================================================================================")
     print(f"{'k ATR':<6} | {'MODE':<32} | {'RETURN %':<10} | {'NET PNL ($)':<12} | {'WIN RATE %':<10} | {'FILL RATE %':<11} | {'MAX DD %':<10} | {'P.FACTOR':<8}")
     print("-" * 120)
@@ -181,4 +178,4 @@ def evaluate_2023_2025(target_tp_pct=10.0):
     return df_summary, export_payload
 
 if __name__ == "__main__":
-    evaluate_2023_2025()
+    evaluate_2023_2024()

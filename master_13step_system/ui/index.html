@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Master System 13 Lớp AI - Dashboard (System Rocket 2H)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg-dark: #0b0f19;
+            --card-bg: rgba(18, 26, 43, 0.75);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --primary: #3b82f6;
+            --primary-glow: rgba(59, 130, 246, 0.35);
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --text-main: #f3f4f6;
+            --text-sub: #9ca3af;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { background: var(--bg-dark); color: var(--text-main); padding: 24px; min-height: 100vh; }
+        
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px; }
+        header h1 { font-size: 24px; font-weight: 800; background: linear-gradient(90deg, #60a5fa, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        header .badge { background: rgba(59, 130, 246, 0.15); border: 1px solid var(--primary); color: #60a5fa; padding: 6px 14px; borderRadius: 20px; font-size: 13px; font-weight: 600; }
+
+        .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 18px; margin-bottom: 28px; }
+        .kpi-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 20px; backdrop-filter: blur(12px); }
+        .kpi-card .title { font-size: 13px; color: var(--text-sub); font-weight: 600; text-transform: uppercase; margin-bottom: 8px; }
+        .kpi-card .value { font-size: 26px; font-weight: 800; }
+        .kpi-card .value.green { color: var(--success); }
+        .kpi-card .value.red { color: var(--danger); }
+        .kpi-card .sub { font-size: 12px; color: var(--text-sub); margin-top: 6px; }
+
+        .dashboard-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; margin-bottom: 28px; }
+        .card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 24px; backdrop-filter: blur(12px); }
+        .card h2 { font-size: 18px; font-weight: 700; margin-bottom: 18px; display: flex; align-items: center; justify-content: space-between; }
+
+        table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+        th, td { padding: 12px 14px; text-align: left; border-bottom: 1px solid var(--border-color); font-size: 13px; }
+        th { color: var(--text-sub); font-weight: 600; }
+        tr:hover { background: rgba(255, 255, 255, 0.02); }
+
+        .status-tag { padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; }
+        .status-tag.skip { background: rgba(239, 68, 68, 0.15); color: #f87171; }
+        .status-tag.trade { background: rgba(16, 185, 129, 0.15); color: #34d399; }
+        .status-tag.tp { background: rgba(16, 185, 129, 0.2); color: #34d399; }
+        .status-tag.sl { background: rgba(239, 68, 68, 0.2); color: #f87171; }
+
+        .pipeline-list { list-style: none; }
+        .pipeline-item { padding: 10px 14px; margin-bottom: 8px; background: rgba(255,255,255,0.03); border-radius: 8px; border-left: 3px solid var(--primary); font-size: 13px; }
+        .pipeline-item span { font-weight: 700; color: #93c5fd; }
+    </style>
+</head>
+<body>
+    <header>
+        <div>
+            <h1>SYSTEM ROCKET 2H - MASTER 13 LỚP AI DASHBOARD</h1>
+            <p style="color: var(--text-sub); font-size: 13px; margin-top: 4px;">Khung Giao Dịch: 10:00 - 12:00 ICT | Tối Ưu Hóa Trọn Vẹn 13 Bước AI</p>
+        </div>
+        <div class="badge">Port 8005 • Master Engine</div>
+    </header>
+
+    <div class="kpi-grid">
+        <div class="kpi-card">
+            <div class="title">Vốn Ban Đầu</div>
+            <div class="value" id="kpi-initial">$10,000</div>
+            <div class="sub">Tài khoản chuẩn</div>
+        </div>
+        <div class="kpi-card">
+            <div class="title">Tài Sản Cuối Kỳ (Equity)</div>
+            <div class="value green" id="kpi-equity">$13,528.27</div>
+            <div class="sub" id="kpi-return">+35.28% Ret</div>
+        </div>
+        <div class="kpi-card">
+            <div class="title">Tỷ Lệ Thắng (Win Rate)</div>
+            <div class="value green" id="kpi-winrate">86.71%</div>
+            <div class="sub" id="kpi-tp-sl">124 TP / 0 SL</div>
+        </div>
+        <div class="kpi-card">
+            <div class="title">Số Ngày Lọc SKIP</div>
+            <div class="value" style="color: var(--warning);" id="kpi-skip">373 Ngày</div>
+            <div class="sub">Tránh bão rủi ro</div>
+        </div>
+    </div>
+
+    <div class="dashboard-grid">
+        <div class="card">
+            <h2>📈 Đường Cong Tăng Trưởng Tài Sản (Master 13-Step AI Equity Curve)</h2>
+            <div style="height: 320px;">
+                <canvas id="equityChart"></canvas>
+            </div>
+        </div>
+        <div class="card">
+            <h2>🧠 Lộ Trình 13 Bước AI Master</h2>
+            <ul class="pipeline-list">
+                <li class="pipeline-item"><span>B1:</span> Trade / Skip (Risk Gatekeeper)</li>
+                <li class="pipeline-item"><span>B2:</span> Dynamic Volume Multiplier ($k \times \text{Vol}$)</li>
+                <li class="pipeline-item"><span>B3-4:</span> Profiles Entry & DCA Step</li>
+                <li class="pipeline-item"><span>B5:</span> Dynamic DCA Breakers (In-session)</li>
+                <li class="pipeline-item"><span>B6-7:</span> Continuous Range Optimization</li>
+                <li class="pipeline-item"><span>B8-9:</span> Multi-Checkpoint 10h30/11h00/11h30</li>
+                <li class="pipeline-item"><span>B10:</span> Asymmetric Buy / Sell Parameters</li>
+                <li class="pipeline-item"><span>B11-12:</span> Dynamic & Reduced Breakeven TP</li>
+                <li class="pipeline-item"><span>B13:</span> Model Pruning (Anti-Overfitting)</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>📋 Nhật Ký Chi Tiết Từng Ngày Giao Dịch (Daily Execution Logs)</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Ngày</th>
+                    <th>Giá 10h00</th>
+                    <th>ATR14</th>
+                    <th>P(Risk)</th>
+                    <th>Quyết Định</th>
+                    <th>Active Lot</th>
+                    <th>Hướng</th>
+                    <th>Trạng Thái</th>
+                    <th>PnL (USD)</th>
+                    <th>Lý Do / Chi Tiết</th>
+                </tr>
+            </thead>
+            <tbody id="logsTable">
+                <tr><td colspan="10" style="text-align:center;">Đang tải dữ liệu...</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        async function loadDashboard() {
+            try {
+                const res = await fetch('/api/summary');
+                const data = await res.json();
+
+                const summary = data.summary;
+                const daily = data.daily_results;
+
+                document.getElementById('kpi-initial').innerText = `$${summary.initial_capital.toLocaleString()}`;
+                document.getElementById('kpi-equity').innerText = `$${summary.final_equity.toLocaleString()}`;
+                document.getElementById('kpi-return').innerText = `+${summary.return_pct}% Profit`;
+                document.getElementById('kpi-winrate').innerText = `${summary.win_rate_pct}%`;
+                document.getElementById('kpi-tp-sl').innerText = `${summary.tp_days} TP / ${summary.sl_days} SL / ${summary.early_exit_days} Exit`;
+                document.getElementById('kpi-skip').innerText = `${summary.skipped_days} Ngày`;
+
+                // Render Chart
+                const labels = daily.map(d => d.date);
+                const equityData = daily.map(d => d.ending_equity_usd);
+
+                const ctx = document.getElementById('equityChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Master AI Equity ($)',
+                            data: equityData,
+                            borderColor: '#3b82f6',
+                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                            fill: true,
+                            tension: 0.2,
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            x: { grid: { display: false }, ticks: { color: '#6b7280' } },
+                            y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#6b7280' } }
+                        }
+                    }
+                });
+
+                // Render Table
+                const tbody = document.getElementById('logsTable');
+                tbody.innerHTML = '';
+                daily.slice(-50).reverse().forEach(row => {
+                    const tr = document.createElement('tr');
+                    const isSkip = row.decision === 'SKIP';
+                    const tagClass = isSkip ? 'skip' : 'trade';
+                    
+                    let statusHtml = '';
+                    if (row.tp_hit) statusHtml = '<span class="status-tag tp">TP Hit</span>';
+                    else if (row.sl_hit) statusHtml = '<span class="status-tag sl">SL Hit</span>';
+                    else if (row.early_exit) statusHtml = '<span class="status-tag sl">Early Exit</span>';
+                    else statusHtml = isSkip ? '<span class="status-tag skip">Skipped</span>' : '<span class="status-tag trade">End 12h</span>';
+
+                    tr.innerHTML = `
+                        <td>${row.date}</td>
+                        <td>${row.anchor_price_10am}</td>
+                        <td>${row.atr14_m5_raw}</td>
+                        <td>${row.prob_risk_pct}%</td>
+                        <td><span class="status-tag ${tagClass}">${row.decision}</span></td>
+                        <td>${row.active_lot_size} L</td>
+                        <td>${row.direction}</td>
+                        <td>${statusHtml}</td>
+                        <td style="font-weight:700; color:${row.daily_pnl_usd >= 0 ? '#10b981' : '#ef4444'}">$${row.daily_pnl_usd}</td>
+                        <td style="color:var(--text-sub); font-size:12px;">${row.reason}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+
+            } catch (err) {
+                console.error("Error loading dashboard:", err);
+            }
+        }
+
+        window.onload = loadDashboard;
+    </script>
+</body>
+</html>

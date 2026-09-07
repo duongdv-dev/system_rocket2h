@@ -106,6 +106,7 @@ flowchart TD
 | **8002** | `ai_trade_filter/` | AI Risk Filter Dashboard | Xem báo cáo AI lọc ngày bão và đối soát với Baseline. |
 | **8003** | `ai_volume_optimizer/` | Dynamic Volume Dashboard | Xem phân bổ khối lượng Lot size (bội 0.01 Lot) từng ngày. |
 | **8004** | `ai_step_optimizer/` | Master System Dashboard | Xem hiệu năng tổng thể phối hợp 3 Lớp (Filter + Vol + Step). |
+| **8005** | `master_13step_system/` | Master 13-Step AI Dashboard | Xem hiệu năng tổng thể 13 Bước AI hoàn chỉnh (In-session Breakers, Checkpoints, Reduced TP, Asymmetric Buy/Sell). |
 
 ---
 

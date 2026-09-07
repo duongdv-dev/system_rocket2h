@@ -200,13 +200,12 @@
             <div>
                 <label for="kSelect">Entry Distance (k × ATR):</label>
                 <select id="kSelect" onchange="renderDashboard()">
+                    <option value="0.4">k = 0.4 ATR (High Frequency)</option>
+                    <option value="0.5" selected>k = 0.5 ATR (Recommended)</option>
+                    <option value="0.6">k = 0.6 ATR</option>
                     <option value="0.8">k = 0.8 ATR</option>
-                    <option value="1.0" selected>k = 1.0 ATR (Recommended)</option>
+                    <option value="1.0">k = 1.0 ATR</option>
                     <option value="1.2">k = 1.2 ATR</option>
-                    <option value="1.5">k = 1.5 ATR</option>
-                    <option value="1.8">k = 1.8 ATR</option>
-                    <option value="2.0">k = 2.0 ATR</option>
-                    <option value="2.5">k = 2.5 ATR</option>
                 </select>
             </div>
             <div>
