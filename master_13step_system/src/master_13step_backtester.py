@@ -11,7 +11,7 @@ from master_engine import Master13StepEngine
 class Master13StepBacktester:
     """
     Động Cơ Backtest Thời Gian Thực 13 Bước AI (10:00 - 12:00 ICT):
-    Thực thi chi tiết nến M1 từng phút từ Bước 1 tới Bước 13.
+    Hỗ trợ tham số max_step (0 đến 13) để kiểm chứng từng bước phát triển.
     """
     def __init__(self, data_paths, model_path=None, initial_balance=10000.0, default_lot=0.60, lot_usd_per_point=100.0, max_daily_loss_pct=20.0):
         self.data_paths = data_paths
@@ -22,17 +22,15 @@ class Master13StepBacktester:
         self.tz_ict = pytz.timezone("Asia/Ho_Chi_Minh")
 
         if model_path and os.path.exists(model_path):
-            print(f"Loading Master AI Model: {model_path}")
             self.model = joblib.load(model_path)
         else:
             self.model = None
 
         self.engine = Master13StepEngine(base_lot=default_lot)
 
-    def run_13step_backtest(self):
+    def run_13step_backtest(self, max_step=13):
         extractor = FeatureExtractor(self.data_paths)
         features_df, raw_m1_df = extractor.extract_daily_features()
-        m5_df = extractor.compute_m5_atr14(raw_m1_df)
 
         feature_cols = [
             "atr14_m5", "atr_ratio_20d", "morning_range_pts", "morning_trend_pts",
@@ -55,15 +53,13 @@ class Master13StepBacktester:
             feat_row = features_df[features_df['date'] == date_str].iloc[0]
             feat_dict = feat_row.to_dict()
 
-            # Dự báo xác suất rủi ro P(Risk) lúc 10h00
-            if self.model is not None:
+            if self.model is not None and max_step >= 1:
                 X_feat = pd.DataFrame([feat_row[feature_cols]])
                 prob_risk = float(self.model.predict_proba(X_feat)[0, 1])
             else:
-                prob_risk = 0.15 # Fallback safe if no model
+                prob_risk = 0.0 # Step 0: Risk = 0 so no skipping
 
-            # BƯỚC 1 - 4, 6, 7, 10, 13: Xử lý cấu hình trước 10h00
-            pre10_cfg = self.engine.compute_pre10_config(prob_risk, feat_dict)
+            pre10_cfg = self.engine.compute_pre10_config(prob_risk, feat_dict, max_step=max_step)
 
             day_m1 = raw_m1_df[raw_m1_df['date_str'] == date_str].copy()
             target_10am = time(10, 0, 0)
@@ -109,7 +105,6 @@ class Master13StepBacktester:
             early_exit = False
             session_closed = False
             daily_pnl = 0.0
-            max_drawdown_usd = 0.0
 
             start_day_equity = cumulative_balance
             max_allowed_loss_usd = start_day_equity * (self.max_daily_loss_pct / 100.0)
@@ -143,7 +138,6 @@ class Master13StepBacktester:
 
                 # 2. XỬ LÝ VỊ THẾ TRONG PHIÊN
                 if direction == "BUY":
-                    # Nhồi DCA Buy
                     if allow_dca:
                         curr_max_k = int(np.floor((anchor_price - b_low) / dca_step_buy))
                         if curr_max_k > max_level:
@@ -155,15 +149,13 @@ class Master13StepBacktester:
                     if positions:
                         floating_pnl = sum((b_close - pos['entry_price']) * usd_per_point for pos in positions)
 
-                        # BƯỚC 5, 8, 9, 11, 12: Đánh giá Checkpoint thời gian thực
                         chk_action = self.engine.evaluate_in_session_checkpoints(
-                            b_time, direction, positions, b_close, anchor_price, raw_atr, floating_pnl, max_allowed_loss_usd
+                            b_time, direction, positions, b_close, anchor_price, raw_atr, floating_pnl, max_allowed_loss_usd, max_step=max_step
                         )
 
                         allow_dca = chk_action["allow_dca"]
                         tp_target_price = chk_action["tp_target_price"]
 
-                        # Check Early Exit
                         if chk_action["early_exit"]:
                             daily_pnl = floating_pnl
                             early_exit = True
@@ -171,7 +163,6 @@ class Master13StepBacktester:
                             session_closed = True
                             break
 
-                        # Check Max Daily Loss Cut
                         if abs(floating_pnl) >= max_allowed_loss_usd and floating_pnl < 0:
                             daily_pnl = -max_allowed_loss_usd
                             sl_hit = True
@@ -179,7 +170,6 @@ class Master13StepBacktester:
                             session_closed = True
                             break
 
-                        # Check TP Target
                         if b_high >= tp_target_price:
                             daily_pnl = sum((tp_target_price - pos['entry_price']) * usd_per_point for pos in positions)
                             tp_hit = True
@@ -188,7 +178,6 @@ class Master13StepBacktester:
                             break
 
                 elif direction == "SELL":
-                    # Nhồi DCA Sell
                     if allow_dca:
                         curr_max_k = int(np.floor((b_high - anchor_price) / dca_step_sell))
                         if curr_max_k > max_level:
@@ -200,9 +189,8 @@ class Master13StepBacktester:
                     if positions:
                         floating_pnl = sum((pos['entry_price'] - b_close) * usd_per_point for pos in positions)
 
-                        # BƯỚC 5, 8, 9, 11, 12: Checkpoints
                         chk_action = self.engine.evaluate_in_session_checkpoints(
-                            b_time, direction, positions, b_close, anchor_price, raw_atr, floating_pnl, max_allowed_loss_usd
+                            b_time, direction, positions, b_close, anchor_price, raw_atr, floating_pnl, max_allowed_loss_usd, max_step=max_step
                         )
 
                         allow_dca = chk_action["allow_dca"]
@@ -229,7 +217,6 @@ class Master13StepBacktester:
                             session_closed = True
                             break
 
-            # 3. ÉP ĐÓNG KHI HẾT PHIÊN 12H00
             if not session_closed:
                 last_bar = window_session.iloc[-1]
                 exit_price = float(last_bar['close'])
@@ -263,6 +250,7 @@ class Master13StepBacktester:
             })
 
         summary = {
+            "step": max_step,
             "initial_capital": self.initial_balance,
             "final_equity": round(cumulative_balance, 2),
             "net_pnl_usd": round(cumulative_balance - self.initial_balance, 2),
