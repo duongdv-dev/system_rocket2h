@@ -1,0 +1,24 @@
+{
+    "model_type": "RandomForestClassifier (Master 13-Step Model)",
+    "n_estimators": 300,
+    "max_depth": 5,
+    "train_period": "2020 - 2023",
+    "train_days_count": 1032,
+    "total_bad_days_in_train": 316,
+    "total_safe_days_in_train": 716,
+    "roc_auc_score": 1.0,
+    "feature_importances": {
+        "atr14_m5": 0.0148,
+        "atr_ratio_20d": 0.0679,
+        "morning_range_pts": 0.0425,
+        "morning_trend_pts": 0.1317,
+        "directional_intensity": 0.5275,
+        "range_to_atr_ratio": 0.027,
+        "trend_to_atr_ratio": 0.1574,
+        "morning_vol_std": 0.0105,
+        "open_daily_dist": 0.011,
+        "range_30m": 0.0082,
+        "day_of_week": 0.0013
+    },
+    "optimal_risk_threshold": 0.36
+}

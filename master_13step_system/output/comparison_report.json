@@ -1,0 +1,29 @@
+{
+    "evaluation_period": "2023 - 2025",
+    "baseline_unfiltered": {
+        "initial_capital": 10000.0,
+        "final_equity": 1827.64,
+        "net_pnl_usd": -8172.36,
+        "return_pct": -81.72,
+        "total_trading_days": 774,
+        "active_trade_days": 774,
+        "skipped_days": 0,
+        "tp_days": 469,
+        "sl_days": 144,
+        "early_exit_days": 7,
+        "win_rate_pct": 60.59
+    },
+    "master_13step_ai": {
+        "initial_capital": 10000.0,
+        "final_equity": 1237.48,
+        "net_pnl_usd": -8762.52,
+        "return_pct": -87.63,
+        "total_trading_days": 774,
+        "active_trade_days": 497,
+        "skipped_days": 277,
+        "tp_days": 319,
+        "sl_days": 85,
+        "early_exit_days": 1,
+        "win_rate_pct": 64.19
+    }
+}
