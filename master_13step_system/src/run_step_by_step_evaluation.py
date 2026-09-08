@@ -17,13 +17,14 @@ STEP_NAMES = {
     10: "Step 10: Asymmetric Buy / Sell Parameters",
     11: "Step 11: Dynamic Breakeven TP tại 11h00",
     12: "Step 12: Dynamic Reduced TP 50% tại 11h30",
-    13: "Step 13: Master Model Pruning (Kháng Overfitting)"
+    13: "Step 13: Master Model Pruning (Kháng Overfitting)",
+    99: "🌟 STEP 99: OPTIMAL COMBO (Chế độ Tinh hoa Tối ưu)"
 }
 
 def run_step_by_step_evaluation():
-    print("=" * 105)
-    print("🔍 KHỞI CHẠY BÁO CÁO KIỂM CHỨNG TỪNG BƯỚC (STEP-BY-STEP EVALUATION: STEP 0 -> STEP 13)")
-    print("=" * 105)
+    print("=" * 115)
+    print("🔍 KHỞI CHẠY BÁO CÁO KIỂM CHỨNG TỪNG BƯỚC & CHẾ ĐỘ OPTIMAL COMBO (STEP 0 -> STEP 13 & STEP 99)")
+    print("=" * 115)
 
     base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     files = ["XAUUSD_2023_m1.csv", "XAUUSD_2024_m1.csv", "XAUUSD_2025_m1.csv"]
@@ -48,11 +49,12 @@ def run_step_by_step_evaluation():
     backtester = Master13StepBacktester(test_paths, model_path=model_path, default_lot=0.60)
 
     step_results = []
+    steps_to_run = list(range(0, 14)) + [99]
 
-    print(f"{'BƯỚC':<8} | {'TÊN BƯỚC PHÁT TRIỂN AI':<45} | {'EQUITY ($)':<12} | {'NET PNL ($)':<12} | {'RETURN (%)':<10} | {'WINRATE (%)':<11} | {'TP/SL/EXIT':<12} | {'SKIP':<6}")
-    print("-" * 125)
+    print(f"{'BƯỚC':<8} | {'TÊN BƯỚC PHÁT TRIỂN AI':<50} | {'EQUITY ($)':<12} | {'NET PNL ($)':<12} | {'RETURN (%)':<10} | {'WINRATE (%)':<11} | {'TP/SL/EXIT':<12} | {'SKIP':<6}")
+    print("-" * 135)
 
-    for step in range(0, 14):
+    for step in steps_to_run:
         summary, _ = backtester.run_13step_backtest(max_step=step)
         step_results.append(summary)
 
@@ -64,15 +66,15 @@ def run_step_by_step_evaluation():
         tpsl_str = f"{summary['tp_days']}/{summary['sl_days']}/{summary['early_exit_days']}"
         skip_str = f"{summary['skipped_days']}d"
 
-        print(f"Step {step:<3} | {name:<45} | {eq_str:<12} | {pnl_str:<12} | {ret_str:<10} | {wr_str:<11} | {tpsl_str:<12} | {skip_str:<6}")
+        print(f"Step {step:<3} | {name:<50} | {eq_str:<12} | {pnl_str:<12} | {ret_str:<10} | {wr_str:<11} | {tpsl_str:<12} | {skip_str:<6}")
 
-    print("=" * 125)
+    print("=" * 135)
 
     matrix_path = os.path.join(output_dir, "step_by_step_comparison_matrix.json")
     with open(matrix_path, "w") as f:
         json.dump(step_results, f, indent=4)
 
-    print(f"\n✅ Đã lưu kết quả đối soát từng bước vào: {matrix_path}")
+    print(f"\n✅ Đã lưu kết quả đối soát từng bước và Chế độ Optimal Combo vào: {matrix_path}")
 
 if __name__ == "__main__":
     run_step_by_step_evaluation()

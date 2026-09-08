@@ -3,7 +3,7 @@ import numpy as np
 class Master13StepEngine:
     """
     Master Engine Đóng Gói 13 Bước AI Cho System Rocket 2H:
-    Hỗ trợ tham số max_step (0 đến 13) để kiểm chứng từng bước độc lập và cộng dồn.
+    Hỗ trợ tham số max_step (0 đến 13) và max_step=99 (Chế Độ Tinh Hoa Tối Ưu Kết Hợp).
     """
     def __init__(self, base_lot=0.60, min_lot=0.15, skip_threshold=0.36, safe_threshold=0.20):
         self.base_lot = base_lot
@@ -42,6 +42,34 @@ class Master13StepEngine:
                 "reason": f"🛑 BƯỚC 1 - BỎ QUA (SKIP): P={prob_risk*100:.1f}% ≥ {self.skip_threshold*100:.1f}%"
             }
 
+        # CHẾ ĐỘ 99: TỈNH HOA TỐI ƯU KẾT HỢP (OPTIMAL COMBO: Step 1 + Step 2 + Step 7 + Step 8)
+        if max_step == 99:
+            if prob_risk < self.safe_threshold:
+                vol_mode = "NORMAL"
+                vol_multiplier = 1.0
+            else:
+                vol_mode = "CONSERVATIVE"
+                ratio = (self.skip_threshold - prob_risk) / (self.skip_threshold - self.safe_threshold)
+                vol_multiplier = round(0.25 + ratio * 0.50, 2)
+            
+            active_lot = round(self.base_lot * vol_multiplier, 2)
+            active_lot = max(self.min_lot, min(self.base_lot, active_lot))
+
+            range_to_atr = features.get("range_to_atr_ratio", 1.0)
+            cont_dca = max(0.95, min(1.30, 0.9 + 0.3 * range_to_atr / 2.0))
+
+            return {
+                "decision": "TRADE",
+                "vol_mode": vol_mode,
+                "vol_multiplier": vol_multiplier,
+                "active_lot": active_lot,
+                "entry_factor_buy": 1.0, # Đặt Entry chuẩn 1.0x ATR tránh nhiễu
+                "entry_factor_sell": 1.0,
+                "dca_factor_buy": round(cont_dca, 2),
+                "dca_factor_sell": round(cont_dca, 2),
+                "reason": f"🌟 OPTIMAL COMBO MASTER: Vol={active_lot}L ({vol_mode}) | P={prob_risk*100:.1f}%"
+            }
+
         # BƯỚC 2: Chọn mức Volume
         if max_step >= 2:
             if prob_risk < self.safe_threshold:
@@ -70,29 +98,23 @@ class Master13StepEngine:
         morning_direction = features.get("morning_direction", 0)
 
         if max_step >= 3:
-            # Bước 3: Profile Entry Distance (Near 0.8, Standard 1.0, Far 1.2)
             if range_to_atr < 1.2:
-                entry_factor_buy = entry_factor_sell = 0.8 # NEAR
+                entry_factor_buy = entry_factor_sell = 0.8
             elif range_to_atr > 2.2:
-                entry_factor_buy = entry_factor_sell = 1.2 # FAR
+                entry_factor_buy = entry_factor_sell = 1.2
 
         if max_step >= 4:
-            # Bước 4: Profile DCA Step (Wide 1.25 khi volatility cao)
             if atr_ratio_20d > 1.3:
-                dca_factor_buy = dca_factor_sell = 1.25 # WIDE DCA
+                dca_factor_buy = dca_factor_sell = 1.25
 
-        # BƯỚC 6 & 7: Continuous Entry & DCA Range Tuning (Hệ số liên tục)
         if max_step >= 6:
-            # Entry factor tinh chỉnh liên tục theo volatility
             cont_entry = 1.0 / max(0.8, min(1.25, atr_ratio_20d))
             entry_factor_buy = entry_factor_sell = round(cont_entry, 2)
 
         if max_step >= 7:
-            # DCA factor tinh chỉnh liên tục
             cont_dca = max(0.95, min(1.30, 0.9 + 0.3 * range_to_atr / 2.0))
             dca_factor_buy = dca_factor_sell = round(cont_dca, 2)
 
-        # BƯỚC 10: Tách riêng tham số Buy / Sell phi đối xứng theo Trend sáng
         if max_step >= 10:
             if morning_direction == 1 and directional_intensity > 0.6:
                 entry_factor_buy = round(0.85 * max(0.8, 1.0 / atr_ratio_20d), 2)
@@ -105,7 +127,6 @@ class Master13StepEngine:
                 dca_factor_sell = 1.0
                 dca_factor_buy = 1.25
 
-        # BƯỚC 13: Model Pruning (Giới hạn chống overfitting)
         if max_step >= 13:
             entry_factor_buy = max(0.75, min(1.30, entry_factor_buy))
             entry_factor_sell = max(0.75, min(1.30, entry_factor_sell))
@@ -130,12 +151,24 @@ class Master13StepEngine:
         """
         action = {"allow_dca": True, "early_exit": False, "tp_target_price": anchor_price, "reason": "HOLD"}
 
-        if not positions or direction == "NONE" or max_step < 5:
+        if not positions or direction == "NONE":
             return action
 
         num_positions = len(positions)
         hours = current_time.hour
         minutes = current_time.minute
+
+        # CHẾ ĐỘ 99: OPTIMAL COMBO (In-session Stop DCA & Early Exit 11h30)
+        if max_step == 99:
+            if num_positions >= 4 or (floating_pnl < 0 and abs(floating_pnl) >= 0.50 * max_allowed_loss_usd):
+                action["allow_dca"] = False
+                action["reason"] = "🛑 OPTIMAL COMBO - STOP DCA BREAKER"
+
+            if hours == 11 and minutes >= 30 and minutes < 35:
+                if floating_pnl < 0 and abs(floating_pnl) >= 0.65 * max_allowed_loss_usd:
+                    action["early_exit"] = True
+                    action["reason"] = "⚠️ OPTIMAL COMBO - EARLY EXIT 11H30"
+            return action
 
         # BƯỚC 5: Allow / Stop DCA Breaker System
         if max_step >= 5:

@@ -6,6 +6,7 @@ import numpy as np
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import roc_auc_score
 from feature_extractor import FeatureExtractor
+from master_13step_backtester import Master13StepBacktester
 
 def train_master_ai():
     print("=" * 70)
@@ -33,20 +34,26 @@ def train_master_ai():
             print(f"Warning: {f} not found in candidate locations.")
 
     extractor = FeatureExtractor(train_paths)
-    features_df, raw_m1_df = extractor.extract_daily_features()
-    print(f"Trích xuất thành công {len(features_df)} ngày dữ liệu huấn luyện.")
+    features_df, _ = extractor.extract_daily_features()
+    print(f"Trích xuất thành công {len(features_df)} ngày đặc trưng huấn luyện.")
 
-    # Gán nhãn Bad Day (Các ngày có biến động lớn nguy cơ thua lỗ DCA)
-    # Lọc dựa trên directional_intensity > 0.65 và range_to_atr_ratio > 2.2 hoặc morning_vol_std > 2.5
-    features_df['is_bad_day'] = (
-        (features_df['directional_intensity'] >= 0.62) & (features_df['range_to_atr_ratio'] >= 1.8)
-    ) | (features_df['morning_vol_std'] >= 2.5) | (features_df['atr_ratio_20d'] >= 1.6)
+    # 1. Backtest Baseline thô để gán nhãn chính xác theo PnL thực tế
+    backtester_base = Master13StepBacktester(train_paths, model_path=None, default_lot=0.60)
+    _, logs_base = backtester_base.run_13step_backtest(max_step=0)
+    df_logs = pd.DataFrame(logs_base)
 
-    features_df['is_bad_day'] = features_df['is_bad_day'].astype(int)
+    cols_to_drop = [c for c in ['anchor_price_10am', 'atr14_m5_raw', 'atr14_m5'] if c in df_logs.columns]
+    df_logs_clean = df_logs.drop(columns=cols_to_drop, errors='ignore')
 
-    bad_count = features_df['is_bad_day'].sum()
-    good_count = len(features_df) - bad_count
-    print(f"Phân bổ nhãn: Safe Days = {good_count} | High Risk Bad Days = {bad_count}")
+    df_dataset = pd.merge(features_df, df_logs_clean, on='date')
+
+    # Gán nhãn Bad Day: PnL < -$20 hoặc bị SL Hit
+    df_dataset['target'] = np.where((df_dataset['daily_pnl_usd'] < -20.0) | (df_dataset['sl_hit'] == True), 1, 0)
+    sample_weights = np.where(df_dataset['sl_hit'] == True, 30.0, 1.0)
+
+    bad_count = df_dataset['target'].sum()
+    good_count = len(df_dataset) - bad_count
+    print(f"Phân bổ nhãn huấn luyện: Safe Days = {good_count} | High Risk Bad Days = {bad_count}")
 
     feature_cols = [
         "atr14_m5", "atr_ratio_20d", "morning_range_pts", "morning_trend_pts",
@@ -54,11 +61,17 @@ def train_master_ai():
         "morning_vol_std", "open_daily_dist", "range_30m", "day_of_week"
     ]
 
-    X = features_df[feature_cols]
-    y = features_df['is_bad_day']
+    X = df_dataset[feature_cols]
+    y = df_dataset['target']
 
-    clf = RandomForestClassifier(n_estimators=300, max_depth=5, random_state=42)
-    clf.fit(X, y)
+    clf = RandomForestClassifier(
+        n_estimators=300,
+        max_depth=5,
+        min_samples_leaf=2,
+        class_weight='balanced',
+        random_state=42
+    )
+    clf.fit(X, y, sample_weight=sample_weights)
 
     y_pred_prob = clf.predict_proba(X)[:, 1]
     auc_score = roc_auc_score(y, y_pred_prob)
@@ -78,7 +91,7 @@ def train_master_ai():
         "n_estimators": 300,
         "max_depth": 5,
         "train_period": "2020 - 2023",
-        "train_days_count": len(features_df),
+        "train_days_count": len(df_dataset),
         "total_bad_days_in_train": int(bad_count),
         "total_safe_days_in_train": int(good_count),
         "roc_auc_score": round(auc_score, 4),
